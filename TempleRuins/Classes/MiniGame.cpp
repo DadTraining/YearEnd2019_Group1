@@ -43,6 +43,10 @@ bool MiniGame::init()
 	label_Collect->setPosition(10, 10);
 	this->addChild(label_Collect);
 
+	// initial time remain
+	countTimmer = new CountTimer(this, TIME_REMAIN);
+
+
 	// touch began
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(MiniGame::OnTouhBegan, this);
@@ -75,4 +79,7 @@ void MiniGame::update(float deltaTime)
 	// update collect
 	CCString* colle = CCString::createWithFormat("%i", collect);
 	label_Collect->setString(colle->getCString());
+
+	// update count timer
+	countTimmer->Update(deltaTime);
 }

@@ -24,6 +24,7 @@ public:
 	Sprite* GetSpriteById(int id);
 	Sprite* GetItemById(int id);
 	ui::Button* GetButtonById(int id);
+	Sprite* GetLoadById(int id);
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);

@@ -39,6 +39,8 @@ void Item_game::Init()
 
 void Item_game::Update(float deltaTime)
 {
+	this->collect = false;
+
 	auto rect = new Rect(this->GetSprite()->getPosition().x, this->GetSprite()->getPosition().y,
 		this->GetSprite()->getContentSize().width, this->GetSprite()->getContentSize().height);
 
