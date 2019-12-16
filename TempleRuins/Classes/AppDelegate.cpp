@@ -23,7 +23,9 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+//#include "HelloWorldScene.h"
+#include "ResourceManager.h"
+#include "MiniGame.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -42,7 +44,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size designResolutionSize = cocos2d::Size(480 * 2, 320 * 2);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
@@ -91,7 +93,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -117,8 +119,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+	auto scene = MiniGame::createMiniGame();
 
     // run
     director->runWithScene(scene);
