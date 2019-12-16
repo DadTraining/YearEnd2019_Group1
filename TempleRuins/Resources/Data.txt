@@ -1,0 +1,8 @@
+#SPRITE 2
+ID: 0
+PATH: rock/aestroid_brown.png
+ID: 1
+PATH: rock/aestroid_dark.png
+#LOAD 1
+ID: 0
+PATH: Load/circle_3.png
