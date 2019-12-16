@@ -22,3 +22,6 @@ PATH: button/btSound.png
 #ITEM 1
 ID: 0
 PATH: Item/hammer.png
+#MAIN_ACTION_PUSH 1
+ID: 0
+PATH: push.plist

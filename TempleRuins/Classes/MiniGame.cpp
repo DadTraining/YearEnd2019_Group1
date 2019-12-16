@@ -52,6 +52,12 @@ bool MiniGame::init()
 	touchListener->onTouchBegan = CC_CALLBACK_2(MiniGame::OnTouhBegan, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
+	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
+	auto sprite = ResourceManager::GetInstance()->GetSpriteById(1);
+	sprite->runAction(ResourceManager::GetInstance()->GetActionPushById(0));
+	sprite->setPosition(200, 200);
+	this->addChild(sprite);
+	
 	// update
 	scheduleUpdate();
 

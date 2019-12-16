@@ -5,7 +5,7 @@
 #include "CountTimer.h"
 
 #define NUM_ITEM 10
-#define TIME_REMAIN 10
+#define TIME_REMAIN 30
 
 class MiniGame : public Scene
 {

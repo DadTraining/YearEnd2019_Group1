@@ -155,6 +155,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\CountTimer.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Item_game.cpp" />
+    <ClCompile Include="..\Classes\MainCharactor.cpp" />
     <ClCompile Include="..\Classes\MiniGame.cpp" />
     <ClCompile Include="..\Classes\Objject.cpp" />
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
@@ -165,6 +166,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\CountTimer.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Item_game.h" />
+    <ClInclude Include="..\Classes\MainCharactor.h" />
     <ClInclude Include="..\Classes\MiniGame.h" />
     <ClInclude Include="..\Classes\Objject.h" />
     <ClInclude Include="..\Classes\ResourceManager.h" />
