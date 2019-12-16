@@ -1,0 +1,61 @@
+#include "Item_game.h"
+
+
+Item_game::Item_game(Scene* scene)
+{
+	this->scene = scene;
+	Init();
+}
+
+
+Item_game::~Item_game()
+{
+}
+
+
+void Item_game::SetTouch(CCPoint touch)
+{
+	this->touch = touch;
+}
+
+void Item_game::Init()
+{
+	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(0)));
+	//this->GetSprite()->setScale(0.3);
+	random(this);
+	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	physicbody->setDynamic(true);
+	physicbody->setVelocity(Vec2(1, 1));
+	this->GetSprite()->setPhysicsBody(physicbody);
+	this->scene->addChild(this->GetSprite());
+}
+
+void Item_game::Update(float deltaTime)
+{
+	auto rect = new Rect(this->GetSprite()->getPosition().x, this->GetSprite()->getPosition().y,
+		this->GetSprite()->getContentSize().width, this->GetSprite()->getContentSize().height);
+
+	if (rect->containsPoint(touch)) {
+		touch.x = 0;
+		touch.y = 0;
+		this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(1, 1));
+		random(this);
+	}
+	else if (this->GetSprite()->getPosition().y < 0) {
+		this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(1, 1));
+		random(this);
+	}
+}
+
+
+Sprite * Item_game::Clone(Sprite * sprite)
+{
+	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
+	return sprite_clone;
+}
+
+void Item_game::random(Objject * object)
+{
+	float x = 10 + rand() % ((int)this->getVisibleSize().width + 10 - 1);
+	object->GetSprite()->setPosition(x, this->getVisibleSize().height + 20);
+}

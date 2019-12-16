@@ -23,6 +23,8 @@
     </ClCompile>
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\Objject.cpp" />
+    <ClCompile Include="..\Classes\Item_game.cpp" />
+    <ClCompile Include="..\Classes\MiniGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -36,6 +38,8 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\Objject.h" />
+    <ClInclude Include="..\Classes\Item_game.h" />
+    <ClInclude Include="..\Classes\MiniGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

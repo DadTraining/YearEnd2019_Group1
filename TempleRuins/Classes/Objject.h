@@ -8,8 +8,9 @@ class Objject
 private:
 	int blood;
 	Sprite* sprite;
-
+	CCSize visibleSize;
 public:
+	CCSize getVisibleSize();
 	void SetBlood(int blood);
 	int GetBlood();
 	void SetSprite(Sprite* sprite);

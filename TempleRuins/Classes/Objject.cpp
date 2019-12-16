@@ -2,6 +2,12 @@
 
 
 
+CCSize Objject::getVisibleSize()
+{
+
+	return this->visibleSize;
+}
+
 void Objject::SetBlood(int blood)
 {
 	this->blood = blood;
@@ -24,6 +30,7 @@ Sprite * Objject::GetSprite()
 
 Objject::Objject()
 {
+	visibleSize = Director::getInstance()->getVisibleSize();
 }
 
 

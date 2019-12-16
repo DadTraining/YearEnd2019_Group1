@@ -49,12 +49,77 @@ void ResourceManager::Load(string fileName)
 				number--;
 			}
 		}
+		else if (arr_name[0] == "#LOAD") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path
+				string path = Get_Path(arr_source[i]);
+
+				// create sprite
+				auto sprite = Sprite::create(path);
+				sprite->retain();
+
+				// insert map
+				m_load.insert(pair<int, Sprite*>(id, sprite));
+
+				number--;
+			}
+		}
+		else if (arr_name[0] == "#BUTTON") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path
+				string path = Get_Path(arr_source[i]);
+
+				// create sprite
+				auto button = ui::Button::create(path, "");
+				button->retain();
+
+				// insert map
+				m_button.insert(pair<int, ui::Button*>(id, button));
+
+				number--;
+			}
+		}
+		else if (arr_name[0] == "#ITEM") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path
+				string path = Get_Path(arr_source[i]);
+
+				// create sprite
+				auto item = Sprite::create(path);
+				item->retain();
+
+				// insert map
+				m_item.insert(pair<int, Sprite*>(id, item));
+
+				number--;
+			}
+		}
 	}
 }
 
 Sprite * ResourceManager::GetSpriteById(int id)
 {
 	return m_sprites.at(id);
+}
+
+Sprite * ResourceManager::GetItemById(int id)
+{
+	return m_item.at(id);
 }
 
 std::vector<std::string> ResourceManager::Split(std::string str1, std::string str2)
