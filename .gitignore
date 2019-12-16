@@ -515,10 +515,3 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,cocos2dx,visualstudio
-/cocos2d
-/bin
-/proj.win32/Debug.win32
-/proj.win32/Project_Group_1.VC.db
-/proj.win32/.vs
-/proj.win32/Project_Group_1.opensdf
-/proj.win32/Project_Group_1.sdf
