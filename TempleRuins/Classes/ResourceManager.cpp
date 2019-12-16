@@ -122,6 +122,11 @@ Sprite * ResourceManager::GetItemById(int id)
 	return m_item.at(id);
 }
 
+ui::Button * ResourceManager::GetButtonById(int id)
+{
+	return m_button.at(id);
+}
+
 std::vector<std::string> ResourceManager::Split(std::string str1, std::string str2)
 {
 	vector<std::string> arr;

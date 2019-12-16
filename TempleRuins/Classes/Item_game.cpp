@@ -7,6 +7,11 @@ Item_game::Item_game(Scene* scene)
 	Init();
 }
 
+bool Item_game::isCollect()
+{
+	return this->collect;
+}
+
 
 Item_game::~Item_game()
 {
@@ -20,8 +25,10 @@ void Item_game::SetTouch(CCPoint touch)
 
 void Item_game::Init()
 {
+	// is collect
+	this->collect = false;
+
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(0)));
-	//this->GetSprite()->setScale(0.3);
 	random(this);
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
 	physicbody->setDynamic(true);
@@ -39,9 +46,11 @@ void Item_game::Update(float deltaTime)
 		touch.x = 0;
 		touch.y = 0;
 		this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(1, 1));
+		this->collect = true;
 		random(this);
 	}
 	else if (this->GetSprite()->getPosition().y < 0) {
+		this->collect = false;
 		this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(1, 1));
 		random(this);
 	}
