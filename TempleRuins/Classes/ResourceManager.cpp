@@ -117,27 +117,21 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				string path_1 = Get_Path(arr_source[i]);
+
+				i++;
+				string path_2 = Get_Path(arr_source[i]);
 
 				// load plist
-				auto spriteCache = SpriteFrameCache::getInstance();
-				spriteCache->addSpriteFramesWithFile(path);
-
-				// create
-				auto push_1 = Sprite::createWithSpriteFrameName("1.png");
-				auto push_2 = Sprite::createWithSpriteFrameName("2.png");
-				auto push_3 = Sprite::createWithSpriteFrameName("3.png");
-				auto push_4 = Sprite::createWithSpriteFrameName("4.png");
-				auto push_5 = Sprite::createWithSpriteFrameName("5.png");
-				auto push_6 = Sprite::createWithSpriteFrameName("6.png");
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
 
 				Vector<SpriteFrame*> spriteFrames;
-				spriteFrames.pushBack((SpriteFrame*)push_1);
-				spriteFrames.pushBack((SpriteFrame*)push_2);
-				spriteFrames.pushBack((SpriteFrame*)push_3);
-				spriteFrames.pushBack((SpriteFrame*)push_4);
-				spriteFrames.pushBack((SpriteFrame*)push_5);
-				spriteFrames.pushBack((SpriteFrame*)push_6);
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1.png"));
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("2.png"));
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("3.png"));
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("4.png"));
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("5.png"));
+				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("6.png"));
 				
 				auto animation = Animation::createWithSpriteFrames(spriteFrames, 0.1f);
 				auto animate = Animate::create(animation);

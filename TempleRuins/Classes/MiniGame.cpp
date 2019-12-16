@@ -53,11 +53,11 @@ bool MiniGame::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
-	auto sprite = ResourceManager::GetInstance()->GetSpriteById(1);
-	sprite->runAction(ResourceManager::GetInstance()->GetActionPushById(0));
-	sprite->setPosition(200, 200);
-	this->addChild(sprite);
 	
+	main_charac = new MainCharactor(this);
+
+
+
 	// update
 	scheduleUpdate();
 
@@ -88,4 +88,7 @@ void MiniGame::update(float deltaTime)
 
 	// update count timer
 	countTimmer->Update(deltaTime);
+
+	// update main charactor
+	main_charac->Update(deltaTime);
 }

@@ -3,6 +3,7 @@
 #include "Objject.h"
 #include "Item_game.h"
 #include "CountTimer.h"
+#include "MainCharactor.h"
 
 #define NUM_ITEM 10
 #define TIME_REMAIN 30
@@ -15,7 +16,8 @@ private:
 	int collect;
 	Label* label_Collect;
 	Sprite* timeRemain;
-	Objject* countTimmer;
+	Objject* countTimmer; //
+	Objject* main_charac;  //
 public:
 	static Scene* createMiniGame();
 	virtual bool init();
