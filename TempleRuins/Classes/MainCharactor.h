@@ -17,6 +17,7 @@ class MainCharactor : public Objject
 private:
 	Actions action;
 	Scene* scene;
+	Animate* animate;
 public:
 	void Init();
 	void Update(float deltaTime);

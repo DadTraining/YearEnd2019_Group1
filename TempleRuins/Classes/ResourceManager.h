@@ -14,7 +14,7 @@ private:
 	map<int, Sprite*> m_load;
 	map<int, Sprite*> m_item;
 	map<int, ui::Button*> m_button;
-	map<int, RepeatForever*> m_action_push;
+	map<int, Vector<SpriteFrame*>> m_action_push;
 
 	ResourceManager();
 	static ResourceManager* instance;
@@ -26,7 +26,7 @@ public:
 	Sprite* GetItemById(int id);
 	ui::Button* GetButtonById(int id);
 	Sprite* GetLoadById(int id);
-	RepeatForever* GetActionPushById(int id);
+	Vector<SpriteFrame*> GetActionPushById(int id);
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);

@@ -8,9 +8,13 @@ void MainCharactor::Right()
 
 void MainCharactor::Push()
 {
-	this->GetSprite()->runAction(ResourceManager::GetInstance()->GetActionPushById(0));
-	this->GetSprite()->setPosition(200, 200);
-	this->scene->addChild(this->GetSprite());
+	if (this->GetSprite()->getNumberOfRunningActions() == 0) {
+		auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetActionPushById(0), 0.2f);
+		animate = Animate::create(animation);
+		animate->setTag(11);
+		this->GetSprite()->runAction(RepeatForever::create(animate));// goi nhieu lan???
+
+	}
 }
 
 MainCharactor::MainCharactor(Scene* scene)
@@ -34,6 +38,9 @@ void MainCharactor::Init()
 {
 	this->SetSprite(Sprite::create());
 	this->GetSprite()->setScale(SCALE_SPRITE);
+	this->GetSprite()->setPosition(200, 200);
+	this->scene->addChild(this->GetSprite());             // add child truoc
+
 	action = PUSH;
 }
 

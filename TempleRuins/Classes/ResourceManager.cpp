@@ -133,13 +133,12 @@ void ResourceManager::Load(string fileName)
 				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("5.png"));
 				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("6.png"));
 				
-				auto animation = Animation::createWithSpriteFrames(spriteFrames, 0.1f);
-				auto animate = Animate::create(animation);
-				auto repeatForeverActionPush = RepeatForever::create(animate);
-				repeatForeverActionPush->retain();
-
+				for (int i = 0; i < spriteFrames.size(); i++) {
+					spriteFrames.at(i)->retain();
+				}
+				
 				// insert map
-				m_action_push.insert(pair<int, RepeatForever*>(id, repeatForeverActionPush));
+				m_action_push.insert(pair<int, Vector<SpriteFrame*>>(id, spriteFrames));
 
 				number--;
 			}
@@ -167,7 +166,7 @@ Sprite * ResourceManager::GetLoadById(int id)
 	return m_load.at(id);
 }
 
-RepeatForever * ResourceManager::GetActionPushById(int id)
+Vector<SpriteFrame*> ResourceManager::GetActionPushById(int id)
 {
 	return m_action_push.at(id);
 }
