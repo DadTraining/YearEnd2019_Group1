@@ -53,7 +53,7 @@ bool MiniGame::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
-	main_charac = new MainCharactor(this);
+	//main_charac = new MainCharactor(this);
 
 	// test rock
 	Objject* rock = new Rock(this);
@@ -103,8 +103,8 @@ void MiniGame::update(float deltaTime)
 	countTimmer->Update(deltaTime);
 
 	// update main charactor
-	main_charac->Update(deltaTime);
+	//main_charac->Update(deltaTime);
 
 	// update spider
-	//spider->Update(deltaTime);
+	spider->Update(deltaTime);
 }
