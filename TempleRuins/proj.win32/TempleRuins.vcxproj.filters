@@ -27,6 +27,8 @@
     <ClCompile Include="..\Classes\MiniGame.cpp" />
     <ClCompile Include="..\Classes\CountTimer.cpp" />
     <ClCompile Include="..\Classes\MainCharactor.cpp" />
+    <ClCompile Include="..\Classes\Rock.cpp" />
+    <ClCompile Include="..\Classes\Spider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -44,6 +46,8 @@
     <ClInclude Include="..\Classes\MiniGame.h" />
     <ClInclude Include="..\Classes\CountTimer.h" />
     <ClInclude Include="..\Classes\MainCharactor.h" />
+    <ClInclude Include="..\Classes\Rock.h" />
+    <ClInclude Include="..\Classes\Spider.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

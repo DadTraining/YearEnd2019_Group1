@@ -1,8 +1,10 @@
-#SPRITE 2
+#SPRITE 3
 ID: 0
 PATH: rock/aestroid_brown.png
 ID: 1
 PATH: rock/aestroid_dark.png
+ID: 2
+PATH: rock/boulder.png
 #LOAD 1
 ID: 0
 PATH: Load/circle_3.png
@@ -26,3 +28,6 @@ PATH: Item/hammer.png
 ID: 0
 PATH: Actions/pushs/push.plist
 PATH: Actions/pushs/push.png
+#ACTION_SPIDER 1
+ID: 0
+PATH: Spider/55.png

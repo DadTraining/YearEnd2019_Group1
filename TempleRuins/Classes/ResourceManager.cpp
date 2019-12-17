@@ -143,6 +143,49 @@ void ResourceManager::Load(string fileName)
 				number--;
 			}
 		}
+		else if (arr_name[0] == "#ACTION_SPIDER") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path
+				string path_1 = Get_Path(arr_source[i]);
+
+
+				// down
+				Vector<SpriteFrame*> spriteFrames_down;
+				for (int i = 0; i < 4; i++) {
+					spriteFrames_down.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 0, 60, 45)));
+				}
+				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_DOWN, spriteFrames_down));
+
+				// left
+				Vector<SpriteFrame*> spriteFrames_left;
+				for (int i = 0; i < 4; i++) {
+					spriteFrames_left.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 1, 60, 45)));
+				}
+				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_LEFT, spriteFrames_left));
+
+				// right
+				Vector<SpriteFrame*> spriteFrames_right;
+				for (int i = 0; i < 4; i++) {
+					spriteFrames_right.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 2, 60, 45)));
+				}
+				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_RIGHT, spriteFrames_right));
+
+				// up
+				Vector<SpriteFrame*> spriteFrames_up;
+				for (int i = 0; i < 4; i++) {
+					spriteFrames_up.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 3, 60, 45)));
+				}
+				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_UP, spriteFrames_up));
+
+				number--;
+			}
+		}
 	}
 }
 
@@ -169,6 +212,26 @@ Sprite * ResourceManager::GetLoadById(int id)
 Vector<SpriteFrame*> ResourceManager::GetActionPushById(int id)
 {
 	return m_action_push.at(id);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetSpiderUp()
+{
+	return m_spider_action.at(Action_Spider::S_UP);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetSpiderDown()
+{
+	return m_spider_action.at(Action_Spider::S_DOWN);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetSpiderLeft()
+{
+	return m_spider_action.at(Action_Spider::S_LEFT);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetSpiderRight()
+{
+	return m_spider_action.at(Action_Spider::S_RIGHT);
 }
 
 std::vector<std::string> ResourceManager::Split(std::string str1, std::string str2)

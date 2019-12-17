@@ -4,6 +4,13 @@
 #include <map>
 #include <string.h>
 
+enum Action_Spider {
+	S_UP,
+	S_DOWN,
+	S_LEFT,
+	S_RIGHT
+};
+
 using namespace std;
 USING_NS_CC;
 class ResourceManager
@@ -15,6 +22,7 @@ private:
 	map<int, Sprite*> m_item;
 	map<int, ui::Button*> m_button;
 	map<int, Vector<SpriteFrame*>> m_action_push;
+	map<int, Vector<SpriteFrame*>> m_spider_action;
 
 	ResourceManager();
 	static ResourceManager* instance;
@@ -27,6 +35,10 @@ public:
 	ui::Button* GetButtonById(int id);
 	Sprite* GetLoadById(int id);
 	Vector<SpriteFrame*> GetActionPushById(int id);
+	Vector<SpriteFrame*> GetSpiderUp();
+	Vector<SpriteFrame*> GetSpiderDown();
+	Vector<SpriteFrame*> GetSpiderLeft();
+	Vector<SpriteFrame*> GetSpiderRight();
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);

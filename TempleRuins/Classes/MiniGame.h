@@ -4,6 +4,8 @@
 #include "Item_game.h"
 #include "CountTimer.h"
 #include "MainCharactor.h"
+#include "Rock.h"
+#include "Spider.h"
 
 #define NUM_ITEM 10
 #define TIME_REMAIN 30
@@ -18,6 +20,7 @@ private:
 	Sprite* timeRemain;
 	Objject* countTimmer; //
 	Objject* main_charac;  //
+	Objject* spider; //
 public:
 	static Scene* createMiniGame();
 	virtual bool init();
