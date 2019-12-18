@@ -34,6 +34,9 @@
     <ClCompile Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GamePlayScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -56,6 +59,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GamePlayScene.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

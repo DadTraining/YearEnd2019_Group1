@@ -155,6 +155,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="..\Classes\GamePlayScene.cpp" />
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+=======
     <ClCompile Include="..\Classes\Item_game.cpp" />
     <ClCompile Include="..\Classes\LoadingLogo.cpp" />
     <ClCompile Include="..\Classes\MainMenu.cpp" />
@@ -162,11 +166,16 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Objject.cpp" />
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
+>>>>>>> 7f5e434ac391e41e42ad5ef0405933371b94d790
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
+<<<<<<< HEAD
+    <ClInclude Include="..\Classes\GamePlayScene.h" />
+    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+=======
     <ClInclude Include="..\Classes\Item_game.h" />
     <ClInclude Include="..\Classes\LoadingLogo.h" />
     <ClInclude Include="..\Classes\MainMenu.h" />
@@ -174,6 +183,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Objject.h" />
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\SettingScene.h" />
+>>>>>>> 7f5e434ac391e41e42ad5ef0405933371b94d790
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
