@@ -160,6 +160,14 @@ void ResourceManager::Load(string fileName)
 
 					m_charactor_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Charactor::CH_RUN, spriteFrames_run));
 				}
+				else if (id == 3) {
+					Vector<SpriteFrame*> spriteFrames_fight;
+					spriteFrames_fight.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fight_1.png"));
+					spriteFrames_fight.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fight_2.png"));
+					spriteFrames_fight.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fight_3.png"));
+
+					m_charactor_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Charactor::CH_FIGHT, spriteFrames_fight));
+				}
 				number--;
 			}
 		}
@@ -291,6 +299,11 @@ ResourceManager::~ResourceManager()
 Vector<SpriteFrame*> ResourceManager::GetCharactorPush()
 {
 	return m_charactor_action.at(Action_Charactor::CH_PUSH);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetCharactorFight()
+{
+	return m_charactor_action.at(Action_Charactor::CH_FIGHT);
 }
 
 Vector<SpriteFrame*> ResourceManager::GetCharactorWait()

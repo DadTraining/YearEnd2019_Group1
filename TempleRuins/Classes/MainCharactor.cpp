@@ -31,7 +31,7 @@ void MainCharactor::Init()
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
 	physicbody->setDynamic(false);
 
-	// create animate
+	// create animate action
 	// push
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME);
 	animate_push = Animate::create(animation);
@@ -47,8 +47,12 @@ void MainCharactor::Init()
 	animate_run = Animate::create(animation);
 	animate_run->retain();
 
-	Run();
-	//action = C_PUSH;
+	// fight
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorFight(), SPEED_FRAME);
+	animate_fight = Animate::create(animation);
+	animate_fight->retain();
+
+	Fight();
 }
 
 void MainCharactor::Update(float deltaTime)
@@ -112,6 +116,7 @@ void MainCharactor::Push()
 
 void MainCharactor::Fight()
 {
+	this->GetSprite()->runAction(RepeatForever::create(animate_fight));
 }
 
 void MainCharactor::Wait()

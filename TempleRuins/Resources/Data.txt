@@ -24,7 +24,7 @@ PATH: button/btSound.png
 #ITEM 1
 ID: 0
 PATH: Item/hammer.png
-#ACTION_CHARACTOR 3
+#ACTION_CHARACTOR 4
 ID: 0
 PATH: Actions/pushs/push.plist
 PATH: Actions/pushs/push.png
@@ -34,6 +34,9 @@ PATH: Actions/waits/wait.png
 ID: 2
 PATH: Actions/runs/run.plist
 PATH: Actions/runs/run.png
+ID: 3
+PATH: Actions/fights/fight.plist
+PATH: Actions/fights/fight.png
 #ACTION_SPIDER 1
 ID: 0
 PATH: Spider/55.png
