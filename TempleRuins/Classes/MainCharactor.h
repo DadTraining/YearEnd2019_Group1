@@ -3,6 +3,7 @@
 
 #define SCALE_SPRITE 0.3
 #define SPEED_FRAME 0.2f
+#define SPEED_RUN 3
 
 enum Actions {
 	C_PUSH,
@@ -21,6 +22,9 @@ private:
 	bool run;
 	bool stun;
 
+	bool moveLeft;
+	bool moveRight;
+
 	Actions action;
 	Scene* scene;
 	Animate* animate_push;
@@ -31,7 +35,7 @@ private:
 public:
 	void SetAction(Actions action);
 
-	void setState(bool push, bool fight, bool wait, bool run, bool stun);
+	void setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight);
 	void Init();
 	void Update(float deltaTime);
 	void Push();
@@ -39,6 +43,8 @@ public:
 	void Wait();
 	void Run();
 	void Stun();
+	void MoveLeft();
+	void MoveRight();
 	MainCharactor(Scene* scene);
 	Sprite* Clone(Sprite* sprite);
 	~MainCharactor();

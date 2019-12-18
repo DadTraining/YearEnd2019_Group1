@@ -25,13 +25,16 @@ void MainCharactor::SetAction(Actions action)
 }
 
 
-void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool stun)
+void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight)
 {
 	this->push = push;
 	this->fight = fight;
 	this->wait = wait;
 	this->run = run;
 	this->stun = stun;
+
+	this->moveLeft = moveLeft;
+	this->moveRight = moveRight;
 }
 
 void MainCharactor::Init()
@@ -42,6 +45,9 @@ void MainCharactor::Init()
 	wait = true;
 	run = false;
 	stun = false;
+
+	moveLeft = false;
+	moveRight = false;
 
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
@@ -110,6 +116,13 @@ void MainCharactor::Update(float deltaTime)
 		//this->GetSprite()->stopAllActions();
 		Stun();
 	}
+
+	if (moveLeft) {
+		MoveLeft();
+	}
+	else if (moveRight) {
+		MoveRight();
+	}
 }
 
 
@@ -146,4 +159,18 @@ void MainCharactor::Stun()
 	//this->GetSprite()->stopActionByTag(Actions::C_STUN);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
+}
+
+void MainCharactor::MoveLeft()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+}
+
+void MainCharactor::MoveRight()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
 }

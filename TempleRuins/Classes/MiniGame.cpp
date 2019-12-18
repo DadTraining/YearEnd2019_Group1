@@ -29,6 +29,9 @@ bool MiniGame::init()
 	wait = false;
 	run = false;
 	stun = false;
+
+	moveLeft = false;
+	moveRight = false;
 	// draw
 	this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
@@ -106,6 +109,14 @@ void MiniGame::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		run = true;
 		break;
 	}
+	case EventKeyboard::KeyCode::KEY_A: {
+		moveLeft = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_D: {
+		moveRight = true;
+		break;
+	}
 	default:
 		break;
 	}
@@ -129,6 +140,14 @@ void MiniGame::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
 		run = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_A: {
+		moveLeft = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_D: {
+		moveRight = false;
 		break;
 	}
 	default:
@@ -156,7 +175,7 @@ void MiniGame::update(float deltaTime)
 
 	// update main charactor
 	main_charac->Update(deltaTime);
-	((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun);
+	((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun, moveLeft, moveRight);
 
 	// update spider
 	spider->Update(deltaTime);

@@ -18,6 +18,9 @@ private:
 	bool wait;
 	bool run;
 	bool stun;
+
+	bool moveLeft;
+	bool moveRight;
 	vector<Objject* > items;
 	CCPoint touch;
 	int collect;
