@@ -33,7 +33,7 @@ void Spider::Init()
 	animate_right->setTag(actions_spider::GO_RIGHT);
 	animate_right->retain();
 
-	this->GetSprite()->runAction(RepeatForever::create(animate_up));
+	goDown();
 }
 
 void Spider::Update(float deltaTime)
@@ -43,45 +43,39 @@ void Spider::Update(float deltaTime)
 	i += deltaTime;
 	
 
-	if (i >= 1) {
-		//check = !check;
+	if (i >= 2) {
+		check = !check;
+	
+		this->GetSprite()->stopAllActions();
 		if (check) {
-			this->GetSprite()->stopAllActions();
-			check = false;
+			goDown();
 		}
-		//this->SetSprite(Sprite::create());
-		this->GetSprite()->runAction(RepeatForever::create(animate_down));    // action must retain()
-		
-		//if(this->GetSprite()->getNumberOfRunningActions() > 0) this->GetSprite();            // getsprite
-		//if (check) {
-		//	//this->GetSprite()->stopActionByTag(actions_spider::GO_UP);
-		//	this->GetSprite()->runAction(RepeatForever::create(animate_down));
-		//}
-		//else {
-		//	//this->GetSprite()->stopActionByTag(actions_spider::GO_DOWN);
-		//	this->GetSprite()->runAction(RepeatForever::create(animate_up));
-		//}
+		else {
+			goUp();
+		}
 
-		//i = 0;
+		i = 0;
 	}
 }
 
 void Spider::goUp()
 {
-	this->GetSprite()->runAction(animate_up);
+	this->GetSprite()->runAction(RepeatForever::create(animate_up));
 }
 
 void Spider::goDown()
 {
-	this->GetSprite()->runAction(animate_down);
+	this->GetSprite()->runAction(RepeatForever::create(animate_down));
 }
 
 void Spider::goLeft()
 {
+	this->GetSprite()->runAction(RepeatForever::create(animate_left));
 }
 
 void Spider::goRight()
 {
+	this->GetSprite()->runAction(RepeatForever::create(animate_right));
 }
 
 Spider::Spider(Scene* scene)

@@ -109,37 +109,57 @@ void ResourceManager::Load(string fileName)
 				number--;
 			}
 		}
-		else if (arr_name[0] == "#MAIN_ACTION_PUSH") {
+		else if (arr_name[0] == "#ACTION_CHARACTOR") {
 			// number 
 			int number = atoi(arr_name[1].c_str());
 			while (number > 0) {
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
 
-				i++;                  // path
+				i++;                  // path plist
 				string path_1 = Get_Path(arr_source[i]);
 
-				i++;
+				i++;			      // path png
 				string path_2 = Get_Path(arr_source[i]);
 
 				// load plist
 				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
-
-				Vector<SpriteFrame*> spriteFrames;
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1.png"));
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("2.png"));
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("3.png"));
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("4.png"));
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("5.png"));
-				spriteFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("6.png"));
 				
-				for (int i = 0; i < spriteFrames.size(); i++) {
-					spriteFrames.at(i)->retain();
-				}
 				
 				// insert map
-				m_action_push.insert(pair<int, Vector<SpriteFrame*>>(id, spriteFrames));
+				if (id == 0) {
+					Vector<SpriteFrame*> spriteFrames_push;
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1.png"));
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("2.png"));
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("3.png"));
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("4.png"));
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("5.png"));
+					spriteFrames_push.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("6.png"));
 
+					m_charactor_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Charactor::CH_PUSH, spriteFrames_push));
+				}
+				else if (id == 1) {
+					Vector<SpriteFrame*> spriteFrames_wait;
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("7.png"));
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("8.png"));
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("9.png"));
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("10.png"));
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("11.png"));
+					spriteFrames_wait.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("12.png"));
+
+					m_charactor_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Charactor::CH_WAIT, spriteFrames_wait));
+				}
+				else if (id == 2) {
+					Vector<SpriteFrame*> spriteFrames_run;
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("13.png"));
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("14.png"));
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("15.png"));
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("16.png"));
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("17.png"));
+					spriteFrames_run.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("18.png"));
+
+					m_charactor_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Charactor::CH_RUN, spriteFrames_run));
+				}
 				number--;
 			}
 		}
@@ -209,11 +229,6 @@ Sprite * ResourceManager::GetLoadById(int id)
 	return m_load.at(id);
 }
 
-Vector<SpriteFrame*> ResourceManager::GetActionPushById(int id)
-{
-	return m_action_push.at(id);
-}
-
 Vector<SpriteFrame*> ResourceManager::GetSpiderUp()
 {
 	return m_spider_action.at(Action_Spider::S_UP);
@@ -271,4 +286,19 @@ string ResourceManager::Get_Path(string s)
 
 ResourceManager::~ResourceManager()
 {
+}
+
+Vector<SpriteFrame*> ResourceManager::GetCharactorPush()
+{
+	return m_charactor_action.at(Action_Charactor::CH_PUSH);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetCharactorWait()
+{
+	return m_charactor_action.at(Action_Charactor::CH_WAIT);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetCharactorRun()
+{
+	return m_charactor_action.at(Action_Charactor::CH_RUN);
 }

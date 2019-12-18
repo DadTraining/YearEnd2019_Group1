@@ -53,20 +53,12 @@ bool MiniGame::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
-	//main_charac = new MainCharactor(this);
+	main_charac = new MainCharactor(this);
 
 	// test rock
 	Objject* rock = new Rock(this);
 
 	// teest spider
-	/*auto sprite = Sprite::create();
-	sprite->setPosition(300, 200);
-	this->addChild(sprite);
-	
-
-	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderDown(), 0.1f);
-	auto animate = Animate::create(animation);
-	sprite->runAction(RepeatForever::create(animate));*/
 	spider = new Spider(this);
 
 

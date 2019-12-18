@@ -24,10 +24,16 @@ PATH: button/btSound.png
 #ITEM 1
 ID: 0
 PATH: Item/hammer.png
-#MAIN_ACTION_PUSH 1
+#ACTION_CHARACTOR 3
 ID: 0
 PATH: Actions/pushs/push.plist
 PATH: Actions/pushs/push.png
+ID: 1
+PATH: Actions/waits/wait.plist
+PATH: Actions/waits/wait.png
+ID: 2
+PATH: Actions/runs/run.plist
+PATH: Actions/runs/run.png
 #ACTION_SPIDER 1
 ID: 0
 PATH: Spider/55.png
