@@ -13,6 +13,11 @@
 class MiniGame : public Scene
 {
 private:
+	bool push;
+	bool fight;
+	bool wait;
+	bool run;
+	bool stun;
 	vector<Objject* > items;
 	CCPoint touch;
 	int collect;
@@ -27,6 +32,8 @@ public:
 	MiniGame();
 	~MiniGame();
 	bool OnTouhBegan(Touch* touch, Event* event);
+	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
+	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
 	void update(float deltaTime);
 	CREATE_FUNC(MiniGame);
 };

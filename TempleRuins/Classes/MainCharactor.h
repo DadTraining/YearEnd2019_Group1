@@ -4,40 +4,41 @@
 #define SCALE_SPRITE 0.3
 #define SPEED_FRAME 0.2f
 
-enum Actions_Charactor {
-	C_UP,
-	C_DOWN,
-	C_LEFT,
-	C_RIGHT,
+enum Actions {
 	C_PUSH,
 	C_FIGHT,
-	C_WAIT
+	C_WAIT,
+	C_RUN,
+	C_STUN
 };
 
 class MainCharactor : public Objject
 {
 private:
-	Actions_Charactor action;
+	bool push;
+	bool fight;
+	bool wait;
+	bool run;
+	bool stun;
+
+	Actions action;
 	Scene* scene;
 	Animate* animate_push;
-	Animate* animate_up;
-	Animate* animate_down;
-	Animate* animate_left;
-	Animate* animate_right;
 	Animate* animate_fight;
 	Animate* animate_wait;
 	Animate* animate_run;
+	Animate* animate_stun;
 public:
+	void SetAction(Actions action);
+
+	void setState(bool push, bool fight, bool wait, bool run, bool stun);
 	void Init();
 	void Update(float deltaTime);
-	void Up();
-	void Down();
-	void Left();
-	void Right();
 	void Push();
 	void Fight();
 	void Wait();
 	void Run();
+	void Stun();
 	MainCharactor(Scene* scene);
 	Sprite* Clone(Sprite* sprite);
 	~MainCharactor();

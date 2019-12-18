@@ -20,6 +20,7 @@ enum Action_Charactor {
 	CH_PUSH,
 	CH_FIGHT,
 	CH_WAIT,
+	CH_STUN
 };
 
 using namespace std;
@@ -57,6 +58,7 @@ public:
 	Vector<SpriteFrame*> GetCharactorFight();
 	Vector<SpriteFrame*> GetCharactorWait();
 	Vector<SpriteFrame*> GetCharactorRun();
+	Vector<SpriteFrame*> GetCharactorStun();
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);

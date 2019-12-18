@@ -23,7 +23,12 @@ bool MiniGame::init()
 	if (!Scene::initWithPhysics()) {
 		return false;
 	}
-
+	// initial state
+	push = false;
+	fight = false;
+	wait = false;
+	run = false;
+	stun = false;
 	// draw
 	this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
@@ -62,6 +67,11 @@ bool MiniGame::init()
 	spider = new Spider(this);
 
 
+	// key board
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyPressed = CC_CALLBACK_2(MiniGame::OnKeyPressed, this);
+	keylistener->onKeyReleased = CC_CALLBACK_2(MiniGame::OnKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
 	// update
 	scheduleUpdate();
@@ -74,6 +84,56 @@ bool MiniGame::OnTouhBegan(Touch * touch, Event * event)
 	this->touch.x = touch->getLocation().x;
 	this->touch.y = touch->getLocation().y;
 	return false;
+}
+
+void MiniGame::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
+{
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_UP_ARROW: {
+		push = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
+		fight = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW: {
+		wait = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW : {
+		run = true;
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void MiniGame::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
+{
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_UP_ARROW: {
+		push = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
+		fight = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW: {
+		wait = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
+		run = false;
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void MiniGame::update(float deltaTime)
@@ -95,7 +155,8 @@ void MiniGame::update(float deltaTime)
 	countTimmer->Update(deltaTime);
 
 	// update main charactor
-	//main_charac->Update(deltaTime);
+	main_charac->Update(deltaTime);
+	((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun);
 
 	// update spider
 	spider->Update(deltaTime);
