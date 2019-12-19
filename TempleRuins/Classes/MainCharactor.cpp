@@ -39,6 +39,10 @@ void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool st
 
 void MainCharactor::Init()
 {
+	// initial direction
+	isLeft = false;
+	isRight = true;
+
 	// initial state
 	push = false;
 	fight = false;
@@ -118,9 +122,12 @@ void MainCharactor::Update(float deltaTime)
 	}
 
 	if (moveLeft) {
+		
+		RotateLeft();
 		MoveLeft();
 	}
 	else if (moveRight) {
+		RotateRight();
 		MoveRight();
 	}
 }
@@ -173,4 +180,32 @@ void MainCharactor::MoveRight()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
+}
+
+void MainCharactor::RotateLeft()
+{
+	if (!isLeft) {
+		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
+		auto rotatecallback = [=](float value) {
+			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
+		};
+		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+		this->GetSprite()->runAction(runaction);
+	}
+	isLeft = true;
+	isRight = false;
+}
+
+void MainCharactor::RotateRight()
+{
+	if (!isRight) {
+		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
+		auto rotatecallback = [=](float value) {
+			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
+		};
+		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+		this->GetSprite()->runAction(runaction);
+	}
+	isRight = true;
+	isLeft = false;
 }

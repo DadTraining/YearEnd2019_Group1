@@ -4,6 +4,7 @@
 #define SCALE_SPRITE 0.3
 #define SPEED_FRAME 0.2f
 #define SPEED_RUN 3
+#define SPEED_ROTATE 0.05f
 
 enum Actions {
 	C_PUSH,
@@ -16,6 +17,9 @@ enum Actions {
 class MainCharactor : public Objject
 {
 private:
+	bool isLeft;
+	bool isRight;
+
 	bool push;
 	bool fight;
 	bool wait;
@@ -45,6 +49,8 @@ public:
 	void Stun();
 	void MoveLeft();
 	void MoveRight();
+	void RotateLeft();
+	void RotateRight();
 	MainCharactor(Scene* scene);
 	Sprite* Clone(Sprite* sprite);
 	~MainCharactor();
