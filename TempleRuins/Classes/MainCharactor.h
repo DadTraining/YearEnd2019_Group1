@@ -4,7 +4,7 @@
 #define SCALE_SPRITE 0.3
 #define SPEED_FRAME 0.2f
 #define SPEED_RUN 3
-#define SPEED_ROTATE 0.05f
+#define SPEED_ROTATE 0.01f
 
 enum Actions {
 	C_PUSH,

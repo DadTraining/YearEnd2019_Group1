@@ -39,9 +39,13 @@ void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool st
 
 void MainCharactor::Init()
 {
-	// initial direction
+	// check direction
 	isLeft = false;
 	isRight = true;
+
+	// initial direction
+	moveLeft = false;
+	moveRight = false;
 
 	// initial state
 	push = false;
@@ -49,9 +53,6 @@ void MainCharactor::Init()
 	wait = true;
 	run = false;
 	stun = false;
-
-	moveLeft = false;
-	moveRight = false;
 
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
@@ -121,8 +122,7 @@ void MainCharactor::Update(float deltaTime)
 		Stun();
 	}
 
-	if (moveLeft) {
-		
+	if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
 	}
@@ -173,6 +173,13 @@ void MainCharactor::MoveLeft()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+
+	// set state
+	push = false;
+	fight = false;
+	wait = false;
+	run = true;
+	stun = false;
 }
 
 void MainCharactor::MoveRight()
@@ -180,6 +187,13 @@ void MainCharactor::MoveRight()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
+
+	// set state
+	push = false;
+	fight = false;
+	wait = false;
+	run = true;
+	stun = false;
 }
 
 void MainCharactor::RotateLeft()

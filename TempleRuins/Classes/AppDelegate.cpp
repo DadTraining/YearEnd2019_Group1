@@ -23,9 +23,8 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-//#include "HelloWorldScene.h"
 #include "ResourceManager.h"
-#include "MiniGame.h"
+#include "GamePlay.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -121,7 +120,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-	auto scene = MiniGame::createMiniGame();
+	auto scene = GamePlay::createMiniGame();
 
     // run
     director->runWithScene(scene);
