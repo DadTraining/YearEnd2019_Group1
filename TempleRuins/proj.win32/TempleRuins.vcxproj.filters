@@ -18,6 +18,9 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\Objject.cpp" />
     <ClCompile Include="..\Classes\Item_game.cpp" />
@@ -27,27 +30,15 @@
     <ClCompile Include="..\Classes\Rock.cpp" />
     <ClCompile Include="..\Classes\Spider.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
-    <ClCompile Include="..\Classes\LoadingLogo.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MainMenu.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SettingScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GamePlayScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ResourceManager.h" />
@@ -59,21 +50,6 @@
     <ClInclude Include="..\Classes\Rock.h" />
     <ClInclude Include="..\Classes\Spider.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
-    <ClInclude Include="..\Classes\LoadingLogo.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MainMenu.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SettingScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GamePlayScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

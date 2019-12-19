@@ -102,69 +102,61 @@ void MainCharactor::Init()
 void MainCharactor::Update(float deltaTime)
 {
 	if (push) {
-		//this->GetSprite()->stopAllActions();
 		Push();
 	}
 	else if (fight) {
-		//this->GetSprite()->stopAllActions();
 		Fight();
 	}
 	else if (wait) {
-		//this->GetSprite()->stopAllActions();
 		Wait();
 	}
 	else if (run) {
-		//this->GetSprite()->stopAllActions();
 		Run();
 	}
 	else if (stun) {
-		//this->GetSprite()->stopAllActions();
 		Stun();
 	}
 
 	if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
-		Run
 	}
 	else if (moveRight) {
 		RotateRight();
 		MoveRight();
+	}
+	else {
+		Wait();
 	}
 }
 
 
 void MainCharactor::Push()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_PUSH);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_push));
 }
 
 void MainCharactor::Fight()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_FIGHT);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_fight));
 }
 
 void MainCharactor::Wait()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_WAIT);
-	this->GetSprite()->stopAllActions();
+	//this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_wait));
 }
 
 void MainCharactor::Run()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_RUN);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_run));
 }
 
 void MainCharactor::Stun()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_STUN);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
 }
@@ -174,13 +166,6 @@ void MainCharactor::MoveLeft()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
-
-	// set state
-	/*push = false;
-	fight = false;
-	wait = false;
-	run = true;
-	stun = false;*/
 }
 
 void MainCharactor::MoveRight()
@@ -188,13 +173,6 @@ void MainCharactor::MoveRight()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
-
-	// set state
-	/*push = false;
-	fight = false;
-	wait = false;
-	run = true;
-	stun = false;*/
 }
 
 void MainCharactor::RotateLeft()
@@ -205,6 +183,8 @@ void MainCharactor::RotateLeft()
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+
+		Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -214,12 +194,16 @@ void MainCharactor::RotateLeft()
 void MainCharactor::RotateRight()
 {
 	if (!isRight) {
+
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+		
+		Run();
 		this->GetSprite()->runAction(runaction);
+
 	}
 	isRight = true;
 	isLeft = false;
