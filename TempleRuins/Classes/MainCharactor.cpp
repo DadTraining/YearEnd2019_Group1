@@ -110,14 +110,8 @@ void MainCharactor::Update(float deltaTime)
 	else if (wait) {
 		Wait();
 	}
-	else if (run) {
-		Run();
-	}
-	else if (stun) {
-		Stun();
-	}
 
-	if (moveLeft) {	
+	else if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
 	}
@@ -147,6 +141,8 @@ void MainCharactor::Wait()
 {
 	//this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_wait));
+	isLeft = false;
+	isRight = false;
 }
 
 void MainCharactor::Run()
