@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+
 #include "GamePlayScene.h"
 #include "ResourceManager.h"
 #include "LoadingLogo.h"
@@ -46,7 +46,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-<<<<<<< HEAD
+
 static cocos2d::Size designResolutionSize = cocos2d::Size(1600 /2 , 900/2);
 
 AppDelegate::AppDelegate()

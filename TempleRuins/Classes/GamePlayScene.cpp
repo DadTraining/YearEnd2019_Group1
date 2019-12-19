@@ -30,10 +30,10 @@ bool GamePlayScene::init()
 	/*float x = point->getProperty("X").asFloat();
 	float y = point->getProperty("Y").asFloat();*/
 
-	auto mainCharactor = Sprite::create("Sprite/1.png");
-	mainCharactor->setPosition(Vec2(0,0));
-	mainCharactor->setScale(0.1);
-	this->addChild(mainCharactor);
+	//auto mainCharactor = Sprite::create("Sprite/1.png");
+	//mainCharactor->setPosition(Vec2(0,0));
+	//mainCharactor->setScale(0.1);
+	//this->addChild(mainCharactor);
 }
 
 void GamePlayScene::update(float deltaTime)
