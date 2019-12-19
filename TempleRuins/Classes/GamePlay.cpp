@@ -2,7 +2,7 @@
 
 
 
-Scene * GamePlay::createMiniGame()
+Scene * GamePlay::createGame()
 {
 	return GamePlay::create();
 }
@@ -65,18 +65,12 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
+		
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
+		
 		break;
 	}
 	default:
@@ -106,12 +100,12 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = false;
-		wait = true;
+		
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = false;
-		wait = true;
+		
 		break;
 	}
 	default:

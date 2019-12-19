@@ -16,7 +16,7 @@ private:
 
 	Objject* main_charactor;
 public:
-	static Scene* createMiniGame();
+	static Scene* createGame();
 	virtual bool init();
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
