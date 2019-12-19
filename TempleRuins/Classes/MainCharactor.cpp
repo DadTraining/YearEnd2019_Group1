@@ -125,6 +125,7 @@ void MainCharactor::Update(float deltaTime)
 	if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
+		Run
 	}
 	else if (moveRight) {
 		RotateRight();
@@ -175,11 +176,11 @@ void MainCharactor::MoveLeft()
 	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
 
 	// set state
-	push = false;
+	/*push = false;
 	fight = false;
 	wait = false;
 	run = true;
-	stun = false;
+	stun = false;*/
 }
 
 void MainCharactor::MoveRight()
@@ -189,11 +190,11 @@ void MainCharactor::MoveRight()
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
 
 	// set state
-	push = false;
+	/*push = false;
 	fight = false;
 	wait = false;
 	run = true;
-	stun = false;
+	stun = false;*/
 }
 
 void MainCharactor::RotateLeft()
