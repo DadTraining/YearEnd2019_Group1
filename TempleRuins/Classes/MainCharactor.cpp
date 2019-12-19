@@ -113,16 +113,24 @@ void MainCharactor::Update(float deltaTime)
 		//this->GetSprite()->stopAllActions();
 		Wait();
 	}
+<<<<<<< refs/remotes/origin/Hao
 	else if (run) {
 		//this->GetSprite()->stopAllActions();
 		Run();
 	}
 	else if (stun) {
 		//this->GetSprite()->stopAllActions();
+=======
+	//else if (run) {
+	//	//log("afsd");
+	//	Run();
+	//}
+	/*else if (stun) {
+>>>>>>> local
 		Stun();
-	}
+	}*/
 
-	if (moveLeft) {	
+	else if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
 		Run
@@ -153,6 +161,8 @@ void MainCharactor::Wait()
 	//this->GetSprite()->stopActionByTag(Actions::C_WAIT);
 	this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_wait));
+	isLeft = false;
+	isRight = false;
 }
 
 void MainCharactor::Run()
