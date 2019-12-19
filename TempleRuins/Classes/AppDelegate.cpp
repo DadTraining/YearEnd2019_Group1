@@ -23,11 +23,12 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
+#include "ResourceManager.h"
+#include "GamePlay.h"
 #include "HelloWorldScene.h"
 #include "GamePlayScene.h"
 #include "ResourceManager.h"
 #include "LoadingLogo.h"
-
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -46,7 +47,6 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-<<<<<<< HEAD
 static cocos2d::Size designResolutionSize = cocos2d::Size(1600 /2 , 900/2);
 
 AppDelegate::AppDelegate()
@@ -106,8 +106,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-
-    auto scene = GamePlayScene::createScene();
+	auto scene = GamePlay::createMiniGame();
 
     // run
     director->runWithScene(scene);
