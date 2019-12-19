@@ -106,7 +106,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-	auto scene = GamePlay::createMiniGame();
+	auto scene = GamePlay::createGame();
 
     // run
     director->runWithScene(scene);
