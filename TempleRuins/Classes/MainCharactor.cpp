@@ -113,22 +113,6 @@ void MainCharactor::Update(float deltaTime)
 		//this->GetSprite()->stopAllActions();
 		Wait();
 	}
-<<<<<<< refs/remotes/origin/Hao
-	else if (run) {
-		//this->GetSprite()->stopAllActions();
-		Run();
-	}
-	else if (stun) {
-		//this->GetSprite()->stopAllActions();
-=======
-	//else if (run) {
-	//	//log("afsd");
-	//	Run();
-	//}
-	/*else if (stun) {
->>>>>>> local
-		Stun();
-	}*/
 
 	else if (moveLeft) {	
 		RotateLeft();
