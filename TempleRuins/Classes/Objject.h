@@ -19,5 +19,7 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	Objject();
 	~Objject();
+	void UpdateVelocity(Point velocity);
+
 };
 
