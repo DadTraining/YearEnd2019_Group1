@@ -33,13 +33,13 @@
     <ClCompile Include="..\Classes\LoadingLogo.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MainMenu.cpp">
+    <ClCompile Include="..\Classes\CountTimer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\SettingScene.cpp">
+    <ClCompile Include="..\Classes\GamePlay.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.cpp">
+    <ClCompile Include="..\Classes\Item_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GamePlayScene.cpp">
@@ -73,6 +73,9 @@
     <ClCompile Include="..\Classes\Spider.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TestMapScene1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -84,6 +87,22 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\CountTimer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GamePlay.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Item_game.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainCharactor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MiniGame.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Objject.h">
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\Objject.h" />
     <ClInclude Include="..\Classes\Item_game.h" />
@@ -96,15 +115,16 @@
     <ClInclude Include="..\Classes\LoadingLogo.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MainMenu.h">
+    <ClInclude Include="..\Classes\ResourceManager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\SettingScene.h">
+    <ClInclude Include="..\Classes\Rock.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.h">
+    <ClInclude Include="..\Classes\Spider.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\TestMapScene1.h">
     <ClInclude Include="..\Classes\GamePlayScene.h">
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>

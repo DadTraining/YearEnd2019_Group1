@@ -230,11 +230,6 @@ Sprite * ResourceManager::GetSpriteById(int id)
 	return m_sprites.at(id);
 }
 
-Sprite* ResourceManager::GetLoadById(int id)
-{
-	return m_load.at(id);
-}
-
 Sprite * ResourceManager::GetItemById(int id)
 {
 	return m_item.at(id);
