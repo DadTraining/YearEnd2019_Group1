@@ -1,5 +1,5 @@
 #pragma once
-
+#include "2d\CCScene.h"
 #include "Objject.h"
 #include "Item_game.h"
 #include "CountTimer.h"
@@ -9,7 +9,7 @@
 
 #define NUM_ITEM 10
 #define TIME_REMAIN 30
-using namespace cocos2d;
+
 class MiniGame : public Scene
 {
 private:
@@ -32,13 +32,8 @@ private:
 public:
 	static Scene* createMiniGame();
 	virtual bool init();
-	bool onTouchBegan(Touch* touch, Event* event);
-	bool onTouchEnded(Touch* touch, Event* event);
-	bool onTouchMoved(Touch* touch, Event* event);
 	MiniGame();
 	~MiniGame();
-
-	
 	bool OnTouhBegan(Touch* touch, Event* event);
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);

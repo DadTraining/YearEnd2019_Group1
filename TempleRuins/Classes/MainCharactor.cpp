@@ -57,7 +57,7 @@ void MainCharactor::Init()
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
 	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 200);
+	this->GetSprite()->setPosition(200, 230);
 	this->scene->addChild(this->GetSprite());   
 
 	// create physic
@@ -125,7 +125,6 @@ void MainCharactor::Update(float deltaTime)
 	if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
-		Run
 	}
 	else if (moveRight) {
 		RotateRight();
@@ -174,7 +173,7 @@ void MainCharactor::MoveLeft()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
-
+	Run();
 	// set state
 	/*push = false;
 	fight = false;
@@ -188,7 +187,7 @@ void MainCharactor::MoveRight()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
-
+	Run();
 	// set state
 	/*push = false;
 	fight = false;
