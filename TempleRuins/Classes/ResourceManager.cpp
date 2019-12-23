@@ -240,10 +240,6 @@ ui::Button * ResourceManager::GetButtonById(int id)
 	return m_button.at(id);
 }
 
-Sprite * ResourceManager::GetLoadById(int id)
-{
-	return m_load.at(id);
-}
 
 Vector<SpriteFrame*> ResourceManager::GetSpiderUp()
 {
