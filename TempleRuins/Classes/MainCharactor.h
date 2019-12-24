@@ -36,6 +36,7 @@ private:
 	Animate* animate_wait;
 	Animate* animate_run;
 	Animate* animate_stun;
+	Action *actionn;
 public:
 	void SetAction(Actions action);
 
@@ -43,7 +44,7 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void Push();
-	void Fight();
+	void Fight(float deltaTime);
 	void Wait();
 	void Run();
 	void Stun();
