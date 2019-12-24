@@ -1,5 +1,6 @@
 #pragma once
 #include "Objject.h"
+#include "Box2D/Box2D.h"
 
 #define SCALE_SPRITE 0.3
 #define SPEED_FRAME 0.2f
@@ -29,6 +30,9 @@ private:
 	bool moveLeft;
 	bool moveRight;
 
+	bool moveUp;
+	bool moveDown;
+
 	Actions action;
 	Scene* scene;
 	Animate* animate_push;
@@ -36,6 +40,7 @@ private:
 	Animate* animate_wait;
 	Animate* animate_run;
 	Animate* animate_stun;
+
 	Action *actionn;
 public:
 	void SetAction(Actions action);
@@ -50,10 +55,15 @@ public:
 	void Stun();
 	void MoveLeft();
 	void MoveRight();
+
+	void MoveUp();
+	void MoveDown();
 	void RotateLeft();
 	void RotateRight();
 	MainCharactor(Scene* scene);
 	Sprite* Clone(Sprite* sprite);
 	~MainCharactor();
+
+	void UpdateVelocity(Point velocity);
 };
 

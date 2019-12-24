@@ -37,3 +37,5 @@ Objject::Objject()
 Objject::~Objject()
 {
 }
+
+void Objject::UpdateVelocity(Point velocity) {}

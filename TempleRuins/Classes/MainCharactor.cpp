@@ -25,6 +25,7 @@ void MainCharactor::SetAction(Actions action)
 }
 
 
+
 void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight)
 {
 	this->push = push;
@@ -114,8 +115,7 @@ void MainCharactor::Update(float deltaTime)
 	else if (wait) {
 		Wait();
 	}
-
-	else if (moveLeft) {	
+	else if (moveLeft) {
 		RotateLeft();
 		MoveLeft();
 	}
@@ -136,6 +136,7 @@ void MainCharactor::Update(float deltaTime)
 
 void MainCharactor::Push()
 {
+
 	
 }
 
@@ -150,8 +151,10 @@ void MainCharactor::Fight(float deltaTime)
 	this->GetSprite()->runAction(actionn);
 };
 
+
 void MainCharactor::Wait()
 {
+	//this->GetSprite()->stopAllActions();
 	this->GetSprite()->runAction(RepeatForever::create(animate_wait));
 	isLeft = false;
 	isRight = false;
@@ -162,6 +165,7 @@ void MainCharactor::Run()
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
+
 	this->GetSprite()->runAction(RepeatForever::create(animate_run));
 }
 
@@ -170,6 +174,7 @@ void MainCharactor::Stun()
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
+
 	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
 }
 
@@ -213,6 +218,7 @@ void MainCharactor::RotateRight()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
 		
+
 		Run();
 		this->GetSprite()->runAction(runaction);
 
@@ -220,3 +226,16 @@ void MainCharactor::RotateRight()
 	isRight = true;
 	isLeft = false;
 }
+
+
+void MainCharactor::MoveUp() {
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
+}
+void MainCharactor::MoveDown() {
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
+}
+

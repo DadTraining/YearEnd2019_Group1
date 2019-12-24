@@ -31,17 +31,19 @@
     <ClCompile Include="..\Classes\Spider.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
     <ClCompile Include="..\Classes\LoadingLogo.cpp">
+
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MainMenu.cpp">
+    <ClCompile Include="..\Classes\CountTimer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\SettingScene.cpp">
+    <ClCompile Include="..\Classes\GamePlay.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.cpp">
+    <ClCompile Include="..\Classes\Item_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
+
     <ClCompile Include="..\Classes\GamePlayScene.cpp">
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
@@ -94,17 +96,19 @@
     <ClInclude Include="..\Classes\Spider.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\LoadingLogo.h">
+
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MainMenu.h">
+    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\SettingScene.h">
+    <ClInclude Include="..\Classes\SneakyJoystick.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\YearEnd2019_Group1\TempleRuins\Classes\sprite.h">
+    <ClInclude Include="..\Classes\SneakyJoystickSkinnedBase.h">
       <Filter>src</Filter>
     </ClInclude>
+
     <ClInclude Include="..\Classes\GamePlayScene.h">
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
@@ -134,6 +138,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Spider.h">
+
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

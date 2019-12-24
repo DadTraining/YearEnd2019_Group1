@@ -43,9 +43,9 @@ public:
 	void Init(const std::string path);
 	void Load(string fileName);
 	Sprite* GetSpriteById(int id);
-	Sprite* GetLoadById(int id);
 	Sprite* GetItemById(int id);
 	ui::Button* GetButtonById(int id);
+	Sprite* GetLoadById(int id);
 	Vector<SpriteFrame*> GetSpiderUp();
 	Vector<SpriteFrame*> GetSpiderDown();
 	Vector<SpriteFrame*> GetSpiderLeft();
