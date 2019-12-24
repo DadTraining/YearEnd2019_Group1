@@ -37,6 +37,7 @@ bool GamePlay::init()
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
+	/*
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Size winSize = Director::getInstance()->getWinSize();
 	Point origin = Director::getInstance()->getVisibleOrigin();
@@ -65,9 +66,106 @@ bool GamePlay::init()
 		cocos2d::log("Velocity x: %f y: %f", newValue.x, newValue.y);
 		cocos2d::log("joystick s: %f", leftJoystick->getVelocity());
 	};
+	*/
+
+	//
+	//buttton move up
+	auto buttonMoveUp = ui::Button::create("button.png");
+	buttonMoveUp->setPosition(Vec2(100, 100));
+	//button->setTitleText("Button Text");
+	buttonMoveUp->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			moveUp = true;
+			run = true;
+			wait = false;
+			push = false;
+			fight = false;
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			moveUp = false;
+			wait = true;
+			break;
+		default:
+			break;
+		}
+	});
+	addChild(buttonMoveUp);
+
+	//button move down
+	auto buttonMoveDown = ui::Button::create("button.png");
+	buttonMoveDown->setPosition(Vec2(100, 50));
+	//button->setTitleText("Button Text");
+	buttonMoveDown->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			moveDown = true;
+			run = true;
+			wait = false;
+			push = false;
+			fight = false;
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			moveDown = false;
+			wait = true;
+			break;
+		default:
+			break;
+		}
+	});
+	addChild(buttonMoveDown);
+
+	//button move left
+	auto buttonMoveLeft = ui::Button::create("button.png");
+	buttonMoveLeft->setPosition(Vec2(50, 50));
+	//button->setTitleText("Button Text");
+	buttonMoveLeft->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			moveLeft = true;
+			run = true;
+			wait = false;
+			push = false;
+			fight = false;
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			moveLeft = false;
+			wait = true;
+			break;
+		default:
+			break;
+		}
+	});
+	addChild(buttonMoveLeft);
+
+	//button move right
+	auto buttonMoveRight = ui::Button::create("button.png");
+	buttonMoveRight->setPosition(Vec2(150, 50));
+	//button->setTitleText("Button Text");
+	buttonMoveRight->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			moveRight = true;
+			run = true;
+			wait = false;
+			push = false;
+			fight = false;
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			moveRight = false;
+			wait = true;
+			break;
+		default:
+			break;
+		}
+	});
+	addChild(buttonMoveRight);
 
 	
-
 	// update
 	scheduleUpdate();
 
@@ -174,18 +272,13 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	default:
 		break;
 	}
+
 }
 
 void GamePlay::update(float deltaTime)
 {
 	// update main charactor
-	main_charactor->Update(deltaTime);
-	UpdateJoystick(deltaTime);
-		
-	//
-//	leftJoystick->onVelocityChanged = [=](SneakyJoystick* eventJoystick, Point oldValue, Point newValue)
-	
-
+	main_charactor->Update(deltaTime);		
 	((MainCharactor*)main_charactor)->setState(push, fight, wait, run, stun, moveLeft, moveRight, moveUp, moveDown);
 }
 
@@ -198,7 +291,4 @@ GamePlay::~GamePlay()
 {
 }
 
-void GamePlay::UpdateJoystick(float deltaTime) {
-	main_charactor->UpdateVelocity(leftJoystick->getStickPosition());
 
-}

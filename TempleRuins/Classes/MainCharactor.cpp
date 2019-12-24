@@ -213,25 +213,6 @@ void MainCharactor::RotateRight()
 	isRight = true;
 	isLeft = false;
 }
-void MainCharactor::UpdateVelocity(Point point) {
-	
-	if (point.x > 0){
-		RotateRight();
-		float posX = this->GetSprite()->getPosition().x;
-		float posY = this->GetSprite()->getPosition().y;
-		this->GetSprite()->setPosition(posX + point.x * 3, posY);;
-	}
-	else if (point.x < 0)
-	{
-		RotateLeft();
-		float posX = this->GetSprite()->getPosition().x;
-		float posY = this->GetSprite()->getPosition().y;
-		this->GetSprite()->setPosition(posX + point.x*3, posY);
-	}
-	else {
-		Wait();
-	}
-}
 void MainCharactor::MoveUp() {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
