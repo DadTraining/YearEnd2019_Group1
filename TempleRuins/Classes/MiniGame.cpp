@@ -220,7 +220,7 @@ void MiniGame::update(float deltaTime)
 	// update main charactor
 	main_charac->Update(deltaTime);
 
-	((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun, moveLeft, moveRight);
+	//((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun, moveLeft, moveRight);
 
 	// update spider
 	spider->Update(deltaTime);
