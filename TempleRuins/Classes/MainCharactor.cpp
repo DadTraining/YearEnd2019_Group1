@@ -25,20 +25,26 @@ void MainCharactor::SetAction(Actions action)
 }
 
 
-void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight)
+
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
 {
-	this->push = push;
 	this->fight = fight;
-	this->wait = wait;
-	this->run = run;
-	this->stun = stun;
 
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
+	this->jump = jump;
 }
 
 void MainCharactor::Init()
 {
+	// khung  -> qua gameplay
+	auto edgeBody = PhysicsBody::createEdgeBox(this->getVisibleSize());
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(this->getVisibleSize() / 2);
+	this->scene->addChild(edgeNode);
+	edgeNode->setPhysicsBody(edgeBody);
+
+
 	// check direction
 	isLeft = false;
 	isRight = true;
@@ -53,6 +59,8 @@ void MainCharactor::Init()
 	wait = true;
 	run = false;
 	stun = false;
+	jump = false;
+	jump_1 = false;
 
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
@@ -65,6 +73,7 @@ void MainCharactor::Init()
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
 	physicbody->setDynamic(true);
 	this->GetSprite()->setPhysicsBody(physicbody);
+	physicbody->setRotationEnable(false);
 
 	// create animate action
 	// push
@@ -75,22 +84,22 @@ void MainCharactor::Init()
 
 	// wait
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorWait(), SPEED_FRAME);
-	animate_wait = Animate::create(animation);
-	animate_wait->retain();
-	animate_wait->setTag(Actions::C_WAIT);
+	action_wait = Animate::create(animation);
+	action_wait->setTag(Actions::C_WAIT);
+	action_wait->retain();
 
 	// run
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorRun(), SPEED_FRAME);
-	animate_run = Animate::create(animation);
-	animate_run->retain();
-	animate_run->setTag(Actions::C_RUN);
+	action_run = RepeatForever::create(Animate::create(animation));
+	action_run->setTag(Actions::C_RUN);
+	action_run->retain();
 
 	// fight
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorFight(), SPEED_FRAME);
-	animate_fight = Animate::create(animation);
-	animate_fight->retain();
-	animate_fight->setTag(Actions::C_FIGHT);
-
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorFight(), SPEED_FIGHT);
+	action_fight = Animate::create(animation);
+	action_fight->setTag(Actions::C_FIGHT);
+	action_fight->retain();
+	
 	// stun
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME);
 	animate_stun = Animate::create(animation);
@@ -102,70 +111,79 @@ void MainCharactor::Init()
 
 void MainCharactor::Update(float deltaTime)
 {
-	if (push) {
-		//this->GetSprite()->stopAllActions();
-		Push();
+	if (fight && !(moveLeft || moveRight)) {
+		if(!(fight && fight_1)) Fight();
 	}
-	else if (fight) {
-		//this->GetSprite()->stopAllActions();
-		Fight();
-	}
-	else if (wait) {
-		//this->GetSprite()->stopAllActions();
-		Wait();
-	}
-	else if (run) {
-		//this->GetSprite()->stopAllActions();
-		Run();
-	}
-	else if (stun) {
-		//this->GetSprite()->stopAllActions();
-		Stun();
-	}
-
-	if (moveLeft) {	
+	else if (moveLeft && !fight) {
 		RotateLeft();
 		MoveLeft();
 	}
-	else if (moveRight) {
+	else if (moveRight && !fight) {
 		RotateRight();
 		MoveRight();
 	}
+	else if (!(jump && jump_1) && (jump != jump_1)) {
+		Jump();
+	}
+	else {
+		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
+			Wait();
+		}
+	}
+
+	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
+		Wait();
+	}
+
+	fight_1 = fight;
+	jump_1 = jump;
 }
 
 
 void MainCharactor::Push()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_PUSH);
-	this->GetSprite()->stopAllActions();
-	this->GetSprite()->runAction(RepeatForever::create(animate_push));
+
+	
 }
 
 void MainCharactor::Fight()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_FIGHT);
-	this->GetSprite()->stopAllActions();
-	this->GetSprite()->runAction(RepeatForever::create(animate_fight));
+	
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
+
+	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
+	this->GetSprite()->runAction(action_fight);
 }
+
 
 void MainCharactor::Wait()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_WAIT);
-	this->GetSprite()->stopAllActions();
-	this->GetSprite()->runAction(RepeatForever::create(animate_wait));
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_WAIT) == 0) {
+		this->GetSprite()->stopAllActions();
+		this->GetSprite()->runAction(action_wait);
+	}
+	
+	isLeft = false;
+	isRight = false;
 }
 
 void MainCharactor::Run()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_RUN);
-	this->GetSprite()->stopAllActions();
-	this->GetSprite()->runAction(RepeatForever::create(animate_run));
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
+
+	this->GetSprite()->runAction(action_run);
 }
 
 void MainCharactor::Stun()
 {
-	//this->GetSprite()->stopActionByTag(Actions::C_STUN);
-	this->GetSprite()->stopAllActions();
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
+
 	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
 }
 
@@ -174,13 +192,6 @@ void MainCharactor::MoveLeft()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
-	Run();
-	// set state
-	/*push = false;
-	fight = false;
-	wait = false;
-	run = true;
-	stun = false;*/
 }
 
 void MainCharactor::MoveRight()
@@ -188,13 +199,16 @@ void MainCharactor::MoveRight()
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
-	Run();
-	// set state
-	/*push = false;
-	fight = false;
-	wait = false;
-	run = true;
-	stun = false;*/
+}
+
+void MainCharactor::Jump()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	if (posY < this->getVisibleSize().height) {
+		auto moveBy = MoveBy::create(2, Vec2(0, posY + 10));
+		this->GetSprite()->runAction(moveBy);
+	}
 }
 
 void MainCharactor::RotateLeft()
@@ -205,6 +219,8 @@ void MainCharactor::RotateLeft()
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+
+		Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -219,8 +235,26 @@ void MainCharactor::RotateRight()
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+		
+
+		Run();
 		this->GetSprite()->runAction(runaction);
+
 	}
 	isRight = true;
 	isLeft = false;
 }
+
+
+void MainCharactor::MoveUp() {
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
+}
+
+void MainCharactor::MoveDown() {
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
+}
+
