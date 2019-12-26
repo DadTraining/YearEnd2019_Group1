@@ -56,6 +56,7 @@ bool MiniGame::init()
 	label_Collect->setPosition(10, 10);
 	this->addChild(label_Collect);
 
+
 	// initial time remain
 	countTimmer = new CountTimer(this, TIME_REMAIN);
 
@@ -67,6 +68,7 @@ bool MiniGame::init()
 	listener->onTouchEnded = CC_CALLBACK_2(MiniGame::OnTouchEnded, this);*/
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
+
 	// initial time remain
 	countTimmer = new CountTimer(this, TIME_REMAIN);
 
@@ -75,7 +77,6 @@ bool MiniGame::init()
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(MiniGame::OnTouhBegan, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
-
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
 	main_charac = new MainCharactor(this);
@@ -224,6 +225,8 @@ void MiniGame::update(float deltaTime)
 
 	// update spider
 	spider->Update(deltaTime);
+
 	/*CCString* colle = CCString::createWithFormat("%i", collect);
 	label_Collect->setString(colle->getCString());*/
+
 }

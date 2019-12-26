@@ -1,7 +1,12 @@
 
 #include "GamePlay.h"
+#include "cocos2d.h"
 
 
+//bool left = false;
+//bool right = false;
+//bool up = false;
+//bool down = false;
 
 Scene * GamePlay::createGame()
 {
@@ -15,10 +20,18 @@ bool GamePlay::init()
 		return false;
 	}
 
-	// initial state
+	//create map
+	_tileMap = new CCTMXTiledMap();
+	_tileMap->initWithTMXFile("map.tmx");
+
+	_background = _tileMap->layerNamed("Background");
+	this->addChild(_tileMap);
+
+	//// initial state
+	push = false;
 	fight = false;
 
-	// initial direction
+	//// initial direction
 	moveLeft = false;
 	moveRight = false;
 
@@ -28,13 +41,15 @@ bool GamePlay::init()
 
 
 
-	// initial main charactor
+	//// initial main charactor
 	this->main_charactor = new MainCharactor(this);
+	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 
 	// initial spider
 	this->spider = new Spider(this);
 
-	// key board
+
+	//// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
@@ -214,10 +229,25 @@ void GamePlay::update(float deltaTime)
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
 }
 
+void GamePlay::setViewPointCenter(CCPoint position)
+{
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+	int x = MAX(position.x, winSize.width / 2);
+	int y = MAX(position.y, winSize.height / 2);
+	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+	CCPoint actualPosition = ccp(x, y);
+
+	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
+	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+	this->setPosition(viewPoint);
+}
+
+
+
 GamePlay::GamePlay()
 {
 }
-
 
 GamePlay::~GamePlay()
 {

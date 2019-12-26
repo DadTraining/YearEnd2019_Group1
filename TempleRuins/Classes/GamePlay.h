@@ -1,11 +1,16 @@
 #pragma once
-#include "C:\Users\Admin\Desktop\2019\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\2d\CCScene.h"
+#include "2d\CCScene.h"
 #include "MainCharactor.h"
 #include "Spider.h"
 #include "SneakyButton.h"
 #include "SneakyButtonSkinnedBase.h"
 #include "SneakyJoystick.h"
 #include "SneakyJoystickSkinnedBase.h"
+
+#include "cocos2d.h"
+
+using namespace cocos2d;
+
 
 class GamePlay : public Scene
 {
@@ -21,6 +26,9 @@ private:
 	SneakyJoystick *leftJoystick;
 	SneakyButton *action1Button;
 
+	CCTMXTiledMap *_tileMap;
+	CCTMXLayer *_background;
+
 	Objject* main_charactor;
 	Objject* spider;
 public:
@@ -29,9 +37,13 @@ public:
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
 	void update(float deltaTime);
+	
+	void setViewPointCenter(CCPoint position);
+	
+
+	CREATE_FUNC(GamePlay);
 	GamePlay();
 	~GamePlay();
-	CREATE_FUNC(GamePlay);
 
 
 	void UpdateJoystick(float deltaTime);

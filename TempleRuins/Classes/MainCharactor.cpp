@@ -65,7 +65,7 @@ void MainCharactor::Init()
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
 	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 200);
+	this->GetSprite()->setPosition(200, 230);
 	this->scene->addChild(this->GetSprite());   
 
 	// create physic
