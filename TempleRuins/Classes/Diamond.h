@@ -7,10 +7,10 @@ class Diamond :
 	public Objject
 {
 private:
-	Scene* scene;
+	cocos2d::Scene* scene;
 public:
-	Diamond(Scene* scene);
-	Sprite* Clone(Sprite* sprite);
+	Diamond(cocos2d::Scene* scene);
+	Sprite* Clone(cocos2d::Sprite* sprite);
 	~Diamond();
 	void Init();
 	void Update(float deltaTime);

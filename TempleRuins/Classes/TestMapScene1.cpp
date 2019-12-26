@@ -25,8 +25,9 @@ bool TestMapScene1::init()
 	//map->setScale(0.5);
 	background = map->layerNamed("Background");
 	wall = map->layerNamed("MapLv1");
-	meta = map->layerNamed("Meta");
+	meta = map->layerNamed("MapLv2");
 	meta->setVisible(true);
+	wall->setVisible(false);
 
 	this->addChild(map);
 
@@ -41,12 +42,15 @@ bool TestMapScene1::init()
 
 	mainCh = ResourceManager::GetInstance()->GetSpriteById(3);
 	mainCh->setScale(0.15);
-	this->addChild(mainCh);
 	mainCh->setPosition(ccp(x, y));
+	this->addChild(mainCh);
+
+
+
 	this->setViewPointCenter(mainCh->getPosition());
 
 
-
+	
 
 	//keyboard
 	auto keyListener = EventListenerKeyboard::create();
@@ -61,6 +65,7 @@ bool TestMapScene1::init()
 	scheduleUpdate();
 	return true;
 }
+
 
 
 void TestMapScene1::update(float deltaTime)
@@ -170,12 +175,6 @@ void TestMapScene1::setPlayerPosition(CCPoint position)
 			Value collision = dict["collidable"];
 			if (!collision.isNull() && collision.asString() == "true") {
 				return;
-			}
-
-			Value collectible = dict["collectable"];
-			if (!collectible.isNull() && collectible.asString() == "true") {
-				meta->removeTileAt(tileCoord);
-				wall->removeTileAt(tileCoord);
 			}
 		}
 	}

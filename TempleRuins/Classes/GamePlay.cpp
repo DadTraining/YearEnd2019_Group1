@@ -12,6 +12,7 @@ Scene * GamePlay::createGame()
 	return GamePlay::create();
 }
 
+
 bool GamePlay::init()
 {
 	if (!Scene::initWithPhysics()) {
@@ -26,18 +27,15 @@ bool GamePlay::init()
 	this->addChild(_tileMap);
 
 	//// initial state
-	push = false;
 	fight = false;
-	wait = false;
-	run = false;
-	stun = false;
 
-
-	// initial direction
+	//// initial direction
 	moveLeft = false;
 	moveRight = false;
+
 	moveUp = false;
 	moveDown = false;
+	jump = false;
 
 
 
@@ -45,11 +43,16 @@ bool GamePlay::init()
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 
+	// initial spider
+	this->spider = new Spider(this);
+
+
 	//// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
 
 
 	//buttton move up
@@ -61,14 +64,10 @@ bool GamePlay::init()
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveUp = true;
-			run = true;
-			wait = false;
-			push = false;
 			fight = false;
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveUp = false;
-			wait = true;
 			break;
 		default:
 			break;
@@ -85,14 +84,10 @@ bool GamePlay::init()
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveDown = true;
-			run = true;
-			wait = false;
-			push = false;
 			fight = false;
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveDown = false;
-			wait = true;
 			break;
 		default:
 			break;
@@ -109,14 +104,14 @@ bool GamePlay::init()
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveLeft = true;
-			run = true;
+			/*run = true;
 			wait = false;
 			push = false;
-			fight = false;
+			fight = false;*/
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveLeft = false;
-			wait = true;
+			//wait = true;
 			break;
 		default:
 			break;
@@ -133,60 +128,67 @@ bool GamePlay::init()
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveRight = true;
-			run = true;
+			/*run = true;
 			wait = false;
 			push = false;
-			fight = false;
+			fight = false;*/
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveRight = false;
-			wait = true;
+			//wait = true;
 			break;
 		default:
 			break;
 		}
 	});
 	addChild(buttonMoveRight);
+
+	//add diamond
+	AddDiamond();
+
 	// update
 	scheduleUpdate();
 
 	return true;
 }
 
+void GamePlay::AddDiamond() {
+	this->diamond = new Diamond(this);
+}
+
 void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 {
 	switch (keycode)
 	{
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
+		if (moveLeft || moveRight) {
+			fight = false;
+		}
+		else {
+			fight = true;
+		}
+
+		break;
+	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_W: {
-		moveUp = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
+		jump = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_S: {
-		moveDown = true;
+		/*moveDown = true;
 		run = true;
 		wait = false;
 		push = false;
-		fight = false;
+		fight = false;*/
+
 		break;
 	}
 	default:
@@ -198,24 +200,24 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 {
 	switch (keycode)
 	{
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
+		fight = false;
+		break;
+	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = false;
-		wait = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = false;
-		wait = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_W: {
-		moveUp = false;
-		wait = true;
+		jump = false;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_S: {
 		moveDown = false;
-		wait = true;
 		break;
 	}
 	default:
@@ -226,19 +228,9 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 void GamePlay::update(float deltaTime)
 {
 	// update main charactor
-	main_charactor->Update(deltaTime);		
-	((MainCharactor*)main_charactor)->setState(push, fight, wait, run, stun, moveLeft, moveRight, moveUp, moveDown);
+	main_charactor->Update(deltaTime);
+	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
 }
-
-GamePlay::GamePlay()
-{
-}
-
-
-GamePlay::~GamePlay()
-{
-}
-
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
@@ -254,3 +246,12 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	this->setPosition(viewPoint);
 }
 
+
+
+GamePlay::GamePlay()
+{
+}
+
+GamePlay::~GamePlay()
+{
+}

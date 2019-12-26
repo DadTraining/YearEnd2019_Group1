@@ -32,6 +32,11 @@ bool MiniGame::init()
 
 	moveLeft = false;
 	moveRight = false;
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+
 	// draw
 	this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
@@ -51,6 +56,19 @@ bool MiniGame::init()
 	label_Collect->setPosition(10, 10);
 	this->addChild(label_Collect);
 
+
+	// initial time remain
+	countTimmer = new CountTimer(this, TIME_REMAIN);
+
+
+	auto move = MoveBy::create(1.0f, Vec2(0, 0));
+	auto listener = EventListenerTouchOneByOne::create();
+	/*listener->onTouchBegan = CC_CALLBACK_2(MiniGame::OnTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(MiniGame::OnTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(MiniGame::OnTouchEnded, this);*/
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+
 	// initial time remain
 	countTimmer = new CountTimer(this, TIME_REMAIN);
 
@@ -69,11 +87,13 @@ bool MiniGame::init()
 	// teest spider
 	spider = new Spider(this);
 
+
 	// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(MiniGame::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(MiniGame::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
 
 	// update
 	scheduleUpdate();
@@ -104,24 +124,16 @@ void MiniGame::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		wait = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW : {
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
 		run = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_W: {
@@ -167,12 +179,10 @@ void MiniGame::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = false;
-		wait = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_D: {
 		moveRight = false;
-		wait = true;
 		break;
 	}
 	case EventKeyboard::KeyCode::KEY_W: {
@@ -210,8 +220,13 @@ void MiniGame::update(float deltaTime)
 
 	// update main charactor
 	main_charac->Update(deltaTime);
-	((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun, moveLeft, moveRight, moveUp, moveDown);
+
+	//((MainCharactor*)main_charac)->setState(push, fight, wait, run, stun, moveLeft, moveRight);
 
 	// update spider
 	spider->Update(deltaTime);
+
+	/*CCString* colle = CCString::createWithFormat("%i", collect);
+	label_Collect->setString(colle->getCString());*/
+
 }

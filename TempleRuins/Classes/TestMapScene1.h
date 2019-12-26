@@ -5,6 +5,8 @@
 #include "MainCharactor.h"
 #include "ResourceManager.h"
 
+
+
 USING_NS_CC;
 
 class TestMapScene1 :
@@ -16,10 +18,15 @@ private:
 	TMXLayer* wall;
 	TMXLayer* meta;
 	Sprite* mainCh;
+	PhysicsBody* physicsBody;
+
+	
 public:
 	static Scene* createMap();
 	bool init() override;
 	void update(float deltaTime);
+
+	
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);

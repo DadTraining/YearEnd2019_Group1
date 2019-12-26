@@ -7,8 +7,7 @@
 enum Action_Spider {
 	S_UP,
 	S_DOWN,
-	S_LEFT,
-	S_RIGHT
+	S_SIDE
 };
 
 enum Action_Charactor {
@@ -48,8 +47,8 @@ public:
 	Sprite* GetLoadById(int id);
 	Vector<SpriteFrame*> GetSpiderUp();
 	Vector<SpriteFrame*> GetSpiderDown();
-	Vector<SpriteFrame*> GetSpiderLeft();
-	Vector<SpriteFrame*> GetSpiderRight();
+	Vector<SpriteFrame*> GetSpiderSide();
+	
 	Vector<SpriteFrame*> GetCharactorUp();
 	Vector<SpriteFrame*> GetCharactorDown();
 	Vector<SpriteFrame*> GetCharactorLeft();

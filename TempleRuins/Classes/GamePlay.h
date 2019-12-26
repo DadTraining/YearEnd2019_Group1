@@ -1,30 +1,36 @@
 #pragma once
 #include "2d\CCScene.h"
 #include "MainCharactor.h"
+#include "Spider.h"
+#include "SneakyButton.h"
+#include "SneakyButtonSkinnedBase.h"
+#include "SneakyJoystick.h"
+#include "SneakyJoystickSkinnedBase.h"
+#include "Diamond.h"
+
 #include "cocos2d.h"
 
 using namespace cocos2d;
+
 class GamePlay : public Scene
 {
 private:
-	bool push;
 	bool fight;
-	bool wait;
-	bool run;
-	bool stun;
 
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
 	bool moveDown;
+	bool jump;
 
-//	SneakyJoystick *leftJoystick;
-//	SneakyButton *action1Button;
+
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
 
 	Objject* main_charactor;
+	Objject* spider;
+	Objject* diamond;
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -33,11 +39,14 @@ public:
 	void update(float deltaTime);
 	
 	void setViewPointCenter(CCPoint position);
-	
+
+	void AddDiamond();
 
 	CREATE_FUNC(GamePlay);
 	GamePlay();
 	~GamePlay();
+
+	void UpdateJoystick(float deltaTime);
 
 };
 

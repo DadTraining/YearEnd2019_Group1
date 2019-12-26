@@ -7,33 +7,29 @@ void Spider::Init()
 	// initial sprite
 	this->SetSprite(Sprite::create());
 	this->GetSprite()->setPosition(300, 200);
+	this->GetSprite()->setScale(SCALE_SPIDER);
 	this->scene->addChild(this->GetSprite());
 
 	// action up
-	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), 0.1f);
-	animate_up = Animate::create(animation);
-	animate_up->setTag(actions_spider::GO_UP);
-	animate_up->retain();
+	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), SPEED_FRAME_SPIDER);
+	action_up = RepeatForever::create(Animate::create(animation));
+	action_up->setTag(actions_spider::GO_UP);
+	action_up->retain();
 
 	// action down
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderDown(), 0.1f);
-	animate_down = Animate::create(animation);
-	animate_down->setTag(actions_spider::GO_DOWN);
-	animate_down->retain();
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderDown(), SPEED_FRAME_SPIDER);
+	action_down = RepeatForever::create(Animate::create(animation));
+	action_down->setTag(actions_spider::GO_DOWN);
+	action_down->retain();
 
 	// action left
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderLeft(), 0.1f);
-	animate_left = Animate::create(animation);
-	animate_left->setTag(actions_spider::GO_LEFT);
-	animate_left->retain();
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderSide(), SPEED_FRAME_SPIDER);
+	action_side = RepeatForever::create(Animate::create(animation));
+	action_side->setTag(actions_spider::GO_LEFT);
+	action_side->retain();
 
-	// action right
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderRight(), 0.1f);
-	animate_right = Animate::create(animation);
-	animate_right->setTag(actions_spider::GO_RIGHT);
-	animate_right->retain();
 
-	goDown();
+	goSide();
 }
 
 void Spider::Update(float deltaTime)
@@ -60,22 +56,61 @@ void Spider::Update(float deltaTime)
 
 void Spider::goUp()
 {
-	this->GetSprite()->runAction(RepeatForever::create(animate_up));
+	this->GetSprite()->runAction(action_up);
 }
 
 void Spider::goDown()
 {
-	this->GetSprite()->runAction(RepeatForever::create(animate_down));
+	this->GetSprite()->runAction(action_down);
+}
+
+void Spider::goSide()
+{
+	this->GetSprite()->runAction(action_side);
 }
 
 void Spider::goLeft()
 {
-	this->GetSprite()->runAction(RepeatForever::create(animate_left));
+	this->GetSprite()->runAction(action_side);
 }
 
 void Spider::goRight()
 {
-	this->GetSprite()->runAction(RepeatForever::create(animate_right));
+}
+
+
+void Spider::RotateLeft()
+{
+	if (!isLeft) {
+		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
+		auto rotatecallback = [=](float value) {
+			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
+		};
+		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+
+		//Run();
+		this->GetSprite()->runAction(runaction);
+	}
+	isLeft = true;
+	isRight = false;
+}
+
+void Spider::RotateRight()
+{
+	if (!isRight) {
+		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
+		auto rotatecallback = [=](float value) {
+			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
+		};
+		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+
+
+//		Run();
+		this->GetSprite()->runAction(runaction);
+
+	}
+	isRight = true;
+	isLeft = false;
 }
 
 Spider::Spider(Scene* scene)
