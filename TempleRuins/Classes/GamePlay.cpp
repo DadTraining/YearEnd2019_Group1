@@ -28,7 +28,6 @@ bool GamePlay::init()
 	this->addChild(_tileMap);
 
 	//// initial state
-	push = false;
 	fight = false;
 
 	//// initial direction
@@ -36,7 +35,6 @@ bool GamePlay::init()
 	moveRight = false;
 
 	moveUp = false;
-	moveDown = false;
 	jump = false;
 
 
@@ -85,11 +83,11 @@ bool GamePlay::init()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			moveDown = true;
+			//moveDown = true;
 			fight = false;
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			moveDown = false;
+		//	moveDown = false;
 			break;
 		default:
 			break;
@@ -179,15 +177,6 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		jump = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_S: {
-		/*moveDown = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;*/
-
-		break;
-	}
 	default:
 		break;
 	}
@@ -211,10 +200,6 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	case EventKeyboard::KeyCode::KEY_W: {
 		jump = false;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_S: {
-		moveDown = false;
 		break;
 	}
 	default:

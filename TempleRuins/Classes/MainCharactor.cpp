@@ -5,6 +5,7 @@
 MainCharactor::MainCharactor(Scene* scene)
 {
 	this->scene = scene;
+	//this-> layer = layer;
 	Init();
 }
 

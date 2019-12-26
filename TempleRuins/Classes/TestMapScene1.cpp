@@ -8,15 +8,16 @@ bool down = false;
 
 Scene * TestMapScene1::createMap()
 {
-	CCScene * scene = CCScene::create();
+	/*CCScene * scene = CCScene::create();
 	TestMapScene1* layer = TestMapScene1::create();
 	scene->addChild(layer);
-	return scene;
+	return scene;*/
+	return TestMapScene1::create();
 }
 
 bool TestMapScene1::init()
 {
-	if (!CCLayer::init()) {
+	if (!Scene::initWithPhysics()) {
 		return false;
 	}
 
@@ -40,14 +41,16 @@ bool TestMapScene1::init()
 	int x = spawPoint.at("x").asDouble();
 	int y = spawPoint.at("y").asDouble();
 
-	mainCh = ResourceManager::GetInstance()->GetSpriteById(3);
+	/*mainCh = ResourceManager::GetInstance()->GetSpriteById(3);
 	mainCh->setScale(0.15);
 	mainCh->setPosition(ccp(x, y));
-	this->addChild(mainCh);
+	this->addChild(mainCh);*/
+
+	Main_Charactor = new MainCharactor(this);
+	this->setViewPointCenter(Main_Charactor->GetSprite()->getPosition());
 
 
-
-	this->setViewPointCenter(mainCh->getPosition());
+	//this->setViewPointCenter(mainCh->getPosition());
 
 
 	
@@ -72,7 +75,7 @@ void TestMapScene1::update(float deltaTime)
 	static float k = 0;
 	k += deltaTime;
 	if (k >= 0.1) {
-		CCPoint playerPos = mainCh->getPosition();
+		CCPoint playerPos = Main_Charactor->GetSprite()->getPosition();
 		if (left1) {
 			playerPos.x -= map->getTileSize().width;
 		}
@@ -90,11 +93,14 @@ void TestMapScene1::update(float deltaTime)
 			playerPos.y <= (map->getMapSize().height * map->getTileSize().height) &&
 			playerPos.y >= 0 && playerPos.x >= 0)
 		{
-			this->setPlayerPosition(playerPos);
+			//this->setPlayerPosition(playerPos);
+			
 		}
-		this->setViewPointCenter(mainCh->getPosition());
+		this->setViewPointCenter(Main_Charactor->GetSprite()->getPosition());
 		k = 0;
 	}
+	//((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
+	this->Main_Charactor->Update(deltaTime);
 }
 
 void TestMapScene1::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
@@ -177,7 +183,7 @@ void TestMapScene1::setPlayerPosition(CCPoint position)
 			}
 		}
 	}
-	mainCh->setPosition(position);
+	Main_Charactor->GetSprite()->setPosition(position);
 }
 
 CCPoint TestMapScene1::tileCoorforposition(CCPoint position)

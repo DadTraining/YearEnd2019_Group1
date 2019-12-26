@@ -38,6 +38,7 @@ private:
 
 	Actions action;
 	Scene* scene;
+	Layer* layer;
 	Animate* animate_push;
 	Animate* animate_stun;
 
