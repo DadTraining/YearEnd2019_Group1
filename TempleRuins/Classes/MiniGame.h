@@ -1,4 +1,5 @@
 #pragma once
+
 #include "2d\CCScene.h"
 #include "Objject.h"
 #include "Item_game.h"
@@ -21,6 +22,7 @@ private:
 
 	bool moveLeft;
 	bool moveRight;
+
 	bool moveUp;
 	bool moveDown;
 	vector<Objject* > items;

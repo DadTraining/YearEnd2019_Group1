@@ -16,6 +16,9 @@ private:
 	TMXLayer* wall;
 	TMXLayer* meta;
 	Sprite* mainCh;
+
+	PhysicsBody* physicsBody;
+
 public:
 	static Scene* createMap();
 	bool init() override;

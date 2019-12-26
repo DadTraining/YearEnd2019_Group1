@@ -187,37 +187,49 @@ void ResourceManager::Load(string fileName)
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
 
-				i++;                  // path
+				i++;                  // path 1
 				string path_1 = Get_Path(arr_source[i]);
 
+				i++;                  // path 2
+				string path_2 = Get_Path(arr_source[i]);
 
-				// down
-				Vector<SpriteFrame*> spriteFrames_down;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_down.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 0, 60, 45)));
-				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_DOWN, spriteFrames_down));
+				// load plist
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
 
-				// left
-				Vector<SpriteFrame*> spriteFrames_left;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_left.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 1, 60, 45)));
-				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_LEFT, spriteFrames_left));
+				// insert map
+				if (id == 0) {
+					Vector<SpriteFrame*> spiderFrames_down;
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_01.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_02.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_03.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_04.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_05.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_06.png"));
 
-				// right
-				Vector<SpriteFrame*> spriteFrames_right;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_right.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 2, 60, 45)));
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_DOWN, spiderFrames_down));
 				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_RIGHT, spriteFrames_right));
+				else if (id == 1) {
+					Vector<SpriteFrame*> spiderFrames_up;
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_13.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_14.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_15.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_16.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_17.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_18.png"));
 
-				// up
-				Vector<SpriteFrame*> spriteFrames_up;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_up.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 3, 60, 45)));
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_UP, spiderFrames_up));
 				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_UP, spriteFrames_up));
+				else if (id == 2) {
+					Vector<SpriteFrame*> spiderFrames_side;
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_07.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_08.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_09.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_10.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_11.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_12.png"));
+
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_SIDE, spiderFrames_side));
+				}
 
 				number--;
 			}
@@ -255,14 +267,9 @@ Vector<SpriteFrame*> ResourceManager::GetSpiderDown()
 	return m_spider_action.at(Action_Spider::S_DOWN);
 }
 
-Vector<SpriteFrame*> ResourceManager::GetSpiderLeft()
+Vector<SpriteFrame*> ResourceManager::GetSpiderSide()
 {
-	return m_spider_action.at(Action_Spider::S_LEFT);
-}
-
-Vector<SpriteFrame*> ResourceManager::GetSpiderRight()
-{
-	return m_spider_action.at(Action_Spider::S_RIGHT);
+	return m_spider_action.at(Action_Spider::S_SIDE);
 }
 
 std::vector<std::string> ResourceManager::Split(std::string str1, std::string str2)
