@@ -61,8 +61,9 @@ void MainCharactor::Init()
 	this->scene->addChild(this->GetSprite());   
 
 	// create physic
+	this->scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
-	physicbody->setDynamic(false);
+	physicbody->setDynamic(true);
 	this->GetSprite()->setPhysicsBody(physicbody);
 
 	// create animate action
