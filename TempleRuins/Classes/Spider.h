@@ -1,6 +1,10 @@
 #pragma once
 #include "Objject.h"
 
+#define SPEED_FRAME_SPIDER 0.1f
+#define SCALE_SPIDER 0.3
+#define SPEED_ROTATE 0.01f
+
 enum actions_spider {
 	GO_UP,
 	GO_DOWN,
@@ -11,18 +15,24 @@ enum actions_spider {
 class Spider : public Objject
 {
 private:
+	bool isLeft;
+	bool isRight;
+
 	Scene* scene;
-	Animate* animate_up;
-	Animate* animate_down;
-	Animate* animate_left;
-	Animate* animate_right;
+	Action* action_up;
+	Action* action_down;
+	Action* action_side;
 public:
 	void Init();
 	void Update(float deltaTime);
 	void goUp();
 	void goDown();
+	void goSide();
 	void goLeft();
 	void goRight();
+
+	void RotateLeft();
+	void RotateRight();
 	Spider(Scene* scene);
 	~Spider();
 };

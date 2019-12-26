@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="win32">
@@ -31,6 +31,7 @@
     <ClCompile Include="..\Classes\Spider.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
     <ClCompile Include="..\Classes\LoadingLogo.cpp">
+
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CountTimer.cpp">
@@ -42,6 +43,7 @@
     <ClCompile Include="..\Classes\Item_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
+
     <ClCompile Include="..\Classes\GamePlayScene.cpp">
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
@@ -113,8 +115,19 @@
     <ClInclude Include="..\Classes\Spider.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\LoadingLogo.h">
+
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyJoystick.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyJoystickSkinnedBase.h">
+      <Filter>src</Filter>
+    </ClInclude>
+
     <ClInclude Include="..\Classes\ResourceManager.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -125,6 +138,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TestMapScene1.h">
+
     <ClInclude Include="..\Classes\GamePlayScene.h">
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
@@ -154,6 +168,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Spider.h">
+
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

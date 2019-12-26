@@ -42,6 +42,13 @@ PATH: Actions/fights/fight.png
 ID: 4
 PATH: Actions/stuns/stun.plist
 PATH: Actions/stuns/stun.png
-#ACTION_SPIDER 1
+#ACTION_SPIDER 3
 ID: 0
-PATH: Spider/55.png
+PATH: Spider/Down/down.plist
+PATH: Spider/Down/down.png
+ID: 1
+PATH: Spider/Up/up.plist
+PATH: Spider/Up/up.png
+ID: 2
+PATH: Spider/Side/side.plist
+PATH: Spider/Side/side.png
