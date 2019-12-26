@@ -1,5 +1,5 @@
 #pragma once
-#include "D:\gitclone\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\2d\CCScene.h"
+#include "2d\CCScene.h"
 #include "Objject.h"
 #include "Item_game.h"
 #include "CountTimer.h"

@@ -69,7 +69,6 @@ bool MiniGame::init()
 	// teest spider
 	spider = new Spider(this);
 
-
 	// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(MiniGame::OnKeyPressed, this);
@@ -105,7 +104,7 @@ void MiniGame::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		wait = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW : {
 		run = true;
 		break;
 	}

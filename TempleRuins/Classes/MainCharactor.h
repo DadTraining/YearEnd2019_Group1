@@ -2,7 +2,7 @@
 #include "Objject.h"
 #include "Box2D/Box2D.h"
 
-#define SCALE_SPRITE 0.3
+#define SCALE_SPRITE 0.15
 #define SPEED_FRAME 0.2f
 #define SPEED_RUN 3
 #define SPEED_ROTATE 0.01f

@@ -25,6 +25,7 @@ void MainCharactor::SetAction(Actions action)
 }
 
 
+
 void MainCharactor::setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight, bool moveUp, bool moveDown)
 {
 	this->push = push;
@@ -59,8 +60,8 @@ void MainCharactor::Init()
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
 	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 200);
-	this->scene->addChild(this->GetSprite());
+	this->GetSprite()->setPosition(200, 230);
+	this->scene->addChild(this->GetSprite());   
 
 	// create physic
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
@@ -112,8 +113,7 @@ void MainCharactor::Update(float deltaTime)
 	else if (wait) {
 		Wait();
 	}
-
-	else if (moveLeft) {
+	else if (moveLeft) {	
 		RotateLeft();
 		MoveLeft();
 	}
@@ -130,7 +130,6 @@ void MainCharactor::Update(float deltaTime)
 	else {
 		Wait();
 	}
-
 }
 
 
@@ -205,7 +204,6 @@ void MainCharactor::RotateRight()
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
-
 		Run();
 		this->GetSprite()->runAction(runaction);
 
@@ -223,3 +221,4 @@ void MainCharactor::MoveDown() {
 	float posY = this->GetSprite()->getPosition().y;
 	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
 }
+

@@ -1,9 +1,15 @@
-﻿#include "GamePlay.h"
+#include "GamePlay.h"
+#include "cocos2d.h"
+
+
+//bool left = false;
+//bool right = false;
+//bool up = false;
+//bool down = false;
 
 Scene * GamePlay::createGame()
 {
-	Scene *scene = GamePlay::create();
-	return scene;
+	return GamePlay::create();
 }
 
 bool GamePlay::init()
@@ -12,7 +18,14 @@ bool GamePlay::init()
 		return false;
 	}
 
-	// initial state
+	//create map
+	_tileMap = new CCTMXTiledMap();
+	_tileMap->initWithTMXFile("map.tmx");
+
+	_background = _tileMap->layerNamed("Background");
+	this->addChild(_tileMap);
+
+	//// initial state
 	push = false;
 	fight = false;
 	wait = false;
@@ -27,48 +40,18 @@ bool GamePlay::init()
 	moveDown = false;
 
 
-	// initial main charactor
+
+	//// initial main charactor
 	this->main_charactor = new MainCharactor(this);
+	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 
-
-	// key board
+	//// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
-	/*
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Size winSize = Director::getInstance()->getWinSize();
-	Point origin = Director::getInstance()->getVisibleOrigin();
 
-	// add joystick
-	int joystickOffset = 10;
-
-	Rect joystickBaseDimensions = Rect(0, 0, 64.0f, 64.0f);
-	Point joystickBasePosition = Point(origin.x + (joystickBaseDimensions.size.width / 2) + joystickOffset, origin.y + (joystickBaseDimensions.size.height / 2) + joystickOffset);
-
-	Rect accelButtonDimensions = Rect(0, 0, 64.0f, 64.0f);
-	Point accelButtonPosition = Point(origin.x + visibleSize.width - (joystickBaseDimensions.size.width / 2) - joystickOffset, origin.y + (joystickBaseDimensions.size.height / 2) + joystickOffset);
-
-	// add joystick base
-	SneakyJoystickSkinnedBase *joystickBase = SneakyJoystickSkinnedBase::create();
-	SneakyJoystick *joystick = new SneakyJoystick();
-	joystick->initWithRect(joystickBaseDimensions);
-	joystickBase->setBackgroundSprite(cocos2d::Sprite::create("res/joystick/dpadDown.png"));
-	joystickBase->setThumbSprite(cocos2d::Sprite::create("res/joystick/joystickDown.png"));
-	joystickBase->setJoystick(joystick);
-	joystickBase->setPosition(joystickBasePosition);
-	leftJoystick = joystickBase->getJoystick();
-	this->addChild(joystickBase);
-
-	leftJoystick->onVelocityChanged = [=](SneakyJoystick* eventJoystick, Point oldValue, Point newValue) {
-		cocos2d::log("Velocity x: %f y: %f", newValue.x, newValue.y);
-		cocos2d::log("joystick s: %f", leftJoystick->getVelocity());
-	};
-	*/
-
-	//
 	//buttton move up
 	auto buttonMoveUp = ui::Button::create("button.png");
 	buttonMoveUp->setPosition(Vec2(100, 100));
@@ -164,8 +147,6 @@ bool GamePlay::init()
 		}
 	});
 	addChild(buttonMoveRight);
-
-	
 	// update
 	scheduleUpdate();
 
@@ -176,22 +157,6 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_UP_ARROW: {
-		push = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
-		fight = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_LEFT_ARROW: {
-		wait = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
-		run = true;
-		break;
-	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = true;
 		run = true;
@@ -233,22 +198,6 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_UP_ARROW: {
-		push = false;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
-		fight = false;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_LEFT_ARROW: {
-		wait = false;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
-		run = false;
-		break;
-	}
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = false;
 		wait = true;
@@ -272,7 +221,6 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	default:
 		break;
 	}
-
 }
 
 void GamePlay::update(float deltaTime)
@@ -291,4 +239,18 @@ GamePlay::~GamePlay()
 {
 }
 
+
+void GamePlay::setViewPointCenter(CCPoint position)
+{
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+	int x = MAX(position.x, winSize.width / 2);
+	int y = MAX(position.y, winSize.height / 2);
+	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+	CCPoint actualPosition = ccp(x, y);
+
+	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
+	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+	this->setPosition(viewPoint);
+}
 
