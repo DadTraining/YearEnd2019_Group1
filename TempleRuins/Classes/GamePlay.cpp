@@ -3,11 +3,6 @@
 #include "cocos2d.h"
 
 
-//bool left = false;
-//bool right = false;
-//bool up = false;
-//bool down = false;
-
 Scene * GamePlay::createGame()
 {
 	return GamePlay::create();
@@ -20,45 +15,82 @@ bool GamePlay::init()
 		return false;
 	}
 
+	// create map
+	CreateMap();
+
+	// initial physics for map
+	InitialPhysics();
+
+	// initial state
+	InitialState();
+
+	// initial object
+	InitialObject();
+
+	// add dispatcher
+	AddDispatcher();
+
+	// add button
+	InitialButton();
+	
+	// update
+	scheduleUpdate();
+
+	return true;
+}
+
+void GamePlay::CreateMap()
+{
 	//create map
 	_tileMap = new CCTMXTiledMap();
 	_tileMap->initWithTMXFile("map.tmx");
 
 	_background = _tileMap->layerNamed("Background");
 	this->addChild(_tileMap);
+}
 
-	//// initial state
+void GamePlay::InitialState()
+{
+	// initial state
 	fight = false;
 
-	//// initial direction
+	// initial direction
 	moveLeft = false;
 	moveRight = false;
-
 	moveUp = false;
 	jump = false;
+}
 
-
-
-	//// initial main charactor
+void GamePlay::InitialObject()
+{
+	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 
 	// initial spider
 	this->spider = new Spider(this);
+	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
+}
 
-
-	//// key board
+void GamePlay::AddDispatcher()
+{
+	// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
+	// listener contact
+	auto contacListener = EventListenerPhysicsContact::create();
+	contacListener->onContactBegin = CC_CALLBACK_1(GamePlay::OnContactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contacListener, this);
+}
 
-
+void GamePlay::InitialButton()
+{
 	//buttton move up
 	auto buttonMoveUp = ui::Button::create("button.png");
 	buttonMoveUp->setPosition(Vec2(100, 100));
-	//button->setTitleText("Button Text");
 	buttonMoveUp->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -75,43 +107,18 @@ bool GamePlay::init()
 	});
 	addChild(buttonMoveUp);
 
-	//button move down
-	auto buttonMoveDown = ui::Button::create("button.png");
-	buttonMoveDown->setPosition(Vec2(100, 50));
-	//button->setTitleText("Button Text");
-	buttonMoveDown->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			//moveDown = true;
-			fight = false;
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-		//	moveDown = false;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveDown);
 
 	//button move left
 	auto buttonMoveLeft = ui::Button::create("button.png");
 	buttonMoveLeft->setPosition(Vec2(50, 50));
-	//button->setTitleText("Button Text");
 	buttonMoveLeft->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveLeft = true;
-			/*run = true;
-			wait = false;
-			push = false;
-			fight = false;*/
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveLeft = false;
-			//wait = true;
 			break;
 		default:
 			break;
@@ -122,31 +129,55 @@ bool GamePlay::init()
 	//button move right
 	auto buttonMoveRight = ui::Button::create("button.png");
 	buttonMoveRight->setPosition(Vec2(150, 50));
-	//button->setTitleText("Button Text");
 	buttonMoveRight->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			moveRight = true;
-			/*run = true;
-			wait = false;
-			push = false;
-			fight = false;*/
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			moveRight = false;
-			//wait = true;
 			break;
 		default:
 			break;
 		}
 	});
 	addChild(buttonMoveRight);
+}
 
-	
+void GamePlay::InitialPhysics()
+{//test
+	// ground
+	auto _frame = _tileMap->layerNamed("MapLv1");
+	Size layerSize = _frame->getLayerSize();
+	for (int i = 0; i < layerSize.width; i++) {
+		for (int j = 0; j < layerSize.height; j++) {
+			auto tileSet = _frame->getTileAt(Vec2(i, j));
+			if (tileSet != NULL) {
+				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physic->setCollisionBitmask(1);
+				physic->setContactTestBitmask(true);
+				physic->setDynamic(false);
+				physic->setMass(100);
+				tileSet->setPhysicsBody(physic);
+			}
+		}
+	}
+}
 
-	// update
-	scheduleUpdate();
+bool GamePlay::OnContactBegin(PhysicsContact & contact)
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+
+	if (nodeA && nodeB) {
+		if (nodeA->getTag() == 10 && nodeB->getTag() == 20) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+		}
+		else if (nodeA->getTag() == 20 && nodeB->getTag() == 10) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+		}
+	}
 
 	return true;
 }
@@ -212,6 +243,11 @@ void GamePlay::update(float deltaTime)
 	// update main charactor
 	main_charactor->Update(deltaTime);
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
+
+	// update spider
+	spider->Update(deltaTime);
+
+	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)

@@ -6,8 +6,9 @@
 #include "SneakyButtonSkinnedBase.h"
 #include "SneakyJoystick.h"
 #include "SneakyJoystickSkinnedBase.h"
-
 #include "cocos2d.h"
+
+#define BLOOD_REDUCTION 5
 
 using namespace cocos2d;
 
@@ -33,6 +34,14 @@ private:
 public:
 	static Scene* createGame();
 	virtual bool init();
+	void CreateMap();
+	void InitialState();
+	void InitialObject();
+	void AddDispatcher();
+	void InitialButton();
+	void InitialPhysics();
+	bool OnContactBegin(PhysicsContact& contact);
+
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
 	void update(float deltaTime);

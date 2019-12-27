@@ -1,11 +1,9 @@
 #include "MainCharactor.h"
 
 
-
 MainCharactor::MainCharactor(Scene* scene)
 {
 	this->scene = scene;
-	//this-> layer = layer;
 	Init();
 }
 
@@ -20,17 +18,11 @@ MainCharactor::~MainCharactor()
 {
 }
 
-void MainCharactor::SetAction(Actions action)
-{
-	this->action = action;
-}
-
 
 
 void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
 {
 	this->fight = fight;
-
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
 	this->jump = jump;
@@ -45,7 +37,20 @@ void MainCharactor::Init()
 	this->scene->addChild(edgeNode);
 	edgeNode->setPhysicsBody(edgeBody);
 
+	// initial state
+	InitialState();
 
+	// create sprite
+	CreateSprite();
+
+	// create animate action
+	InitialAction();
+
+	Wait();
+}
+
+void MainCharactor::InitialState()
+{
 	// check direction
 	isLeft = false;
 	isRight = true;
@@ -62,12 +67,20 @@ void MainCharactor::Init()
 	stun = false;
 	jump = false;
 	jump_1 = false;
+}
+
+void MainCharactor::CreateSprite()
+{
+	// initial blood
+	this->SetBlood(BLOOD);
+	CreateBloodBar();
 
 	// create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
 	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 230);
-	this->scene->addChild(this->GetSprite());   
+	this->GetSprite()->setPosition(300, 230);
+	this->scene->addChild(this->GetSprite());
+	this->GetSprite()->setTag(20);
 
 	// create physic
 	this->scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -75,8 +88,12 @@ void MainCharactor::Init()
 	physicbody->setDynamic(true);
 	this->GetSprite()->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	physicbody->setContactTestBitmask(1);
+	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
+}
 
-	// create animate action
+void MainCharactor::InitialAction()
+{
 	// push
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME);
 	animate_push = Animate::create(animation);
@@ -100,15 +117,35 @@ void MainCharactor::Init()
 	action_fight = Animate::create(animation);
 	action_fight->setTag(Actions::C_FIGHT);
 	action_fight->retain();
-	
+
 	// stun
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME);
 	animate_stun = Animate::create(animation);
 	animate_stun->retain();
 	animate_stun->setTag(Actions::C_STUN);
-
-	Wait();
 }
+
+void MainCharactor::CreateBloodBar()
+{
+	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
+	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
+	bloodBar_1->setPercent(100);
+	bloodBar_1->setPosition(Vec2(this->getVisibleSize().width / 2, this->getVisibleSize().height - 30));
+
+	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
+	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
+	bloodBar_2->setPercent(this->GetBlood());
+	bloodBar_2->setPosition(bloodBar_1->getPosition());
+
+	this->scene->addChild(bloodBar_1);
+	this->scene->addChild(bloodBar_2);
+}
+
+void MainCharactor::UpdateBloodBar()
+{
+	this->bloodBar_2->setPercent(this->GetBlood());
+}
+
 
 void MainCharactor::Update(float deltaTime)
 {
@@ -138,6 +175,8 @@ void MainCharactor::Update(float deltaTime)
 
 	fight_1 = fight;
 	jump_1 = jump;
+
+	UpdateBloodBar(); //update blood
 }
 
 
@@ -204,12 +243,7 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	if (posY < this->getVisibleSize().height) {
-		auto moveBy = MoveBy::create(2, Vec2(0, posY + 10));
-		this->GetSprite()->runAction(moveBy);
-	}
+	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 5000));
 }
 
 void MainCharactor::RotateLeft()
@@ -226,6 +260,9 @@ void MainCharactor::RotateLeft()
 	}
 	isLeft = true;
 	isRight = false;
+
+	/*this->GetSprite()->setFlippedX(true);
+	Run();*/
 }
 
 void MainCharactor::RotateRight()
@@ -244,18 +281,7 @@ void MainCharactor::RotateRight()
 	}
 	isRight = true;
 	isLeft = false;
+
+	/*this->GetSprite()->setFlippedX(false);
+	Run();*/
 }
-
-
-void MainCharactor::MoveUp() {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
-}
-
-void MainCharactor::MoveDown() {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
-}
-
