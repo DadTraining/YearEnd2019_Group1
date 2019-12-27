@@ -21,15 +21,21 @@ Sprite* Diamond::Clone(cocos2d::Sprite* sprite)
 
 void Diamond::Init()
 {
-	auto diamond = Sprite::create();
-	Vector<SpriteFrame*> diamondVector;
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Diamond/Diamond.plist", "Diamond/Diamond.png");
-	diamondVector.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_03.png"));
+	//create sprite
+	auto diamond = Sprite::create("Diamond/1_03.png");
 	diamond->retain();
 	this->SetSprite(diamond);
 	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 200);
+	this->GetSprite()->setPosition(100, 100);
 	this->scene->addChild(this->GetSprite());
+
+	//add physic
+	auto physicsBody1 = PhysicsBody::createBox(diamond->getContentSize());
+	physicsBody1->setDynamic(false);
+	physicsBody1->setRotationEnable(false);
+	diamond->setPhysicsBody(physicsBody1);
+	diamond->getPhysicsBody()->setContactTestBitmask(1);
+
 }
 void Diamond::Update(float deltaTime) 
 {

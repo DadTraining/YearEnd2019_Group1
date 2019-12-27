@@ -48,5 +48,7 @@ public:
 
 	void UpdateJoystick(float deltaTime);
 
+	bool onContactBegin(PhysicsContact & contact);
+
 };
 

@@ -1,4 +1,4 @@
-#include "MainCharactor.h"
+﻿#include "MainCharactor.h"
 
 
 
@@ -67,17 +67,22 @@ void MainCharactor::Init()
 	jump_1 = false;
 
 	// create sprite
-	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
-	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 230);
-	this->scene->addChild(this->GetSprite());   
+	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
+	this->SetSprite(main);
+	main->setScale(SCALE_SPRITE);
+	main->setPosition(200, 230);
+	this->scene->addChild(main);   
 
 	// create physic
 	this->scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
-	this->GetSprite()->setPhysicsBody(physicbody);
+	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	main->getPhysicsBody()->setContactTestBitmask(1);
+   	main->setTag(100); //tag dùng để xác định đối tượng va chạm
+
+
 
 	// create animate action
 	// push

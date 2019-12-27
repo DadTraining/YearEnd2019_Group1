@@ -146,6 +146,12 @@ bool GamePlay::init()
 	//add diamond
 	AddDiamond();
 
+	//create colision diamond
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GamePlay::onContactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+
 	// update
 	scheduleUpdate();
 
@@ -246,7 +252,23 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	this->setPosition(viewPoint);
 }
 
-
+bool GamePlay::onContactBegin(PhysicsContact & contact) 
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA && nodeB)
+	{
+		if (nodeA->getTag() == 100)
+		{
+			nodeB->removeFromParentAndCleanup(true);
+		}
+		else if (nodeB->getTag() == 100)
+		{
+			nodeA->removeFromParentAndCleanup(true);
+		}
+	}
+	return true;
+}
 
 GamePlay::GamePlay()
 {

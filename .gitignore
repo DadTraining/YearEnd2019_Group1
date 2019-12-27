@@ -515,3 +515,11 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,cocos2dx,visualstudio
+# ignore folder cocos2dx
+bin/
+cocos2d/
+proj.ios_mac/
+proj.linux/
+Debug.win32/
+TempleRuins/.cocos-project.json
+TempleRuins/CMakeLists.txt
