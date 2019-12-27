@@ -25,16 +25,12 @@ void MainCharactor::SetAction(Actions action)
 }
 
 
-
-
 void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
 
 {
 	this->fight = fight;
-
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
-
 	this->jump = jump;
 
 }
@@ -143,7 +139,6 @@ void MainCharactor::Update(float deltaTime)
 	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 		Wait();
 	}
-
 	fight_1 = fight;
 	jump_1 = jump;
 }

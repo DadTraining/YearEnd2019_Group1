@@ -12,6 +12,7 @@
 
 using namespace cocos2d;
 
+
 class GamePlay : public Scene
 {
 private:
@@ -23,7 +24,8 @@ private:
 	bool moveDown;
 	bool jump;
 
-
+//	SneakyJoystick *leftJoystick;
+//	SneakyButton *action1Button;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;

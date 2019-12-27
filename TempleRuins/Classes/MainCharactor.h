@@ -46,6 +46,7 @@ private:
 	Action *action_run;
 public:
 	void SetAction(Actions action);
+
 	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
 	void Init();
 	void Update(float deltaTime);
@@ -57,6 +58,7 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+
 	void MoveUp();
 	void MoveDown();
 	void RotateLeft();

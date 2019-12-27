@@ -15,7 +15,9 @@
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
+
     <ClCompile Include="..\Classes\AppDelegate.cpp">
+
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GamePlay.cpp">
@@ -24,6 +26,7 @@
     <ClCompile Include="..\Classes\MainCharactor.cpp">
       <Filter>src</Filter>
     </ClCompile>
+
     <ClCompile Include="..\Classes\Objject.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -37,6 +40,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Diamond.cpp">
+
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,6 +48,7 @@
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
+
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -56,16 +61,19 @@
     <ClInclude Include="..\Classes\Objject.h">
       <Filter>src</Filter>
     </ClInclude>
+
     <ClInclude Include="..\Classes\ResourceManager.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Rock.h">
       <Filter>src</Filter>
     </ClInclude>
+
     <ClInclude Include="..\Classes\Spider.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Diamond.h">
+
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

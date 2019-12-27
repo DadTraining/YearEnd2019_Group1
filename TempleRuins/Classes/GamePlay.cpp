@@ -1,3 +1,4 @@
+
 #include "GamePlay.h"
 #include "cocos2d.h"
 
@@ -37,15 +38,12 @@ bool GamePlay::init()
 	moveDown = false;
 	jump = false;
 
-
-
 	//// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 
 	// initial spider
 	this->spider = new Spider(this);
-
 
 	//// key board
 	auto keylistener = EventListenerKeyboard::create();
@@ -176,6 +174,7 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 
 		break;
 	}
+
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = true;
 		break;
@@ -210,6 +209,7 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 		fight = false;
 		break;
 	}
+
 	case EventKeyboard::KeyCode::KEY_A: {
 		moveLeft = false;
 		break;
@@ -236,7 +236,9 @@ void GamePlay::update(float deltaTime)
 	// update main charactor
 	main_charactor->Update(deltaTime);
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
+
 }
+
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
@@ -251,6 +253,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
 	this->setPosition(viewPoint);
 }
+
 
 bool GamePlay::onContactBegin(PhysicsContact & contact) 
 {
@@ -277,3 +280,4 @@ GamePlay::GamePlay()
 GamePlay::~GamePlay()
 {
 }
+

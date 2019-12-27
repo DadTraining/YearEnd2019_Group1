@@ -25,6 +25,7 @@ bool TestMapScene1::init()
 	//map->setScale(0.5);
 	background = map->layerNamed("Background");
 	wall = map->layerNamed("MapLv1");
+
 	meta = map->layerNamed("MapLv2");
 	meta->setVisible(true);
 	wall->setVisible(false);
@@ -42,6 +43,7 @@ bool TestMapScene1::init()
 
 	mainCh = ResourceManager::GetInstance()->GetSpriteById(3);
 	mainCh->setScale(0.15);
+
 	mainCh->setPosition(ccp(x, y));
 	this->addChild(mainCh);
 
@@ -50,16 +52,11 @@ bool TestMapScene1::init()
 	this->setViewPointCenter(mainCh->getPosition());
 
 
-	
-
 	//keyboard
 	auto keyListener = EventListenerKeyboard::create();
 	keyListener->onKeyPressed = CC_CALLBACK_2(TestMapScene1::OnKeyPressed, this);
 	keyListener->onKeyReleased = CC_CALLBACK_2(TestMapScene1::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
-
-
-
 
 
 	scheduleUpdate();
@@ -176,6 +173,7 @@ void TestMapScene1::setPlayerPosition(CCPoint position)
 			if (!collision.isNull() && collision.asString() == "true") {
 				return;
 			}
+
 		}
 	}
 	mainCh->setPosition(position);

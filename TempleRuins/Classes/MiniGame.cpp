@@ -87,7 +87,6 @@ bool MiniGame::init()
 	// teest spider
 	spider = new Spider(this);
 
-
 	// key board
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(MiniGame::OnKeyPressed, this);
@@ -226,7 +225,10 @@ void MiniGame::update(float deltaTime)
 	// update spider
 	spider->Update(deltaTime);
 
+
 	/*CCString* colle = CCString::createWithFormat("%i", collect);
 	label_Collect->setString(colle->getCString());*/
 
+
 }
+
