@@ -2,10 +2,6 @@
 #include "2d\CCScene.h"
 #include "MainCharactor.h"
 #include "Spider.h"
-#include "SneakyButton.h"
-#include "SneakyButtonSkinnedBase.h"
-#include "SneakyJoystick.h"
-#include "SneakyJoystickSkinnedBase.h"
 #include "Diamond.h"
 
 #include "cocos2d.h"
@@ -23,9 +19,6 @@ private:
 	bool moveUp;
 	bool moveDown;
 	bool jump;
-
-//	SneakyJoystick *leftJoystick;
-//	SneakyButton *action1Button;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
