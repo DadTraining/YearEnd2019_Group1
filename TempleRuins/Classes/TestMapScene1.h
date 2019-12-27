@@ -9,7 +9,7 @@
 USING_NS_CC;
 
 class TestMapScene1 :
-	public Layer
+	public Scene
 {
 private:
 	TMXTiledMap* map;
@@ -17,11 +17,17 @@ private:
 	TMXLayer* wall;
 	TMXLayer* meta;
 	Sprite* mainCh;
+
 	PhysicsBody* physicsBody;
+
+	Objject* Main_Charactor;
+
 public:
 	static Scene* createMap();
 	bool init() override;
 	void update(float deltaTime);
+
+	
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);

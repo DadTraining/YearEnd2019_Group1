@@ -3,7 +3,9 @@
  <image source="meta_tiles.png" width="67" height="34"/>
  <tile id="0">
   <properties>
+
    <property name="collidable" value="true"/>
+
   </properties>
  </tile>
 </tileset>

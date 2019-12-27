@@ -4,12 +4,67 @@
 
 void Spider::Init()
 {
+
 	// initial sprite
-	this->SetSprite(Sprite::create());
-	this->GetSprite()->setPosition(300, 200);
+	InitialSPider();
+
+	// initial action
+	InitialAction();
+
+
+	goLeft();
+}
+
+void Spider::Update(float deltaTime)
+{
+	static bool check = true;
+	static float i = 0;
+	i += deltaTime;
+
+
+	if (i >= 4) {
+		check = !check;
+
+		this->GetSprite()->stopAllActions();
+		if (check) {
+			//goDown();
+			goLeft();
+		}
+		else {
+			//goUp();
+			goRight();
+		}
+
+		i = 0;
+	}
+
+	if (check) {
+		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
+	}
+	else {
+		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
+	}
+}
+
+void Spider::InitialSPider()
+{
+	// initial sprite
+	this->SetSprite(Sprite::create("spider_01.png"));
+	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
 	this->scene->addChild(this->GetSprite());
+	this->GetSprite()->setTag(10);
 
+	// physic
+	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	physicbody->setDynamic(false);
+	this->GetSprite()->setPhysicsBody(physicbody);
+	physicbody->setRotationEnable(false);
+	physicbody->setContactTestBitmask(1);
+}
+
+void Spider::InitialAction()
+{
 	// action up
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), SPEED_FRAME_SPIDER);
 	action_up = RepeatForever::create(Animate::create(animation));
@@ -27,32 +82,8 @@ void Spider::Init()
 	action_side = RepeatForever::create(Animate::create(animation));
 	action_side->setTag(actions_spider::GO_LEFT);
 	action_side->retain();
-
-
-	goSide();
 }
 
-void Spider::Update(float deltaTime)
-{
-	static bool check = true;
-	static float i = 0;
-	i += deltaTime;
-	
-
-	if (i >= 2) {
-		check = !check;
-	
-		this->GetSprite()->stopAllActions();
-		if (check) {
-			goDown();
-		}
-		else {
-			goUp();
-		}
-
-		i = 0;
-	}
-}
 
 void Spider::goUp()
 {
@@ -72,10 +103,13 @@ void Spider::goSide()
 void Spider::goLeft()
 {
 	this->GetSprite()->runAction(action_side);
+	this->GetSprite()->setFlippedX(false);
 }
 
 void Spider::goRight()
 {
+	this->GetSprite()->setFlippedX(true);
+	this->GetSprite()->runAction(action_side);
 }
 
 
@@ -88,7 +122,7 @@ void Spider::RotateLeft()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
 
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -104,8 +138,6 @@ void Spider::RotateRight()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
 
-
-		Run();
 		this->GetSprite()->runAction(runaction);
 
 	}
