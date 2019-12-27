@@ -48,6 +48,9 @@ void Spider::Update(float deltaTime)
 
 void Spider::InitialSPider()
 {
+	// initial blood
+	this->SetBlood(BLOOD);
+
 	// initial sprite
 	this->SetSprite(Sprite::create("spider_01.png"));
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);

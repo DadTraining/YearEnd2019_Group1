@@ -213,6 +213,13 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 	return true;
 }
 
+bool GamePlay::CheckFight()
+{
+	if(fight && )
+
+	return false;
+}
+
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
 }
