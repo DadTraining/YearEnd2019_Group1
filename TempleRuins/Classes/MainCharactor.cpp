@@ -52,6 +52,9 @@ void MainCharactor::Init()
 
 void MainCharactor::InitialState()
 {
+	// number diamond
+	this->numDiamond = 0;
+
 	// check direction
 	isLeft = false;
 	isRight = true;
@@ -135,7 +138,7 @@ void MainCharactor::InitialAction()
 
 void MainCharactor::CreateBloodBar()
 {
-	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
+	bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
 	bloodBar_1->setPosition(Vec2(this->getVisibleSize().width / 2, this->getVisibleSize().height - 30));
@@ -152,6 +155,17 @@ void MainCharactor::CreateBloodBar()
 void MainCharactor::UpdateBloodBar()
 {
 	this->bloodBar_2->setPercent(this->GetBlood());
+	//this->bloodBar_1->setPosition(this->GetSprite()->getPosition())
+}
+
+void MainCharactor::setDiamond(int diamon)
+{
+	this->numDiamond = diamon;
+}
+
+int MainCharactor::getDiamond()
+{
+	return this->numDiamond;
 }
 
 

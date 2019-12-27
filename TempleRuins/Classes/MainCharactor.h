@@ -7,7 +7,7 @@
 #define SCALE_SPRITE 0.1
 #define SPEED_FRAME 0.2f
 #define SPEED_FIGHT 0.2f
-#define SPEED_RUN 3
+#define SPEED_RUN 4
 #define SPEED_ROTATE 0.01f
 #define BLOOD 100
 
@@ -22,6 +22,7 @@ enum Actions {
 class MainCharactor : public Objject
 {
 private:
+	int numDiamond;
 	bool isLeft;
 	bool isRight;
 
@@ -46,6 +47,7 @@ private:
 	Action *action_wait;
 	Action *action_run;
 
+	ui::LoadingBar* bloodBar_1;
 	ui::LoadingBar* bloodBar_2;
 public:
 	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
@@ -55,6 +57,8 @@ public:
 	void InitialAction();
 	void CreateBloodBar();
 	void UpdateBloodBar();
+	void setDiamond(int diamon);
+	int getDiamond();
 
 	void Update(float deltaTime);
 	void Push();

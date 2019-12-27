@@ -15,7 +15,6 @@ class GamePlay : public Scene
 {
 private:
 	bool fight;
-
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
@@ -37,6 +36,7 @@ public:
 	void InitialButton();
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact& contact);
+	bool CheckFight();
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
