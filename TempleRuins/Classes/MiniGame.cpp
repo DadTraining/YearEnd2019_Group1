@@ -79,7 +79,7 @@ bool MiniGame::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
-	main_charac = new MainCharactor(this);
+//	main_charac = new MainCharactor(this);
 
 	// test rock
 	Objject* rock = new Rock(this);

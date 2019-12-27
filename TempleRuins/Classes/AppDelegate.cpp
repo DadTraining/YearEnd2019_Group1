@@ -124,12 +124,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
 
+	//auto scene = TestMapScene1::createMap();
+	auto scene = GamePlay::createGame();
+	// run
 
-	auto scene = GamePlay::create();
-
-//	auto scene = TestMapScene1::createMap();
-
-    // run
     director->runWithScene(scene);
 
     return true;

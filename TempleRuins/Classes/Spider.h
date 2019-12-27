@@ -2,7 +2,7 @@
 #include "Objject.h"
 
 #define SPEED_FRAME_SPIDER 0.1f
-#define SCALE_SPIDER 0.3
+#define SCALE_SPIDER 0.1
 #define SPEED_ROTATE 0.01f
 
 enum actions_spider {
@@ -24,6 +24,8 @@ private:
 	Action* action_side;
 public:
 	void Init();
+	void InitialSPider();
+	void InitialAction();
 	void Update(float deltaTime);
 	void goUp();
 	void goDown();

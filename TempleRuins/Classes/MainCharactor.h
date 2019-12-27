@@ -1,12 +1,15 @@
 #pragma once
 #include "Objject.h"
 
+#include "ui/CocosGUI.h"
 
-#define SCALE_SPRITE 0.15
+
+#define SCALE_SPRITE 0.1
 #define SPEED_FRAME 0.2f
 #define SPEED_FIGHT 0.2f
 #define SPEED_RUN 3
 #define SPEED_ROTATE 0.01f
+#define BLOOD 100
 
 enum Actions {
 	C_PUSH,
@@ -34,9 +37,7 @@ private:
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
-	bool moveDown;
 
-	Actions action;
 	Scene* scene;
 	Animate* animate_push;
 	Animate* animate_stun;
@@ -44,11 +45,17 @@ private:
 	Action *action_fight;
 	Action *action_wait;
 	Action *action_run;
-public:
-	void SetAction(Actions action);
 
+	ui::LoadingBar* bloodBar_2;
+public:
 	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
 	void Init();
+	void InitialState();
+	void CreateSprite();
+	void InitialAction();
+	void CreateBloodBar();
+	void UpdateBloodBar();
+
 	void Update(float deltaTime);
 	void Push();
 	void Fight();
@@ -59,8 +66,6 @@ public:
 	void MoveRight();
 	void Jump();
 
-	void MoveUp();
-	void MoveDown();
 	void RotateLeft();
 	void RotateRight();
 	MainCharactor(Scene* scene);

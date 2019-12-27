@@ -6,6 +6,8 @@
 
 #include "cocos2d.h"
 
+#define BLOOD_REDUCTION 5
+
 using namespace cocos2d;
 
 
@@ -17,7 +19,6 @@ private:
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
-	bool moveDown;
 	bool jump;
 
 	CCTMXTiledMap *_tileMap;
@@ -29,6 +30,14 @@ private:
 public:
 	static Scene* createGame();
 	virtual bool init();
+	void CreateMap();
+	void InitialState();
+	void InitialObject();
+	void AddDispatcher();
+	void InitialButton();
+	void InitialPhysics();
+	bool OnContactBegin(PhysicsContact& contact);
+
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
 	void update(float deltaTime);
@@ -42,8 +51,6 @@ public:
 	~GamePlay();
 
 	void UpdateJoystick(float deltaTime);
-
-	bool onContactBegin(PhysicsContact & contact);
 
 };
 

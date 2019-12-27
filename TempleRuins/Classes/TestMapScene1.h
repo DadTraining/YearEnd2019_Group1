@@ -9,7 +9,7 @@
 USING_NS_CC;
 
 class TestMapScene1 :
-	public Layer
+	public Scene
 {
 private:
 	TMXTiledMap* map;
@@ -20,6 +20,7 @@ private:
 
 	PhysicsBody* physicsBody;
 
+	Objject* Main_Charactor;
 
 public:
 	static Scene* createMap();
