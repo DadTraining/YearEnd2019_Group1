@@ -3,6 +3,7 @@
 #include "MainCharactor.h"
 #include "Spider.h"
 #include "Diamond.h"
+#include "Rock.h"
 
 #include "cocos2d.h"
 
@@ -15,6 +16,7 @@ class GamePlay : public Layer
 {
 private:
 	bool fight;
+	bool push;
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
@@ -26,6 +28,7 @@ private:
 	Objject* main_charactor;
 	Objject* spider;
 	Objject* diamond;
+	Objject* rock;
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -37,6 +40,7 @@ public:
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact& contact);
 	bool CheckFight();
+	bool CheckPush();
 	void CreateBloodBar();
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);

@@ -81,6 +81,9 @@ void GamePlay::InitialObject()
 	// initial spider
 	this->spider = new Spider(this);
 
+	// initial rock
+	this->rock = new Rock(this);
+
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
@@ -208,10 +211,22 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		{
 			nodeA->removeFromParentAndCleanup(true);
 		}
-
+		else if(nodeA->getTag() == 20 && nodeB->getTag() == 50)
+		{
+			//nodeB->removeFromParentAndCleanup(true);
+		}
+		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20) 
+		{
+			//nodeA->removeFromParentAndCleanup(true);
+		}
 
 	}
 
+	return true;
+}
+
+bool GamePlay::CheckPush() 
+{
 	return true;
 }
 
@@ -344,9 +359,11 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
 	_tileMap->setPosition(viewPoint);
 
+
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-	
+
+	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 }
 
 
