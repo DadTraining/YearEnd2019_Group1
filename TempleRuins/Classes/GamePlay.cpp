@@ -247,6 +247,7 @@ void GamePlay::CreateBloodBar()
 }
 
 
+
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
 	auto objectgroup = _tileMap->objectGroupNamed("Objects");
@@ -345,7 +346,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-	//main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + ccpSub(p, viewPoint));
+	
 }
 
 
