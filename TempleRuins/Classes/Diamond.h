@@ -7,9 +7,9 @@ class Diamond :
 	public Objject
 {
 private:
-	cocos2d::Scene* scene;
+	cocos2d::Layer* layer;
 public:
-	Diamond(cocos2d::Scene* scene);
+	Diamond(cocos2d::Layer* layer);
 	Sprite* Clone(cocos2d::Sprite* sprite);
 	~Diamond();
 	void Init();

@@ -2,9 +2,9 @@
 
 
 
-Diamond::Diamond(cocos2d::Scene* scene)
+Diamond::Diamond(cocos2d::Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	this->Init();
 }
 
@@ -27,7 +27,7 @@ void Diamond::Init()
 	this->SetSprite(diamond);
 	this->GetSprite()->setScale(SCALE_SPRITE);
 	this->GetSprite()->setPosition(600, 300);
-	this->scene->addChild(this->GetSprite());
+	this->layer->addChild(this->GetSprite());
 
 	//add physic
 	auto physicsBody1 = PhysicsBody::createBox(diamond->getContentSize());

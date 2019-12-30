@@ -9,7 +9,7 @@
 USING_NS_CC;
 
 class TestMapScene1 :
-	public Scene
+	public Layer
 {
 private:
 	TMXTiledMap* map;

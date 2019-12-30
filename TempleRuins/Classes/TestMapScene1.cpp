@@ -8,16 +8,16 @@ bool down = false;
 
 Scene * TestMapScene1::createMap()
 {
-	/*CCScene * scene = CCScene::create();
+	CCScene * scene = CCScene::create();
 	TestMapScene1* layer = TestMapScene1::create();
 	scene->addChild(layer);
-	return scene;*/
-	return TestMapScene1::create();
+	return scene;
+	//return TestMapScene1::create();
 }
 
 bool TestMapScene1::init()
 {
-	if (!Scene::initWithPhysics()) {
+	if (!Layer::init()) {
 		return false;
 	}
 

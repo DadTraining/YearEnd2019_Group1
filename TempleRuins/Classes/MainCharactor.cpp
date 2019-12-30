@@ -1,9 +1,9 @@
 ﻿#include "MainCharactor.h"
 
 
-MainCharactor::MainCharactor(Scene* scene)
+MainCharactor::MainCharactor(Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	Init();
 }
 
@@ -31,12 +31,6 @@ void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jum
 
 void MainCharactor::Init()
 {
-	// khung  -> qua gameplay
-	/*auto edgeBody = PhysicsBody::createEdgeBox(this->getVisibleSize());
-	auto edgeNode = Node::create();
-	edgeNode->setPosition(this->getVisibleSize() / 2);
-	this->scene->addChild(edgeNode);
-	edgeNode->setPhysicsBody(edgeBody);*/
 
 	// initial state
 	InitialState();
@@ -77,25 +71,24 @@ void MainCharactor::CreateSprite()
 {
 	// initial blood
 	this->SetBlood(BLOOD);
-	CreateBloodBar();
-
+	
 	// create sprite
 
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
 	main->setPosition(400, 230);
-	this->scene->addChild(main);   
+	this->layer->addChild(main);   
 
 //	this->GetSprite()->setTag(20);
 
 
 	// create physic
-	this->scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	//physicbody->setMass(100);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm
@@ -136,27 +129,6 @@ void MainCharactor::InitialAction()
 	animate_stun->setTag(Actions::C_STUN);
 }
 
-void MainCharactor::CreateBloodBar()
-{
-	bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
-	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
-	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(this->getVisibleSize().width / 2, this->getVisibleSize().height - 30));
-
-	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
-	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
-	bloodBar_2->setPercent(this->GetBlood());
-	bloodBar_2->setPosition(bloodBar_1->getPosition());
-
-	this->scene->addChild(bloodBar_1);
-	this->scene->addChild(bloodBar_2);
-}
-
-void MainCharactor::UpdateBloodBar()
-{
-	this->bloodBar_2->setPercent(this->GetBlood());
-	//this->bloodBar_1->setPosition(this->GetSprite()->getPosition())
-}
 
 void MainCharactor::setDiamond(int diamon)
 {
@@ -196,8 +168,7 @@ void MainCharactor::Update(float deltaTime)
 	}
 	fight_1 = fight;
 	jump_1 = jump;
-
-	UpdateBloodBar(); //update blood
+	
 }
 
 

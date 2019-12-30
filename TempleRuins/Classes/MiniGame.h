@@ -11,7 +11,7 @@
 #define NUM_ITEM 10
 #define TIME_REMAIN 30
 
-class MiniGame : public Scene
+class MiniGame : public Layer
 {
 private:
 	bool push;

@@ -20,6 +20,7 @@ private:
 	bool isRight;
 
 	Scene* scene;
+	Layer* layer;
 	Action* action_up;
 	Action* action_down;
 	Action* action_side;
@@ -36,7 +37,7 @@ public:
 
 	void RotateLeft();
 	void RotateRight();
-	Spider(Scene* scene);
+	Spider(Layer* layer);
 	~Spider();
 };
 
