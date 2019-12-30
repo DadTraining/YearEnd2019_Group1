@@ -19,13 +19,14 @@ MainCharactor::~MainCharactor()
 }
 
 
-void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
-
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push)
 {
 	this->fight = fight;
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
 	this->jump = jump;
+	this->stun = stun;
+	this->push = push;
 
 }
 
@@ -87,7 +88,6 @@ void MainCharactor::CreateSprite()
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	//physicbody->setMass(100);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm

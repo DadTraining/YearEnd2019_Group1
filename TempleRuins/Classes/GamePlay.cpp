@@ -196,11 +196,15 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 
 	if (nodeA && nodeB) {
 		if (nodeA->getTag() == 10 && nodeB->getTag() == 20) {
-			if(!fight) this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			if (!fight) { 
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
+			}
 			else if (CheckFight()) log("danh1");
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 10) {
-			if(!fight) this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			if (!fight) {
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
+			}
 			else if (CheckFight()) log("danh2");
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
@@ -214,10 +218,12 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		else if(nodeA->getTag() == 20 && nodeB->getTag() == 50)
 		{
 			//nodeB->removeFromParentAndCleanup(true);
+			push = true;
 		}
 		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20) 
 		{
 			//nodeA->removeFromParentAndCleanup(true);
+			push = true;
 		}
 
 	}
@@ -333,7 +339,7 @@ void GamePlay::update(float deltaTime)
 {
 	// update main charactor
 	main_charactor->Update(deltaTime);
-	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
+	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
 	// update spider
 	spider->Update(deltaTime);
