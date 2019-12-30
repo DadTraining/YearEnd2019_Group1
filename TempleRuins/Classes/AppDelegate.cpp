@@ -24,10 +24,11 @@
 
 #include "AppDelegate.h"
 
-#include "GamePlayScene.h"
 #include "ResourceManager.h"
-#include "LoadingLogo.h"
 
+
+#include "LoadingLogo.h"
+#include "MainMenu.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -106,8 +107,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-
-    auto scene = GamePlayScene::createScene();
+	auto scene = LoadingLogo::createScene();
 
     // run
     director->runWithScene(scene);

@@ -26,7 +26,7 @@
 #include "SimpleAudioEngine.h"
 #include <ResourceManager.h>
 #include <SettingScene.h>
-#include <MiniGame.h>
+#include "GamePlay.h"
 
 USING_NS_CC;
 
@@ -54,35 +54,53 @@ bool MainMenu::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
+	background->removeFromParent();
+	addChild(background);
+	background->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height/1.1 );
 
 
+	auto label = Label::create("Temple Ruin","Marker Felt.ttf",45);
+	label->setColor(Color3B::ORANGE);
+	label->removeFromParent();
+	label->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height /1.2);
+	
+	label->enableShadow();
+	label->enableOutline(Color4B::WHITE, 1);
 
-    auto play = ResourceManager::GetInstance()->GetButtonById(1);
+	addChild(label);
+
+	
+
+
+	
+
+ auto play = ResourceManager::GetInstance()->GetButtonById(0);
 
     play->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
 
-    play->setScale(0.5);
+    play->setScale(0.3);
     play->removeFromParent();
 
-    addChild(play);
+    addChild(play,2);
     play->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
             if (type == ui::Widget::TouchEventType::ENDED) {
-                auto scene = MiniGame::createMiniGame();
+                auto scene = GamePlay::createGame();
                 Director::getInstance()->replaceScene(scene);
             }
         });
 
 
-    auto setting = ResourceManager::GetInstance()->GetButtonById(4);
+    auto setting = ResourceManager::GetInstance()->GetButtonById(1);
 
    
-    setting->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 3));
+    setting->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height /2.3));
 
     setting->setScale(0.5);
     setting->removeFromParent();
 
-    addChild(setting);
+    addChild(setting,2);
     setting->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
             if (type == ui::Widget::TouchEventType::ENDED) {
@@ -91,6 +109,18 @@ bool MainMenu::init()
             }
         });
 
+	auto shop = ResourceManager::GetInstance()->GetButtonById(2);
+
+
+	shop->setPosition(Vec2(visibleSize.width /1.7, visibleSize.height / 2.3));
+
+	shop->setScale(0.5);
+	shop->removeFromParent();
+
+	addChild(shop, 2);
+	
+	
+   
    
     return true;
 }

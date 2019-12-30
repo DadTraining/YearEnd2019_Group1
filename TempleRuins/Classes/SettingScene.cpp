@@ -28,6 +28,11 @@ bool SettingScene::init()
 	originalSize = Director::getInstance()->getVisibleOrigin();
 	width = Director::getInstance()->getVisibleSize().width / 2 + originalSize.x;
 	height = Director::getInstance()->getVisibleSize().height / 2 + originalSize.y;
+	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
+	background->removeFromParent();
+	addChild(background);
+	background->setPosition(width ,height);
+
 	// create soundItem
 	createSound();
 	// create scrollView
@@ -47,7 +52,7 @@ void SettingScene::addMenu()
 
 
 	
-	auto returnButton = ui::Button::create("resume_normal.png", "resume_pressed.png");
+	auto returnButton = ui::Button::create("./button/Resume.png", " ");
 	returnButton->setScale(0.5);
 	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 		{
@@ -55,7 +60,8 @@ void SettingScene::addMenu()
 			auto myScene = MainMenu::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, myScene));
 		});
-	returnButton->setPosition(Vec2(visibleSize.width /3.3, visibleSize.height / 3));
+	returnButton->setPosition(Vec2(visibleSize.width /8, visibleSize.height / 2));
+	
 	addChild(returnButton);
 	
 
@@ -65,18 +71,18 @@ void SettingScene::addMenu()
 	auto settingLabel = MenuItemLabel::create(label, nullptr);
 	settingLabel->setPosition(width, height + 400);
 
-	auto soundItem = MenuItemImage::create("./button/btSound.png", " ",
+	auto soundItem = MenuItemImage::create("./button/sound.png", " ",
 		[&](Ref* pSender) {
 			activeSound();
 		});
-	soundItem->setScale(0.2);
+	soundItem->setScale(0.5);
 	soundItem->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
 
-	auto aboutItem = MenuItemImage::create("./button/btAbout.png", " ",
+	auto aboutItem = MenuItemImage::create("./button/about.png", " ",
 		[&](Ref* pSender) {
 			activeAbout();
 		});
-	aboutItem->setScale(0.2);
+	aboutItem->setScale(0.5);
 	aboutItem->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /2));
 
 	auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
@@ -111,7 +117,7 @@ void SettingScene::createSound() {
 	layerSound->setPosition(0, 100);
 	addChild(layerSound, 2);
 	// create return button
-	auto returnButton = ui::Button::create("resume_normal.png", "resume_pressed.png");
+	auto returnButton = ui::Button::create("./button/Resume.png", " ");
 	layerSound->addChild(returnButton);
 	returnButton->setPosition(Vec2(100, layerSound->getContentSize().height - 40));
 	returnButton->setScale(0.5f);
@@ -136,7 +142,7 @@ void SettingScene::createAbout() {
 	layerAbout->setPosition(0, 100);
 	addChild(layerAbout, 2);
 	
-	auto returnButton = ui::Button::create("resume_normal.png", "resume_pressed.png");
+	auto returnButton = ui::Button::create("./button/Resume.png", " ");
 	layerAbout->addChild(returnButton);
 	returnButton->setPosition(Vec2(100, layerAbout->getContentSize().height - 40));
 	returnButton->setScale(0.5f);
@@ -145,18 +151,13 @@ void SettingScene::createAbout() {
 			layerAbout->setVisible(false);
 		});
 
-	auto scrollView = ui::ScrollView::create();
-	layerAbout->addChild(scrollView);
-	scrollView->setDirection(ui::ScrollView::Direction::VERTICAL);
-	scrollView->setPosition(Vec2(100,50));
-	scrollView->setContentSize(Size(300,300));
-	scrollView->setBounceEnabled(true);
 
-	auto inSize = Vec2(scrollView->getContentSize().width / 2, scrollView->getContentSize().height / 2);
+
+	auto inSize = Vec2(layerAbout->getContentSize().width / 2, layerAbout->getContentSize().height / 2);
 	auto label = Label::createWithSystemFont("Game Mysterious Temple Ruins", "Arial", 25);
 	label->setPosition(inSize);
 	
-	scrollView->addChild(label);
+	layerAbout->addChild(label);
 
 
 
