@@ -73,7 +73,6 @@ void MainCharactor::CreateSprite()
 	this->SetBlood(BLOOD);
 	
 	// create sprite
-
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);

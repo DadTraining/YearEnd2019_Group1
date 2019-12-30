@@ -38,7 +38,7 @@ bool GamePlay::init()
 	InitialButton();
 	
 	// add diamond
-	AddDiamond();
+	//AddDiamond();
 
 	// update
 	scheduleUpdate();
@@ -49,11 +49,13 @@ bool GamePlay::init()
 void GamePlay::CreateMap()
 {
 	//create map
+	auto layer_1 = Layer::create();
 	_tileMap = new CCTMXTiledMap();
 	_tileMap->initWithTMXFile("map.tmx");
 
 	_background = _tileMap->layerNamed("Background");
-	this->addChild(_tileMap);
+	layer_1->addChild(_tileMap);
+	this->addChild(layer_1);
 }
 
 void GamePlay::InitialState()
@@ -73,18 +75,19 @@ void GamePlay::InitialState()
 
 void GamePlay::InitialObject()
 {
+	// diamond
+	AddDiamond();
+
+	// initial spider
+	this->spider = new Spider(this);
+
+	// initial rock
+	this->rock = new Rock(this);
+
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 	CreateBloodBar();
-
-	// initial spider
-	this->spider = new Spider(this);
-	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
-
-	// initial rock
-	this->rock = new Rock(this);
-	this->setViewPointCenter(this->rock->GetSprite()->getPosition());
 }
 
 
@@ -166,7 +169,7 @@ void GamePlay::InitialButton()
 
 
 void GamePlay::InitialPhysics()
-{//test
+{
 	// ground
 	auto _frame = _tileMap->layerNamed("MapLv1");
 	Size layerSize = _frame->getLayerSize();
@@ -244,7 +247,6 @@ bool GamePlay::CheckFight()
 
 void GamePlay::CreateBloodBar()
 {
-	Layer* layer_1 = Layer::create();
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
@@ -255,14 +257,18 @@ void GamePlay::CreateBloodBar()
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 	bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-	layer_1->addChild(bloodBar_1);
-	layer_1->addChild(bloodBar_2);
-	this->addChild(layer_1);
+	this->addChild(bloodBar_1);
+	this->addChild(bloodBar_2);
 }
 
 
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
+	auto objectgroup = _tileMap->objectGroupNamed("Objects");
+	auto spawPoint = objectgroup->objectNamed("SpawnPoint");
+	int x = spawPoint.at("x").asDouble();
+	int y = spawPoint.at("y").asDouble();
+	this->diamond->GetSprite()->setPosition(x, y);
 }
 
 void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
@@ -339,6 +345,8 @@ void GamePlay::update(float deltaTime)
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
+	CCPoint p = _tileMap->getPosition();
+
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 	int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
@@ -350,6 +358,11 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
 	//this->setPosition(viewPoint);
 	_tileMap->setPosition(viewPoint);
+
+
+	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 }
 
 
