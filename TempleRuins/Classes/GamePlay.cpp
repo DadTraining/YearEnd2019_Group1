@@ -71,8 +71,6 @@ void GamePlay::InitialState()
 }
 
 
-	//// initial main charactor
-
 void GamePlay::InitialObject()
 {
 	// diamond
@@ -364,6 +362,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 
 	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + ccpSub(p, viewPoint));
 }
 
 

@@ -39,6 +39,7 @@
     <ClInclude Include="..\Classes\TestMapScene1.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="..\Classes\Diamond.h" />
+    <ClInclude Include="..\Classes\Defines.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

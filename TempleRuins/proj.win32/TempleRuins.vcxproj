@@ -173,6 +173,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\CountTimer.h" />
+    <ClInclude Include="..\Classes\Defines.h" />
     <ClInclude Include="..\Classes\Diamond.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
