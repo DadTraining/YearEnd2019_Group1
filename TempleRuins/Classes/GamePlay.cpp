@@ -12,7 +12,6 @@ Scene * GamePlay::createGame()
 	return scene;
 }
 
-
 bool GamePlay::init()
 {
 	if (!Layer::init()) {
@@ -70,9 +69,6 @@ void GamePlay::InitialState()
 	jump = false;
 }
 
-
-	//// initial main charactor
-
 void GamePlay::InitialObject()
 {
 	// diamond
@@ -89,7 +85,6 @@ void GamePlay::InitialObject()
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 	CreateBloodBar();
 }
-
 
 void GamePlay::AddDispatcher()
 {
@@ -165,9 +160,6 @@ void GamePlay::InitialButton()
 	addChild(buttonMoveRight);
 }
 
-
-
-
 void GamePlay::InitialPhysics()
 {
 	// ground
@@ -187,7 +179,6 @@ void GamePlay::InitialPhysics()
 		}
 	}
 }
-
 
 bool GamePlay::OnContactBegin(PhysicsContact & contact)
 {
@@ -348,7 +339,6 @@ void GamePlay::update(float deltaTime)
 
 }
 
-
 void GamePlay::setViewPointCenter(CCPoint position)
 {
 	CCPoint p = _tileMap->getPosition();
@@ -362,16 +352,14 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
-	//this->setPosition(viewPoint);
 	_tileMap->setPosition(viewPoint);
 
 
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+
 	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 }
-
-
 
 GamePlay::GamePlay()
 {
