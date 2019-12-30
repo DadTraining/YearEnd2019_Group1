@@ -234,6 +234,7 @@ void ResourceManager::Load(string fileName)
 				number--;
 			}
 		}
+
 	}
 }
 

@@ -10,16 +10,16 @@ void Rock::Init()
 	physicsBody->setDynamic(true);
 	this->GetSprite()->setPosition(200, 200);
 	this->GetSprite()->setPhysicsBody(physicsBody);
-	this->scene->addChild(this->GetSprite());
+	this->layer->addChild(this->GetSprite());
 }
 
 void Rock::Update(float deltaTime)
 {
 }
 
-Rock::Rock(Scene* scene)
+Rock::Rock(Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	Init();
 }
 
