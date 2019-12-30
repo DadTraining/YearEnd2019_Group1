@@ -88,7 +88,7 @@ void Spider::RotateLeft()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
 
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -105,7 +105,7 @@ void Spider::RotateRight()
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
 
 
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 
 	}

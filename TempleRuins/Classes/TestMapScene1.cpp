@@ -25,9 +25,9 @@ bool TestMapScene1::init()
 	//map->setScale(0.5);
 	background = map->layerNamed("Background");
 	wall = map->layerNamed("MapLv1");
-	meta = map->layerNamed("MapLv2");
+	meta = map->layerNamed("physics");
 	meta->setVisible(true);
-	wall->setVisible(false);
+	//wall->setVisible(false);
 
 	this->addChild(map);
 

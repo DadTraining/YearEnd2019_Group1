@@ -23,23 +23,29 @@ private:
 	bool moveDown;
 	bool jump;
 
-	SneakyJoystick *leftJoystick;
-	SneakyButton *action1Button;
 
-	CCTMXTiledMap *_tileMap;
-	CCTMXLayer *_background;
+	TMXTiledMap* map;
+	TMXLayer* backgroundLayer;
+	TMXLayer* wallLayer;
+	TMXLayer* mPhysicsLayer;
+	TMXObjectGroup* mObjectGroup;
 
 	Objject* main_charactor;
 	Objject* spider;
+
+	void createMap();
+
+	void createPhysics();
+
 public:
-	static Scene* createGame();
+	static Scene* createScene();
 	virtual bool init();
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
 	void update(float deltaTime);
 	
 	void setViewPointCenter(CCPoint position);
-	
+	CCPoint tileCoorforposition(CCPoint position);
 
 	CREATE_FUNC(GamePlay);
 	GamePlay();

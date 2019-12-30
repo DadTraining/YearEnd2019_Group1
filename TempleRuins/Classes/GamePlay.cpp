@@ -2,36 +2,47 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
+Size visibleSize;
 
-//bool left = false;
-//bool right = false;
-//bool up = false;
-//bool down = false;
-
-Scene * GamePlay::createGame()
+Scene * GamePlay::createScene()
 {
-	return GamePlay::create();
+	// 'scene' is an autorelease object
+	auto scene = Scene::createWithPhysics();
+	
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+	// 'layer' is an autorelease object
+	auto layer = GamePlay::create();
+
+	// add layer as a child to scene
+	scene->addChild(layer);
+
+	// return the scene
+	return scene;
 }
 
 
 bool GamePlay::init()
 {
-	if (!Scene::initWithPhysics()) {
+	if (!Scene::init())
+	{
 		return false;
 	}
 
+
 	//create map
-	_tileMap = new CCTMXTiledMap();
-	_tileMap->initWithTMXFile("map.tmx");
+	createMap();
 
-	_background = _tileMap->layerNamed("Background");
-	this->addChild(_tileMap);
+	//init physics
+	/*createPhysics();*/
 
-	//// initial state
-	push = false;
+
+
+
+	// initial state
 	fight = false;
 
-	//// initial direction
+	// initial direction
 	moveLeft = false;
 	moveRight = false;
 
@@ -42,11 +53,14 @@ bool GamePlay::init()
 
 
 	//// initial main charactor
-	this->main_charactor = new MainCharactor(this);
+	main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
+	//this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
-	// initial spider
-	this->spider = new Spider(this);
+
+
+
+
 
 
 	//// key board
@@ -55,97 +69,6 @@ bool GamePlay::init()
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
-
-
-	//buttton move up
-	auto buttonMoveUp = ui::Button::create("button.png");
-	buttonMoveUp->setPosition(Vec2(100, 100));
-	//button->setTitleText("Button Text");
-	buttonMoveUp->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			moveUp = true;
-			fight = false;
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			moveUp = false;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveUp);
-
-	//button move down
-	auto buttonMoveDown = ui::Button::create("button.png");
-	buttonMoveDown->setPosition(Vec2(100, 50));
-	//button->setTitleText("Button Text");
-	buttonMoveDown->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			moveDown = true;
-			fight = false;
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			moveDown = false;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveDown);
-
-	//button move left
-	auto buttonMoveLeft = ui::Button::create("button.png");
-	buttonMoveLeft->setPosition(Vec2(50, 50));
-	//button->setTitleText("Button Text");
-	buttonMoveLeft->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			moveLeft = true;
-			/*run = true;
-			wait = false;
-			push = false;
-			fight = false;*/
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			moveLeft = false;
-			//wait = true;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveLeft);
-
-	//button move right
-	auto buttonMoveRight = ui::Button::create("button.png");
-	buttonMoveRight->setPosition(Vec2(150, 50));
-	//button->setTitleText("Button Text");
-	buttonMoveRight->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			moveRight = true;
-			/*run = true;
-			wait = false;
-			push = false;
-			fight = false;*/
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			moveRight = false;
-			//wait = true;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveRight);
-
-	
 
 	// update
 	scheduleUpdate();
@@ -157,7 +80,7 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
+	case EventKeyboard::KeyCode::KEY_J: {
 		if (moveLeft || moveRight) {
 			fight = false;
 		}
@@ -175,17 +98,8 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		moveRight = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_W: {
+	case EventKeyboard::KeyCode::KEY_SPACE: {
 		jump = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_S: {
-		/*moveDown = true;
-		run = true;
-		wait = false;
-		push = false;
-		fight = false;*/
-
 		break;
 	}
 	default:
@@ -232,10 +146,11 @@ void GamePlay::update(float deltaTime)
 void GamePlay::setViewPointCenter(CCPoint position)
 {
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
 	int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
-	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
-	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+	x = MIN(x, (map->getMapSize().width * this->map->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (map->getMapSize().height * map->getTileSize().height) - winSize.height / 2);
 	CCPoint actualPosition = ccp(x, y);
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
@@ -243,7 +158,58 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	this->setPosition(viewPoint);
 }
 
+void GamePlay::createMap()
+{
+	map = new CCTMXTiledMap();
+	map->initWithTMXFile("map.tmx");
 
+	backgroundLayer = map->layerNamed("Background");
+	wallLayer = map->layerNamed("MapLv1");
+	mObjectGroup = map->getObjectGroup("Objects");
+	mPhysicsLayer = map->layerNamed("physics");
+	mPhysicsLayer->setVisible(true);
+	wallLayer->setVisible(false);
+
+	addChild(map);
+}
+
+void GamePlay::createPhysics()
+{
+	//world
+	auto edgeBody = PhysicsBody::createEdgeBox(visibleSize);
+	edgeBody->setContactTestBitmask(true);
+
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	edgeNode->setPhysicsBody(edgeBody);
+	addChild(edgeNode);
+
+	//ground
+	Size layerSize = mPhysicsLayer->getLayerSize();
+	for (int i = 0; i < layerSize.width; i++)
+	{
+		for (int j = 0; j < layerSize.height; j++)
+		{
+			auto tileSet = mPhysicsLayer->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physics = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physics->setContactTestBitmask(true);
+				physics->setDynamic(false);
+				physics->setMass(100);
+				tileSet->setPhysicsBody(physics);
+			}
+		}
+	}
+}
+
+CCPoint GamePlay::tileCoorforposition(CCPoint position)
+{
+	int x = position.x / map->getTileSize().width;
+	int y = ((map->getMapSize().height * map->getTileSize().height) - position.y) / map->getTileSize().height;
+
+	return ccp(x, y);
+}
 
 GamePlay::GamePlay()
 {
