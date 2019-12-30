@@ -169,12 +169,20 @@ void MainCharactor::Update(float deltaTime)
 	fight_1 = fight;
 	jump_1 = jump;
 	
+	if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
+		Push();
+	}
 }
 
 
 void MainCharactor::Push()
 {
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
 
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
+		this->GetSprite()->runAction(action_fight);
 	
 }
 
