@@ -12,7 +12,6 @@ Scene * GamePlay::createGame()
 	return scene;
 }
 
-
 bool GamePlay::init()
 {
 	if (!Layer::init()) {
@@ -70,9 +69,6 @@ void GamePlay::InitialState()
 	jump = false;
 }
 
-
-	//// initial main charactor
-
 void GamePlay::InitialObject()
 {
 	// diamond
@@ -87,7 +83,6 @@ void GamePlay::InitialObject()
 	this->spider = new Spider(this);
 	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
 }
-
 
 void GamePlay::AddDispatcher()
 {
@@ -163,9 +158,6 @@ void GamePlay::InitialButton()
 	addChild(buttonMoveRight);
 }
 
-
-
-
 void GamePlay::InitialPhysics()
 {
 	// ground
@@ -185,7 +177,6 @@ void GamePlay::InitialPhysics()
 		}
 	}
 }
-
 
 bool GamePlay::OnContactBegin(PhysicsContact & contact)
 {
@@ -266,7 +257,6 @@ void GamePlay::UpdateMainCharac()
 	}
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 }
-
 
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
@@ -349,7 +339,6 @@ void GamePlay::update(float deltaTime)
 
 }
 
-
 void GamePlay::setViewPointCenter(CCPoint position)
 {
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
@@ -368,8 +357,6 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	DPos.x -= _tileMap->getTileSize().width;
 	diamond->GetSprite()->setPosition(DPos);
 }
-
-
 
 GamePlay::GamePlay()
 {
