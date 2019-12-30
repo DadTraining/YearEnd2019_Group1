@@ -1,4 +1,5 @@
 ﻿
+# include "MainMenu.h"
 # include "SettingScene.h"
 # include "SimpleAudioEngine.h"
 #include <ResourceManager.h>

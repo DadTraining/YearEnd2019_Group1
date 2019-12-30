@@ -26,6 +26,7 @@
 #include "SimpleAudioEngine.h"
 #include <ResourceManager.h>
 #include <SettingScene.h>
+#include <MiniGame.h>
 
 USING_NS_CC;
 

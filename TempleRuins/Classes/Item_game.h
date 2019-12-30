@@ -3,14 +3,14 @@
 class Item_game : public Objject
 {
 private:
-	Scene* scene;
+	Layer* layer;
 	CCPoint touch;
 	bool collect;
 public:
 	void SetTouch(CCPoint touch);
 	void Init();
 	void Update(float deltaTime);
-	Item_game(Scene* scene);
+	Item_game(Layer* layer);
 	bool isCollect();
 	~Item_game();
 	Sprite* Clone(Sprite* sprite);

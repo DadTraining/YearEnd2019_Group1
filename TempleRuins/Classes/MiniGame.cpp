@@ -15,12 +15,15 @@ MiniGame::~MiniGame()
 
 Scene * MiniGame::createMiniGame()
 {
-	return MiniGame::create();
+	auto scene = Scene::createWithPhysics();
+	auto layer = MiniGame::create();
+	scene->addChild(layer);
+	return scene;
 }
 
 bool MiniGame::init()
 {
-	if (!Scene::initWithPhysics()) {
+	if (!Layer::init()) {
 		return false;
 	}
 	// initial state
@@ -36,9 +39,9 @@ bool MiniGame::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-  
+
 	// draw
-	this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	this->getScene()->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	// initial collect
 	this->collect = 0;
@@ -58,19 +61,19 @@ bool MiniGame::init()
 
 
 	// initial time remain
-	countTimmer = new CountTimer(this, TIME_REMAIN);
+	//countTimmer = new CountTimer(this, TIME_REMAIN);
 
-	
-	auto move = MoveBy::create(1.0f, Vec2(0,0));
+
+	auto move = MoveBy::create(1.0f, Vec2(0, 0));
 	auto listener = EventListenerTouchOneByOne::create();
 	/*listener->onTouchBegan = CC_CALLBACK_2(MiniGame::OnTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(MiniGame::OnTouchMoved, this);
 	listener->onTouchEnded = CC_CALLBACK_2(MiniGame::OnTouchEnded, this);*/
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-	
+
 
 	// initial time remain
-	countTimmer = new CountTimer(this, TIME_REMAIN);
+//	countTimmer = new CountTimer(this, TIME_REMAIN);
 
 
 	// touch began
@@ -79,14 +82,13 @@ bool MiniGame::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// test action pushhhhhhhhhhhhhhhhhhhhhhhhhh
-	main_charac = new MainCharactor(this);
+//	main_charac = new MainCharactor(this);
 
 	// test rock
 	Objject* rock = new Rock(this);
 
 	// teest spider
 	spider = new Spider(this);
-
 
 	// key board
 	auto keylistener = EventListenerKeyboard::create();
@@ -124,7 +126,7 @@ void MiniGame::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 		wait = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW : {
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: {
 		run = true;
 		break;
 	}
@@ -226,7 +228,10 @@ void MiniGame::update(float deltaTime)
 	// update spider
 	spider->Update(deltaTime);
 
+
 	/*CCString* colle = CCString::createWithFormat("%i", collect);
 	label_Collect->setString(colle->getCString());*/
 
+
 }
+

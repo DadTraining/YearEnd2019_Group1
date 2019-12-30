@@ -1,10 +1,9 @@
-#include "MainCharactor.h"
+﻿#include "MainCharactor.h"
 
 
-
-MainCharactor::MainCharactor(Scene* scene)
+MainCharactor::MainCharactor(Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	Init();
 }
 
@@ -19,31 +18,36 @@ MainCharactor::~MainCharactor()
 {
 }
 
-void MainCharactor::SetAction(Actions action)
-{
-	this->action = action;
-}
-
-
 
 void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
+
 {
 	this->fight = fight;
-
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
 	this->jump = jump;
+
 }
 
 void MainCharactor::Init()
 {
-	// khung  -> qua gameplay
-	auto edgeBody = PhysicsBody::createEdgeBox(this->getVisibleSize());
-	auto edgeNode = Node::create();
-	edgeNode->setPosition(this->getVisibleSize() / 2);
-	this->scene->addChild(edgeNode);
-	edgeNode->setPhysicsBody(edgeBody);
 
+	// initial state
+	InitialState();
+
+	// create sprite
+	CreateSprite();
+
+	// create animate action
+	InitialAction();
+
+	Wait();
+}
+
+void MainCharactor::InitialState()
+{
+	// number diamond
+	this->numDiamond = 0;
 
 	// check direction
 	isLeft = false;
@@ -61,21 +65,39 @@ void MainCharactor::Init()
 	stun = false;
 	jump = false;
 	jump_1 = false;
+}
 
+void MainCharactor::CreateSprite()
+{
+	// initial blood
+	this->SetBlood(BLOOD);
+	
 	// create sprite
-	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
-	this->GetSprite()->setScale(SCALE_SPRITE);
-	this->GetSprite()->setPosition(200, 230);
-	this->scene->addChild(this->GetSprite());   
+
+	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
+	this->SetSprite(main);
+	main->setScale(SCALE_SPRITE);
+	main->setPosition(400, 230);
+	this->layer->addChild(main);   
+
+//	this->GetSprite()->setTag(20);
+
 
 	// create physic
-	this->scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
-	this->GetSprite()->setPhysicsBody(physicbody);
+	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	//physicbody->setMass(100);
 
-	// create animate action
+	main->getPhysicsBody()->setContactTestBitmask(1);
+   	main->setTag(20); //tag dùng để xác định đối tượng va chạm
+	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
+}
+
+
+void MainCharactor::InitialAction()
+{
 	// push
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME);
 	animate_push = Animate::create(animation);
@@ -99,20 +121,30 @@ void MainCharactor::Init()
 	action_fight = Animate::create(animation);
 	action_fight->setTag(Actions::C_FIGHT);
 	action_fight->retain();
-	
+
 	// stun
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME);
 	animate_stun = Animate::create(animation);
 	animate_stun->retain();
 	animate_stun->setTag(Actions::C_STUN);
-
-	Wait();
 }
+
+
+void MainCharactor::setDiamond(int diamon)
+{
+	this->numDiamond = diamon;
+}
+
+int MainCharactor::getDiamond()
+{
+	return this->numDiamond;
+}
+
 
 void MainCharactor::Update(float deltaTime)
 {
 	if (fight && !(moveLeft || moveRight)) {
-		if(!(fight && fight_1)) Fight();
+		if (!(fight && fight_1)) Fight();
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
@@ -134,9 +166,9 @@ void MainCharactor::Update(float deltaTime)
 	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 		Wait();
 	}
-
 	fight_1 = fight;
 	jump_1 = jump;
+	
 }
 
 
@@ -203,12 +235,7 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	if (posY < this->getVisibleSize().height) {
-		auto moveBy = MoveBy::create(2, Vec2(0, posY + 10));
-		this->GetSprite()->runAction(moveBy);
-	}
+	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 5000));
 }
 
 void MainCharactor::RotateLeft()
@@ -225,6 +252,9 @@ void MainCharactor::RotateLeft()
 	}
 	isLeft = true;
 	isRight = false;
+
+	/*this->GetSprite()->setFlippedX(true);
+	Run();*/
 }
 
 void MainCharactor::RotateRight()
@@ -235,26 +265,14 @@ void MainCharactor::RotateRight()
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
-		
-
 		Run();
 		this->GetSprite()->runAction(runaction);
 
 	}
 	isRight = true;
 	isLeft = false;
+
+
+	/*this->GetSprite()->setFlippedX(false);
+	Run();*/
 }
-
-
-void MainCharactor::MoveUp() {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
-}
-
-void MainCharactor::MoveDown() {
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
-}
-
