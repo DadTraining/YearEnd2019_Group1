@@ -77,7 +77,7 @@ void MainCharactor::CreateSprite()
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
-	main->setPosition(400, 230);
+	main->setPosition(500, 230);
 	this->layer->addChild(main);   
 
 //	this->GetSprite()->setTag(20);
@@ -168,21 +168,28 @@ void MainCharactor::Update(float deltaTime)
 	fight_1 = fight;
 	jump_1 = jump;
 	
-	if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
+	/*if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
 		Push();
-	}
+	}*/
 }
 
 
 void MainCharactor::Push()
 {
+	//???
+	/*
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
 
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
-		this->GetSprite()->runAction(action_fight);
-	
+		this->GetSprite()->runAction(animate_push);
+		*/
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
+
+	this->GetSprite()->runAction(RepeatForever::create(animate_push));
 }
 
 void MainCharactor::Fight()
@@ -242,7 +249,7 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 5000));
+	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
 }
 
 void MainCharactor::RotateLeft()
