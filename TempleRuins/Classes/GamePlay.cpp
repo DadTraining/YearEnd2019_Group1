@@ -341,11 +341,11 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
-	//this->setPosition(viewPoint);
 	_tileMap->setPosition(viewPoint);
 
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	//main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + ccpSub(p, viewPoint));
 }
 
 
