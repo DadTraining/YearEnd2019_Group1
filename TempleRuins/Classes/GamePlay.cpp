@@ -78,14 +78,16 @@ void GamePlay::InitialObject()
 	// diamond
 	AddDiamond();
 
+	// initial spider
+	this->spider = new Spider(this);
+
+	// initial rock
+	this->rock = new Rock(this);
+
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 	CreateBloodBar();
-
-	// initial spider
-	this->spider = new Spider(this);
-	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
 }
 
 
@@ -209,10 +211,22 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		{
 			nodeA->removeFromParentAndCleanup(true);
 		}
-
+		else if(nodeA->getTag() == 20 && nodeB->getTag() == 50)
+		{
+			//nodeB->removeFromParentAndCleanup(true);
+		}
+		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20) 
+		{
+			//nodeA->removeFromParentAndCleanup(true);
+		}
 
 	}
 
+	return true;
+}
+
+bool GamePlay::CheckPush() 
+{
 	return true;
 }
 
@@ -247,25 +261,6 @@ void GamePlay::CreateBloodBar()
 	this->addChild(bloodBar_2);
 }
 
-void GamePlay::UpdateMainCharac()
-{
-	CCPoint playerPos = main_charactor->GetSprite()->getPosition();
-	if (left) {
-		playerPos.x -= _tileMap->getTileSize().width;
-	}
-	else if (right) {
-		playerPos.x += _tileMap->getTileSize().width;
-	}
-
-	if (playerPos.x <= (_tileMap->getMapSize().width * _tileMap->getTileSize().width) &&
-		playerPos.y <= (_tileMap->getMapSize().height * _tileMap->getTileSize().height) &&
-		playerPos.y >= 0 && playerPos.x >= 0)
-	{
-		//this->setPlayerPosition(playerPos);
-		this->main_charactor->GetSprite()->setPosition(playerPos);
-	}
-	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
-}
 
 
 void GamePlay::AddDiamond() {
@@ -340,7 +335,6 @@ void GamePlay::update(float deltaTime)
 	// update main charactor
 	main_charactor->Update(deltaTime);
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
-	//UpdateMainCharac();
 
 	// update spider
 	spider->Update(deltaTime);
@@ -352,6 +346,8 @@ void GamePlay::update(float deltaTime)
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
+	CCPoint p = _tileMap->getPosition();
+
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 	int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
@@ -361,12 +357,13 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
-	//this->setPosition(viewPoint);
 	_tileMap->setPosition(viewPoint);
 
-	CCPoint DPos = position;
-	DPos.x -= _tileMap->getTileSize().width;
-	diamond->GetSprite()->setPosition(DPos);
+
+	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+
+	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 }
 
 
