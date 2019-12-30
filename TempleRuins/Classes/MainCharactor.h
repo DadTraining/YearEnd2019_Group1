@@ -40,6 +40,7 @@ private:
 	bool moveUp;
 
 	Scene* scene;
+	Layer* layer;
 	Animate* animate_push;
 	Animate* animate_stun;
 
@@ -55,8 +56,6 @@ public:
 	void InitialState();
 	void CreateSprite();
 	void InitialAction();
-	void CreateBloodBar();
-	void UpdateBloodBar();
 	void setDiamond(int diamon);
 	int getDiamond();
 
@@ -72,7 +71,7 @@ public:
 
 	void RotateLeft();
 	void RotateRight();
-	MainCharactor(Scene* scene);
+	MainCharactor(Layer* layer);
 	Sprite* Clone(Sprite* sprite);
 	~MainCharactor();
 

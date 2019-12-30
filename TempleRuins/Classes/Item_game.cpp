@@ -1,9 +1,9 @@
 #include "Item_game.h"
 
 
-Item_game::Item_game(Scene* scene)
+Item_game::Item_game(Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	Init();
 }
 
@@ -34,7 +34,7 @@ void Item_game::Init()
 	physicbody->setDynamic(true);
 	physicbody->setVelocity(Vec2(1, 1));
 	this->GetSprite()->setPhysicsBody(physicbody);
-	this->scene->addChild(this->GetSprite());
+	this->layer->addChild(this->GetSprite());
 }
 
 void Item_game::Update(float deltaTime)

@@ -15,12 +15,15 @@ MiniGame::~MiniGame()
 
 Scene * MiniGame::createMiniGame()
 {
-	return MiniGame::create();
+	auto scene = Scene::createWithPhysics();
+	auto layer = MiniGame::create();
+	scene->addChild(layer);
+	return scene;
 }
 
 bool MiniGame::init()
 {
-	if (!Scene::initWithPhysics()) {
+	if (!Layer::init()) {
 		return false;
 	}
 	// initial state
@@ -38,7 +41,7 @@ bool MiniGame::init()
 
 
 	// draw
-	this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	this->getScene()->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	// initial collect
 	this->collect = 0;
@@ -58,7 +61,7 @@ bool MiniGame::init()
 
 
 	// initial time remain
-	countTimmer = new CountTimer(this, TIME_REMAIN);
+	//countTimmer = new CountTimer(this, TIME_REMAIN);
 
 
 	auto move = MoveBy::create(1.0f, Vec2(0, 0));
@@ -70,7 +73,7 @@ bool MiniGame::init()
 
 
 	// initial time remain
-	countTimmer = new CountTimer(this, TIME_REMAIN);
+//	countTimmer = new CountTimer(this, TIME_REMAIN);
 
 
 	// touch began

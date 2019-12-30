@@ -5,11 +5,11 @@
 class Rock : public Objject
 {
 private:
-	Scene* scene;
+	Layer* layer;
 public:
 	void Init();
 	void Update(float deltaTime);
-	Rock(Scene* scene);
+	Rock(Layer* layer);
 	Sprite* Clone(Sprite* sprite);
 	~Rock();
 };

@@ -55,7 +55,7 @@ void Spider::InitialSPider()
 	this->SetSprite(Sprite::create("spider_01.png"));
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
-	this->scene->addChild(this->GetSprite());
+	this->layer->addChild(this->GetSprite());
 	this->GetSprite()->setTag(10);
 
 	// physic
@@ -148,9 +148,9 @@ void Spider::RotateRight()
 	isLeft = false;
 }
 
-Spider::Spider(Scene* scene)
+Spider::Spider(Layer* layer)
 {
-	this->scene = scene;
+	this->layer = layer;
 	Init();
 }
 

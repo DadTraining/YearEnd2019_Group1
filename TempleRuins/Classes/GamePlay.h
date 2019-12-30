@@ -11,7 +11,7 @@
 using namespace cocos2d;
 
 
-class GamePlay : public Scene
+class GamePlay : public Layer
 {
 private:
 	bool fight;
@@ -37,6 +37,7 @@ public:
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact& contact);
 	bool CheckFight();
+	void CreateBloodBar();
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);

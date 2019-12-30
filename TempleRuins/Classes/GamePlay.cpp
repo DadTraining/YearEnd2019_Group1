@@ -5,13 +5,17 @@
 
 Scene * GamePlay::createGame()
 {
-	return GamePlay::create();
+	auto scene = Scene::createWithPhysics();
+	auto layer = GamePlay::create();
+	scene->addChild(layer);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	return scene;
 }
 
 
 bool GamePlay::init()
 {
-	if (!Scene::initWithPhysics()) {
+	if (!Layer::init()) {
 		return false;
 	}
 
@@ -52,9 +56,6 @@ void GamePlay::CreateMap()
 	this->addChild(_tileMap);
 }
 
-
-	//// initial state
-
 void GamePlay::InitialState()
 {
 	// initial state
@@ -75,14 +76,13 @@ void GamePlay::InitialObject()
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
+	CreateBloodBar();
 
 	// initial spider
 	this->spider = new Spider(this);
 	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
 }
 
-
-	//// key board
 
 void GamePlay::AddDispatcher()
 {
@@ -161,10 +161,6 @@ void GamePlay::InitialButton()
 
 
 
-
-
-
-
 void GamePlay::InitialPhysics()
 {//test
 	// ground
@@ -193,10 +189,12 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 
 	if (nodeA && nodeB) {
 		if (nodeA->getTag() == 10 && nodeB->getTag() == 20) {
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			if(!fight) this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			else if (CheckFight()) log("danh1");
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 10) {
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			if(!fight) this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			else if (CheckFight()) log("danh2");
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
 		{
@@ -215,10 +213,37 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 
 bool GamePlay::CheckFight()
 {
-	if(fight && )
+	float ySpider = this->spider->GetSprite()->getPosition().y;
+	float yCharac = this->main_charactor->GetSprite()->getPosition().y;
+	float ySpiderSize = this->spider->GetSprite()->getContentSize().height;
+	float yCharacSize = this->main_charactor->GetSprite()->getContentSize().height;
+
+	/*if (fight && (yCharac > ySpider - (ySpiderSize / 2) && yCharac < ySpider + (ySpiderSize / 2))) {
+		return true;
+	}*/
+	if (fight) return true;
 
 	return false;
 }
+
+void GamePlay::CreateBloodBar()
+{
+	Layer* layer_1 = Layer::create();
+	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
+	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
+	bloodBar_1->setPercent(100);
+	bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
+
+	auto bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
+	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
+	bloodBar_2->setPercent(this->main_charactor->GetBlood());
+	bloodBar_2->setPosition(bloodBar_1->getPosition());
+
+	layer_1->addChild(bloodBar_1);
+	layer_1->addChild(bloodBar_2);
+	this->addChild(layer_1);
+}
+
 
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
@@ -308,6 +333,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
 	this->setPosition(viewPoint);
+	//_tileMap->setPosition(viewPoint);
 }
 
 
