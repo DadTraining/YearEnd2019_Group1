@@ -126,7 +126,6 @@ void MainCharactor::InitialAction()
 	animate_stun->setTag(Actions::C_STUN);
 }
 
-
 void MainCharactor::setDiamond(int diamon)
 {
 	this->numDiamond = diamon;
@@ -136,7 +135,6 @@ int MainCharactor::getDiamond()
 {
 	return this->numDiamond;
 }
-
 
 void MainCharactor::Update(float deltaTime)
 {
@@ -169,7 +167,6 @@ void MainCharactor::Update(float deltaTime)
 	}*/
 }
 
-
 void MainCharactor::Push()
 {
 	//???
@@ -197,7 +194,6 @@ void MainCharactor::Fight()
 	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 	this->GetSprite()->runAction(action_fight);
 }
-
 
 void MainCharactor::Wait()
 {
