@@ -147,13 +147,16 @@ void MainCharactor::Update(float deltaTime)
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
-		MoveLeft();
+		//MoveLeft();
 	}
 	else if (moveRight && !fight) {
 		RotateRight();
-		MoveRight();
+		//MoveRight();
 	}
-	else if (!(jump && jump_1) && (jump != jump_1)) {
+	/*else if (!(jump && jump_1) && (jump != jump_1)) {
+		Jump();
+	}*/
+	else if (jump) {
 		Jump();
 	}
 	else {
