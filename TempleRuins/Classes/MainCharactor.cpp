@@ -73,14 +73,11 @@ void MainCharactor::CreateSprite()
 	this->SetBlood(BLOOD);
 	
 	// create sprite
-
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
 	main->setPosition(400, 230);
 	this->layer->addChild(main);   
-
-//	this->GetSprite()->setTag(20);
 
 
 	// create physic
@@ -148,13 +145,11 @@ void MainCharactor::Update(float deltaTime)
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
-		MoveLeft();
 	}
 	else if (moveRight && !fight) {
 		RotateRight();
-		MoveRight();
 	}
-	else if (!(jump && jump_1) && (jump != jump_1)) {
+	else if (jump) {
 		Jump();
 	}
 	else {
@@ -169,18 +164,25 @@ void MainCharactor::Update(float deltaTime)
 	fight_1 = fight;
 	jump_1 = jump;
 	
+	if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
+		Push();
+	}
 }
 
 
 void MainCharactor::Push()
 {
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
 
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
+		this->GetSprite()->runAction(action_fight);
 	
 }
 
 void MainCharactor::Fight()
 {
-	
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}

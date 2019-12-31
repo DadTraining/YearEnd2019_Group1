@@ -4,13 +4,18 @@
 
 void Rock::Init()
 {
-	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(2)));
-	this->GetSprite()->setScale(SCALE_OBJECT);
-	auto physicsBody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(2));
+	this->SetSprite(rock);
+	rock->setScale(SCALE_OBJECT);
+
+	auto physicsBody = PhysicsBody::createBox(rock->getContentSize());
 	physicsBody->setDynamic(true);
-	this->GetSprite()->setPosition(200, 200);
-	this->GetSprite()->setPhysicsBody(physicsBody);
-	this->layer->addChild(this->GetSprite());
+	rock->setPosition(600, 200);
+	rock->setPhysicsBody(physicsBody);
+	
+	this->GetSprite()->getPhysicsBody()->setContactTestBitmask(1);
+	rock->setTag(50);
+	this->layer->addChild(rock);
 }
 
 void Rock::Update(float deltaTime)
