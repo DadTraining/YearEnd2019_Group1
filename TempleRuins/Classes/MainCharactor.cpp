@@ -79,8 +79,6 @@ void MainCharactor::CreateSprite()
 	main->setPosition(400, 230);
 	this->layer->addChild(main);   
 
-//	this->GetSprite()->setTag(20);
-
 
 	// create physic
 	auto physicbody = PhysicsBody::createBox(main->getContentSize());
@@ -147,15 +145,10 @@ void MainCharactor::Update(float deltaTime)
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
-		//MoveLeft();
 	}
 	else if (moveRight && !fight) {
 		RotateRight();
-		//MoveRight();
 	}
-	/*else if (!(jump && jump_1) && (jump != jump_1)) {
-		Jump();
-	}*/
 	else if (jump) {
 		Jump();
 	}
@@ -190,7 +183,6 @@ void MainCharactor::Push()
 
 void MainCharactor::Fight()
 {
-	
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
