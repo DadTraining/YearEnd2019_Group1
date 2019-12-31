@@ -1,27 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{e392f4f8-9edd-432b-8c1c-668412cf52fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="win32">
-      <UniqueIdentifier>{c2572a2a-3ab6-42fa-86cd-c9aadada09e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{95aac4bb-07e1-4a6a-8d98-96f77a14ce4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\model">
-      <UniqueIdentifier>{e8af4afb-2a5a-4ce1-b65a-863d76940eb4}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Classes\TestMapScene1.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CountTimer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GamePlay.cpp">
@@ -30,36 +10,39 @@
     <ClCompile Include="..\Classes\Item_game.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\MainCharactor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Objject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\ResourceManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Rock.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Spider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TestMapScene1.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Diamond.cpp">
-      <Filter>src\model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MainCharactor.cpp">
-      <Filter>src\model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Objject.cpp">
-      <Filter>src\model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Rock.cpp">
-      <Filter>src\model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Spider.cpp">
-      <Filter>src\model</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\TestMapScene1.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CountTimer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Defines.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Diamond.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GamePlay.h">
@@ -68,27 +51,38 @@
     <ClInclude Include="..\Classes\Item_game.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\MainCharactor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Objject.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\ResourceManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Rock.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Spider.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TestMapScene1.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Diamond.h">
-      <Filter>src\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MainCharactor.h">
-      <Filter>src\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Objject.h">
-      <Filter>src\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Rock.h">
-      <Filter>src\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Spider.h">
-      <Filter>src\model</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{57826e36-8505-4db2-9224-53cac961f4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{22c9f166-9a72-441f-973c-6b184c523cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32">
+      <UniqueIdentifier>{f04e993c-0a9f-4cda-8c27-dda507704333}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

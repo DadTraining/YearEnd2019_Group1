@@ -11,7 +11,6 @@
 
 using namespace cocos2d;
 
-
 class GamePlay : public Layer
 {
 private:
@@ -25,6 +24,7 @@ private:
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
+	CCTMXLayer *_wall;
 
 	Objject* main_charactor;
 	Objject* spider;
@@ -39,16 +39,18 @@ public:
 	void AddDispatcher();
 	void InitialButton();
 	void InitialPhysics();
-	bool OnContactBegin(PhysicsContact& contact);
+	bool OnContactBegin(PhysicsContact &contact);
 	bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
 
-	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
-	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
+	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
+	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 	void update(float deltaTime);
-	
+
 	void setViewPointCenter(CCPoint position);
+	CCPoint tileCoorforposition(CCPoint position);
+
 
 	void AddDiamond();
 
@@ -57,6 +59,4 @@ public:
 	~GamePlay();
 
 	void UpdateJoystick(float deltaTime);
-
 };
-
