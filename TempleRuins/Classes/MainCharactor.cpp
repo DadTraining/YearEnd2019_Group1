@@ -245,7 +245,7 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 5000));
+	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
 }
 
 void MainCharactor::RotateLeft()

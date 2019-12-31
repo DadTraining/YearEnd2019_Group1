@@ -389,6 +389,9 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		}
 	}
 	else if (jump) {
+		static float old = winSize.height / 2;
+		float dis = main_charactor->GetSprite()->getPosition().y - old;
+		old = main_charactor->GetSprite()->getPosition().y;
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 		{
 			mcMoveDistance = Vec2(0, 5);
@@ -398,15 +401,19 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
 			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - 5))
 			{
-				mapMoveDistance = -Vec2(0, 5);
+				mapMoveDistance = -Vec2(0, dis);
 			}
 			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height - 5 - main_charactor->GetSprite()->getContentSize().height / 2))
 			{
-				mcMoveDistance = Vec2(0, 5);
+				mcMoveDistance = Vec2(0, dis);
 			}
 		}
 	}
 	else {
+		static float old = main_charactor->GetSprite()->getPosition().y;
+		float dis = old - main_charactor->GetSprite()->getPosition().y;
+		old = main_charactor->GetSprite()->getPosition().y;
+
 		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
 		{
 			mcMoveDistance = -Vec2(0, 5);
