@@ -2,7 +2,7 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
-
+Size visibleSize;
 Scene * GamePlay::createGame()
 {
 	auto scene = Scene::createWithPhysics();
@@ -34,7 +34,7 @@ bool GamePlay::init()
 	AddDispatcher();
 
 	// add button
-	InitialButton();
+	//InitialButton();
 	
 	// add diamond
 	//AddDiamond();
@@ -53,8 +53,11 @@ void GamePlay::CreateMap()
 	_tileMap->initWithTMXFile("map.tmx");
 
 	_background = _tileMap->layerNamed("Background");
-	layer_1->addChild(_tileMap);
-	this->addChild(layer_1);
+	_wall = _tileMap->layerNamed("MapLv1");
+	_frame = _tileMap->layerNamed("physics");
+	_frame->setVisible(false);
+	//layer_1->addChild(_tileMap);
+	this->addChild(_tileMap);
 }
 
 void GamePlay::InitialState()
@@ -75,7 +78,7 @@ void GamePlay::InitialObject()
 	AddDiamond();
 
 	// initial spider
-	this->spider = new Spider(this);
+	//this->spider = new Spider(this);
 
 	// initial rock
 	this->rock = new Rock(this);
@@ -103,28 +106,8 @@ void GamePlay::AddDispatcher()
 
 void GamePlay::InitialButton()
 {
-	//buttton move up
-	auto buttonMoveUp = ui::Button::create("button.png");
-	buttonMoveUp->setPosition(Vec2(100, 100));
-	buttonMoveUp->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			moveUp = true;
-			fight = false;
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			moveUp = false;
-			break;
-		default:
-			break;
-		}
-	});
-	addChild(buttonMoveUp);
-
-
 	//button move left
-	auto buttonMoveLeft = ui::Button::create("button.png");
+	auto buttonMoveLeft = ui::Button::create("touch_controller_normal.png");
 	buttonMoveLeft->setPosition(Vec2(50, 50));
 	buttonMoveLeft->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -142,8 +125,9 @@ void GamePlay::InitialButton()
 	addChild(buttonMoveLeft);
 
 	//button move right
-	auto buttonMoveRight = ui::Button::create("button.png");
+	auto buttonMoveRight = ui::Button::create("touch_controller_normal.png");
 	buttonMoveRight->setPosition(Vec2(150, 50));
+	buttonMoveRight->setFlipX(true);
 	buttonMoveRight->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -162,19 +146,30 @@ void GamePlay::InitialButton()
 
 void GamePlay::InitialPhysics()
 {
-	// ground
-	auto _frame = _tileMap->layerNamed("MapLv1");
-	Size layerSize = _frame->getLayerSize();
-	for (int i = 0; i < layerSize.width; i++) {
-		for (int j = 0; j < layerSize.height; j++) {
-			auto tileSet = _frame->getTileAt(Vec2(i, j));
-			if (tileSet != NULL) {
-				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-				physic->setCollisionBitmask(1);
-				physic->setContactTestBitmask(true);
-				physic->setDynamic(false);
-				physic->setMass(100);
-				tileSet->setPhysicsBody(physic);
+	//world
+	auto edgeBody = PhysicsBody::createEdgeBox(visibleSize + Size(0, 200), PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	edgeBody->setCollisionBitmask(100);
+	edgeBody->setContactTestBitmask(true);
+
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
+	edgeNode->setPhysicsBody(edgeBody);
+	addChild(edgeNode);
+
+	//ground
+	Size layerSize = _wall->getLayerSize();
+	for (int i = 0; i < layerSize.width; i++)
+	{
+		for (int j = 0; j < layerSize.height; j++)
+		{
+			auto tileSet = _wall->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physics = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physics->setContactTestBitmask(true);
+				physics->setDynamic(false);
+				physics->setMass(100);
+				tileSet->setPhysicsBody(physics);
 			}
 		}
 	}
@@ -252,7 +247,6 @@ void GamePlay::CreateBloodBar()
 	this->addChild(bloodBar_2);
 }
 
-
 void GamePlay::AddDiamond() {
 	this->diamond = new Diamond(this);
 	auto objectgroup = _tileMap->objectGroupNamed("Objects");
@@ -327,7 +321,7 @@ void GamePlay::update(float deltaTime)
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump);
 
 	// update spider
-	spider->Update(deltaTime);
+	//spider->Update(deltaTime);
 
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
@@ -350,7 +344,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
+	//spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 
 	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 }

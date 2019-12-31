@@ -22,8 +22,19 @@ private:
 	bool moveUp;
 	bool jump;
 
+	cocos2d::Sprite* mMoveLeftController;
+	cocos2d::Sprite* mMoveLeftControllerPressed;
+	cocos2d::Sprite* mMoveRightController;
+	cocos2d::Sprite* mMoveRightControllerPressed;
+
+	cocos2d::ui::Button* mFireController;
+	cocos2d::ui::Button* mJumpController;
+
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
+	CCTMXLayer *_wall;
+	CCTMXLayer *_frame;
+
 
 	Objject* main_charactor;
 	Objject* spider;
@@ -37,6 +48,7 @@ public:
 	void InitialObject();
 	void AddDispatcher();
 	void InitialButton();
+	void enablePressedControl(bool isLeft, bool pressed);
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact& contact);
 	bool CheckFight();

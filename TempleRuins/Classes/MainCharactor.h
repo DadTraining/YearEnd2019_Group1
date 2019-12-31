@@ -7,7 +7,7 @@
 #define SCALE_SPRITE 0.1
 #define SPEED_FRAME 0.2f
 #define SPEED_FIGHT 0.2f
-#define SPEED_RUN 10
+#define SPEED_RUN 6
 #define SPEED_ROTATE 0.01f
 #define BLOOD 100
 

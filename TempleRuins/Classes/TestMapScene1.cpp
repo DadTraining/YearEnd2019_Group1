@@ -23,14 +23,6 @@ bool TestMapScene1::init()
 
 	map = new CCTMXTiledMap();
 	map->initWithTMXFile("map.tmx");
-	//map->setScale(0.5);
-	background = map->layerNamed("Background");
-	wall = map->layerNamed("MapLv1");
-
-	meta = map->layerNamed("MapLv2");
-	meta->setVisible(true);
-	wall->setVisible(false);
-
 	this->addChild(map);
 
 	auto objectgroup = map->objectGroupNamed("Objects");
@@ -42,17 +34,9 @@ bool TestMapScene1::init()
 	int x = spawPoint.at("x").asDouble();
 	int y = spawPoint.at("y").asDouble();
 
-	/*mainCh = ResourceManager::GetInstance()->GetSpriteById(3);
-	mainCh->setScale(0.15);
-
-	mainCh->setPosition(ccp(x, y));
-	this->addChild(mainCh);*/
-
 	Main_Charactor = new MainCharactor(this);
 	this->setViewPointCenter(Main_Charactor->GetSprite()->getPosition());
 
-
-	//this->setViewPointCenter(mainCh->getPosition());
 
 
 	//keyboard
