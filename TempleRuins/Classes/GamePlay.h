@@ -20,6 +20,7 @@ private:
 	bool moveRight;
 	bool moveUp;
 	bool jump;
+	bool stun;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;

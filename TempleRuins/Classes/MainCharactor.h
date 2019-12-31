@@ -52,7 +52,7 @@ private:
 	ui::LoadingBar *bloodBar_2;
 
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push);
 	void Init();
 	void InitialState();
 	void CreateSprite();

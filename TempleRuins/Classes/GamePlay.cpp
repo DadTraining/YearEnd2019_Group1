@@ -129,21 +129,22 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-	if (nodeA && nodeB)
-	{
-		if (nodeA->getTag() == 10 && nodeB->getTag() == 20)
-		{
-			if (!fight)
-				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
-			else if (CheckFight())
-				log("danh1");
+
+	if (nodeA && nodeB) {
+		if (nodeA->getTag() == 10 && nodeB->getTag() == 20) {
+			if (!fight) { 
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
+				((MainCharactor*)(main_charactor))->Stun();
 			}
-			else if (nodeA->getTag() == 20 && nodeB->getTag() == 10)
-		{
-			if (!fight)
-				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
-			else if (CheckFight())
-				log("danh2");
+			else if (CheckFight()) log("danh1");
+		}
+		else if (nodeA->getTag() == 20 && nodeB->getTag() == 10) {
+			if (!fight) {
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
+				((MainCharactor*)(main_charactor))->Stun();
+			}
+			else if (CheckFight()) log("danh2");
+
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
 		{
@@ -155,11 +156,11 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 50)
 		{
-			//nodeB->removeFromParentAndCleanup(true);
+			((MainCharactor*)(main_charactor))->Push();
 		}
 		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20)
 		{
-			//nodeA->removeFromParentAndCleanup(true);
+			((MainCharactor*)(main_charactor))->Push();
 		}
 	}
 
@@ -273,10 +274,15 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 
 void GamePlay::update(float deltaTime)
-	{
-		// update main charactor
-		main_charactor->Update(deltaTime);
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump);
+
+{
+	// update main charactor
+	main_charactor->Update(deltaTime);
+	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
+
+	// update spider
+	spider->Update(deltaTime);
+
 
 		// update spider
 		//spider->Update(deltaTime);
