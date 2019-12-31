@@ -500,7 +500,8 @@ void GamePlay::UpdateController()
 			|| mCurrentKey == EventKeyboard::KeyCode::KEY_LEFT_ARROW) //move left
 		{
 			EnablePressedControl(true, true);
-			MoveLeft();
+			moveLeft = true;
+			moveRight = false;
 		}
 		else
 		{
@@ -511,7 +512,8 @@ void GamePlay::UpdateController()
 			|| mCurrentKey == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) //move right		
 		{
 			EnablePressedControl(false, true);
-			MoveRight();
+			moveLeft = false;
+			moveRight = true;
 		}
 		else
 		{
@@ -522,6 +524,8 @@ void GamePlay::UpdateController()
 	case ui::Widget::TouchEventType::ENDED:
 		EnablePressedControl(true, false);
 		EnablePressedControl(false, false);
+		moveLeft = false;
+		moveRight = false;
 		((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 		break;
 	}
@@ -543,11 +547,13 @@ void GamePlay::MoveLeft()
 {
 	((MainCharactor*)main_charactor)->RotateRight();
 	((MainCharactor*)main_charactor)->MoveLeft();
+	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 }
 
 void GamePlay::MoveRight()
 {
 	((MainCharactor*)main_charactor)->RotateLeft();
 	((MainCharactor*)main_charactor)->MoveRight();
+	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 }
 

@@ -38,6 +38,7 @@ private:
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
+	bool moveDown;
 
 	Scene *scene;
 	Layer *layer;
