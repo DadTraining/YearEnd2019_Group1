@@ -2,23 +2,25 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
-
-Scene * GamePlay::createGame()
+Scene *GamePlay::createGame()
 {
+	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
-	auto layer = GamePlay::create();
-	scene->addChild(layer);
+
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+	// 'layer' is an autorelease object
+	auto layer = GamePlay::create();
+
+	// add layer as a child to scene
+	scene->addChild(layer);
+
+	// return the scene
 	return scene;
 }
 
 bool GamePlay::init()
 {
-	if (!Layer::init()) {
-		return false;
-	}
-
-	// create map
 	CreateMap();
 
 	// initial physics for map
@@ -35,27 +37,24 @@ bool GamePlay::init()
 
 	// add button
 	InitialButton();
-	
-	
+
 	// add diamond
 	//AddDiamond();
 
 	// update
 	scheduleUpdate();
-
 	return true;
 }
-
 void GamePlay::CreateMap()
 {
-	//create map
-	auto layer_1 = Layer::create();
-	_tileMap = new CCTMXTiledMap();
-	_tileMap->initWithTMXFile("map.tmx");
+		auto layer_1 = Layer::create();
+		_tileMap = new CCTMXTiledMap();
+		_tileMap->initWithTMXFile("map.tmx");
 
-	_background = _tileMap->layerNamed("Background");
-	layer_1->addChild(_tileMap);
-	this->addChild(layer_1);
+		_background = _tileMap->layerNamed("Background");
+		_wall = _tileMap->layerNamed("MapLv1");
+		//layer_1->addChild(_tileMap);
+		this->addChild(_tileMap);
 }
 
 void GamePlay::InitialState()
@@ -72,19 +71,15 @@ void GamePlay::InitialState()
 
 void GamePlay::InitialObject()
 {
-	// diamond
-	AddDiamond();
-
-	// initial spider
-	this->spider = new Spider(this);
-
-	// initial rock
-	this->rock = new Rock(this);
-
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
+
 	CreateBloodBar();
+
+	// initial spider
+	this->spider = new Spider(this);
+	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
 }
 
 void GamePlay::AddDispatcher()
@@ -112,6 +107,7 @@ void GamePlay::AddDispatcher()
 
 void GamePlay::InitialButton()
 {
+
 	Director::getInstance()->getVisibleSize();
 	//move Left
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
@@ -135,17 +131,20 @@ void GamePlay::InitialButton()
 	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);	
+
 }
 
 void GamePlay::InitialPhysics()
 {
 	// ground
-	auto _frame = _tileMap->layerNamed("MapLv1");
-	Size layerSize = _frame->getLayerSize();
-	for (int i = 0; i < layerSize.width; i++) {
-		for (int j = 0; j < layerSize.height; j++) {
-			auto tileSet = _frame->getTileAt(Vec2(i, j));
-			if (tileSet != NULL) {
+	Size layerSize = _wall->getLayerSize();
+	for (int i = 0; i < layerSize.width; i++)
+	{
+		for (int j = 0; j < layerSize.height; j++)
+		{
+			auto tileSet = _wall->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
 				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
 				physic->setCollisionBitmask(1);
 				physic->setContactTestBitmask(true);
@@ -162,6 +161,7 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
 
+
 	if (nodeA && nodeB) {
 		if (nodeA->getTag() == 10 && nodeB->getTag() == 20) {
 			if (!fight) { 
@@ -176,6 +176,7 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 				((MainCharactor*)(main_charactor))->Stun();
 			}
 			else if (CheckFight()) log("danh2");
+
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
 		{
@@ -185,21 +186,20 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		{
 			nodeA->removeFromParentAndCleanup(true);
 		}
-		else if(nodeA->getTag() == 20 && nodeB->getTag() == 50)
+		else if (nodeA->getTag() == 20 && nodeB->getTag() == 50)
 		{
 			((MainCharactor*)(main_charactor))->Push();
 		}
-		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20) 
+		else if (nodeA->getTag() == 50 && nodeB->getTag() == 20)
 		{
 			((MainCharactor*)(main_charactor))->Push();
 		}
-
 	}
 
 	return true;
 }
 
-bool GamePlay::CheckPush() 
+bool GamePlay::CheckPush()
 {
 	return true;
 }
@@ -212,98 +212,101 @@ bool GamePlay::CheckFight()
 	float yCharacSize = this->main_charactor->GetSprite()->getContentSize().height;
 
 	/*if (fight && (yCharac > ySpider - (ySpiderSize / 2) && yCharac < ySpider + (ySpiderSize / 2))) {
+	return true;
+}*/
+	if (fight)
 		return true;
-	}*/
-	if (fight) return true;
 
 	return false;
 }
 
 void GamePlay::CreateBloodBar()
-{
-	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
-	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
-	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
+	{
+		Layer *layer_1 = Layer::create();
+		auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
+		bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
+		bloodBar_1->setPercent(100);
+		bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
 
-	auto bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
-	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
-	bloodBar_2->setPercent(this->main_charactor->GetBlood());
-	bloodBar_2->setPosition(bloodBar_1->getPosition());
+		auto bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
+		bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
+		bloodBar_2->setPercent(this->main_charactor->GetBlood());
+		bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-	this->addChild(bloodBar_1);
-	this->addChild(bloodBar_2);
-}
-
-
-void GamePlay::AddDiamond() {
-	this->diamond = new Diamond(this);
-	auto objectgroup = _tileMap->objectGroupNamed("Objects");
-	auto spawPoint = objectgroup->objectNamed("SpawnPoint");
-	int x = spawPoint.at("x").asDouble();
-	int y = spawPoint.at("y").asDouble();
-	this->diamond->GetSprite()->setPosition(x, y);
-}
+		this->addChild(bloodBar_1);
+		this->addChild(bloodBar_2);
+	}
 
 void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
-{
-	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
-		if (moveLeft || moveRight) {
-			fight = false;
-		}
-		else {
-			fight = true;
+		switch (keycode)
+		{
+		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		{
+			if (moveLeft || moveRight)
+			{
+				fight = false;
+			}
+			else
+			{
+				fight = true;
+			}
+
+			break;
 		}
 
-		break;
-	}
-
-	case EventKeyboard::KeyCode::KEY_A: {
-		moveLeft = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_D: {
-		moveRight = true;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_W: {
-		jump = true;
-		break;
-	}
-	default:
-		break;
-	}
-}
+		case EventKeyboard::KeyCode::KEY_A:
+		{
+			moveLeft = true;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_D:
+		{
+			moveRight = true;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_W:
+		{
+			jump = true;
+			break;
+		}
+		default:
+			break;
+		}
+	}	
 
 void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
-{
-	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_DOWN_ARROW: {
-		fight = false;
-		break;
-	}
+		switch (keycode)
+		{
+		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		{
+			fight = false;
+			break;
+		}
 
-	case EventKeyboard::KeyCode::KEY_A: {
-		moveLeft = false;
-		break;
+		case EventKeyboard::KeyCode::KEY_A:
+		{
+			moveLeft = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_D:
+		{
+			moveRight = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_W:
+		{
+			jump = false;
+			break;
+		}
+		default:
+			break;
+		}
 	}
-	case EventKeyboard::KeyCode::KEY_D: {
-		moveRight = false;
-		break;
-	}
-	case EventKeyboard::KeyCode::KEY_W: {
-		jump = false;
-		break;
-	}
-	default:
-		break;
-	}
-}
 
 void GamePlay::update(float deltaTime)
+
 {
 	// update main charactor
 	main_charactor->Update(deltaTime);
@@ -313,16 +316,20 @@ void GamePlay::update(float deltaTime)
 	spider->Update(deltaTime);
 	UpdateController();
 
-	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
-}
+		// update spider
+		//spider->Update(deltaTime);
+
+		this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
+	}	
 
 void GamePlay::setViewPointCenter(CCPoint position)
-{
-	CCPoint p = _tileMap->getPosition();
-
-	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	int x = MAX(position.x, winSize.width / 2);
+	{
+		CCPoint p = _tileMap->getPosition();
+		//CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+		CCSize winSize = Director::getInstance()->getVisibleSize();
+		CCPoint viewPoint = ccp(0, 0);
+		/*int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
 	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
 	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
@@ -330,21 +337,112 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
-	_tileMap->setPosition(viewPoint);
+	_tileMap->setPosition(viewPoint);*/
+		Vec2 mapMoveDistance = Vec2(0, 0);
+		Vec2 mcMoveDistance = Vec2(0, 0);
+		if (moveRight)
+		{
+			if (main_charactor->GetSprite()->getPosition().x < winSize.width / 2)
+			{
+				mcMoveDistance = Vec2(5, 0);
+			}
+			else
+			{
+				float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width;
+				if (_tileMap->getPosition().x > -(mapWidth - winSize.width - 5))
+				{
+					mapMoveDistance = -Vec2(5, 0);
+				}
+				else if (main_charactor->GetSprite()->getPosition().x <= (winSize.width - 5 - main_charactor->GetSprite()->getContentSize().width / 2))
+				{
+					mcMoveDistance = Vec2(5, 0);
+				}
+			}
+		}
+		else if (moveLeft)
+		{
+			if (main_charactor->GetSprite()->getPosition().x > winSize.width / 2)
+			{
+				mcMoveDistance = -Vec2(5, 0);
+			}
+			else
+			{
+				if (_tileMap->getPosition().x <= -5)
+				{
+					mapMoveDistance = Vec2(5, 0);
+				}
+				else if (main_charactor->GetSprite()->getPosition().x >= 5 + main_charactor->GetSprite()->getContentSize().width / 2)
+				{
+					mcMoveDistance = -Vec2(5, 0);
+				}
+			}
+		}
+		else if (jump)
+		{
+			if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
+			{
+				mcMoveDistance = Vec2(0, 5);
+			}
+			else
+			{
+				float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+				if (_tileMap->getPosition().y > -(mapHeight - winSize.height - 5))
+				{
+					mapMoveDistance = -Vec2(0, 5);
+				}
+				else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height - 5 - main_charactor->GetSprite()->getContentSize().height / 2))
+				{
+					mcMoveDistance = Vec2(0, 5);
+				}
+			}
+		}
+		else
+		{
+			if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
+			{
+				mcMoveDistance = -Vec2(0, 5);
+			}
+			else
+			{
+				if (_tileMap->getPosition().y <= -5)
+				{
+					mapMoveDistance = Vec2(0, 5);
+				}
+				else if (main_charactor->GetSprite()->getPosition().y >= 5 + main_charactor->GetSprite()->getContentSize().height / 2)
+				{
+					mcMoveDistance = -Vec2(0, 5);
+				}
+			}
+		}
 
+		if (mcMoveDistance != Vec2(0, 0))
+		{
+			main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
+		}
 
+		if (mapMoveDistance != Vec2(0, 0))
+		{
+			_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
+
+			spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
+
+			//rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);
+		}
+
+		/*_tileMap->setPosition(_tileMap->getPosition() + viewPoint);
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 
-	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-}
+	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));*/
+	}	
 
 GamePlay::GamePlay()
 {
-}
+}		
 
 GamePlay::~GamePlay()
 {
+
 }
 
 bool GamePlay::onTouchBegan(Touch* touch, Event  *event)
@@ -452,3 +550,4 @@ void GamePlay::MoveRight()
 	((MainCharactor*)main_charactor)->RotateLeft();
 	((MainCharactor*)main_charactor)->MoveRight();
 }
+
