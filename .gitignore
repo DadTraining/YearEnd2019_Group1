@@ -523,5 +523,4 @@ proj.linux/
 Debug.win32/
 TempleRuins/.cocos-project.json
 TempleRuins/CMakeLists.txt
-TempleRuins/proj.win32/
 TempleRuins/proj.android/

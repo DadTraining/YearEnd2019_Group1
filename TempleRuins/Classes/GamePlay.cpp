@@ -12,7 +12,6 @@ Scene * GamePlay::createGame()
 	return scene;
 }
 
-
 bool GamePlay::init()
 {
 	if (!Layer::init()) {
@@ -70,7 +69,6 @@ void GamePlay::InitialState()
 	jump = false;
 }
 
-
 void GamePlay::InitialObject()
 {
 	// diamond
@@ -86,8 +84,10 @@ void GamePlay::InitialObject()
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 	CreateBloodBar();
-}
 
+	// test
+	this->main_charactor->GetSprite()->setPosition(400, 200);
+}
 
 void GamePlay::AddDispatcher()
 {
@@ -113,11 +113,10 @@ void GamePlay::InitialButton()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			moveUp = true;
-			fight = false;
+			jump = true;
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			moveUp = false;
+			jump = false;
 			break;
 		default:
 			break;
@@ -163,9 +162,6 @@ void GamePlay::InitialButton()
 	addChild(buttonMoveRight);
 }
 
-
-
-
 void GamePlay::InitialPhysics()
 {
 	// ground
@@ -185,7 +181,6 @@ void GamePlay::InitialPhysics()
 		}
 	}
 }
-
 
 bool GamePlay::OnContactBegin(PhysicsContact & contact)
 {
@@ -258,7 +253,6 @@ void GamePlay::CreateBloodBar()
 	this->addChild(bloodBar_1);
 	this->addChild(bloodBar_2);
 }
-
 
 
 void GamePlay::AddDiamond() {
@@ -338,16 +332,15 @@ void GamePlay::update(float deltaTime)
 	spider->Update(deltaTime);
 
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
-
 }
-
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
 	CCPoint p = _tileMap->getPosition();
-
-	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	int x = MAX(position.x, winSize.width / 2);
+	//CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+	CCSize winSize = Director::getInstance()->getVisibleSize();
+	CCPoint viewPoint = ccp(0, 0);
+	/*int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
 	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
 	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
@@ -355,17 +348,102 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
-	_tileMap->setPosition(viewPoint);
+	_tileMap->setPosition(viewPoint);*/
+	Vec2 mapMoveDistance = Vec2(0, 0);
+	Vec2 mcMoveDistance = Vec2(0, 0);
+	if (moveRight)
+	{
+		if (main_charactor->GetSprite()->getPosition().x < winSize.width / 2)
+		{
+			mcMoveDistance = Vec2(5, 0);
+		}
+		else
+		{
+			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width;
+			if (_tileMap->getPosition().x > -(mapWidth - winSize.width - 5))
+			{
+				mapMoveDistance = -Vec2(5, 0);
+			}
+			else if (main_charactor->GetSprite()->getPosition().x <= (winSize.width - 5 - main_charactor->GetSprite()->getContentSize().width / 2))
+			{
+				mcMoveDistance = Vec2(5, 0);
+			}
+		}
+	}
+	else if (moveLeft)
+	{
+		if (main_charactor->GetSprite()->getPosition().x > winSize.width / 2)
+		{
+			mcMoveDistance = -Vec2(5, 0);
+		}
+		else
+		{
+			if (_tileMap->getPosition().x <= -5)
+			{
+				mapMoveDistance = Vec2(5, 0);
+			}
+			else if (main_charactor->GetSprite()->getPosition().x >= 5 + main_charactor->GetSprite()->getContentSize().width / 2)
+			{
+				mcMoveDistance = -Vec2(5, 0);
+			}
+		}
+	}
+	else if (jump) {
+		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
+		{
+			mcMoveDistance = Vec2(0, 5);
+		}
+		else
+		{
+			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - 5))
+			{
+				mapMoveDistance = -Vec2(0, 5);
+			}
+			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height - 5 - main_charactor->GetSprite()->getContentSize().height / 2))
+			{
+				mcMoveDistance = Vec2(0, 5);
+			}
+		}
+	}
+	else {
+		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
+		{
+			mcMoveDistance = -Vec2(0, 5);
+		}
+		else
+		{
+			if (_tileMap->getPosition().y <= -5)
+			{
+				mapMoveDistance = Vec2(0, 5);
+			}
+			else if (main_charactor->GetSprite()->getPosition().y >= 5 + main_charactor->GetSprite()->getContentSize().height / 2)
+			{
+				mcMoveDistance = -Vec2(0, 5);
+			}
+		}
+	}
 
+	if (mcMoveDistance != Vec2(0, 0)) {
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
+	}
 
+	if (mapMoveDistance != Vec2(0, 0)) {
+		_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
+
+		diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + mapMoveDistance);
+		spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
+
+		rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);
+	}
+
+	/*_tileMap->setPosition(_tileMap->getPosition() + viewPoint);
 	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
 
-	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-	main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + ccpSub(p, viewPoint));
+	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));*/
+	
 }
-
-
 
 GamePlay::GamePlay()
 {
