@@ -13,11 +13,9 @@ Sprite * MainCharactor::Clone(Sprite * sprite)
 	return sprite_clone;
 }
 
-
 MainCharactor::~MainCharactor()
 {
 }
-
 
 void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push)
 {
@@ -86,12 +84,12 @@ void MainCharactor::CreateSprite()
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	physicbody->setGravityEnable(false);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm
 	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
 }
-
 
 void MainCharactor::InitialAction()
 {
