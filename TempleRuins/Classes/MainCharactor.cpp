@@ -227,7 +227,7 @@ void MainCharactor::MoveLeft()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+	//this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
 }
 
 void MainCharactor::MoveRight()
