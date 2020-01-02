@@ -7,8 +7,8 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setSubsteps(8);
 	// 'layer' is an autorelease object
 	auto layer = GamePlay::create();
 
@@ -21,6 +21,7 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
+	
 	CreateMap();
 
 	// initial physics for map
@@ -53,6 +54,9 @@ void GamePlay::CreateMap()
 
 		_background = _tileMap->layerNamed("Background");
 		_wall = _tileMap->layerNamed("MapLv1");
+		_phy = _tileMap->layerNamed("physics");
+		_phy->setVisible(false);
+		mObjectGroup = _tileMap->getObjectGroup("Objects");
 		this->addChild(_tileMap);
 }
 
@@ -70,18 +74,31 @@ void GamePlay::InitialState()
 
 void GamePlay::InitialObject()
 {
-	// initial main charactor
-	this->main_charactor = new MainCharactor(this);
-	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
+	auto objects = mObjectGroup->getObjects();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		auto object = objects.at(i);
 
-	CreateBloodBar();
+		auto properties = object.asValueMap();
+		int posX = properties.at("x").asInt();
+		int posY = properties.at("y").asInt();
 
-	// initial spider
-	this->spider = new Spider(this);
-	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
+		int type = object.asValueMap().at("type").asInt();
 
-	// initial rock
-	this->rock = new Rock(this);
+		if (type == 1)
+		{
+			this->main_charactor = new MainCharactor(this);
+			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
+			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
+			CreateBloodBar();
+		}
+		else if (type == 2)
+		{
+			Spider* spider = new Spider(this);
+			spider->GetSprite()->setPosition(Vec2(posX, posY));
+			spiders.push_back(spider);
+		}
+	}
 }
 
 void GamePlay::AddDispatcher()
@@ -108,7 +125,6 @@ void GamePlay::AddDispatcher()
 
 void GamePlay::InitialButton()
 {
-
 	Director::getInstance()->getVisibleSize();
 	//move Left
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
@@ -146,12 +162,12 @@ void GamePlay::InitialButton()
 void GamePlay::InitialPhysics()
 {
 	// ground
-	Size layerSize = _wall->getLayerSize();
+	Size layerSize = _phy->getLayerSize();
 	for (int i = 0; i < layerSize.width; i++)
 	{
 		for (int j = 0; j < layerSize.height; j++)
 		{
-			auto tileSet = _wall->getTileAt(Vec2(i, j));
+			auto tileSet = _phy->getTileAt(Vec2(i, j));
 			if (tileSet != NULL)
 			{
 				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
@@ -177,14 +193,14 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
 				((MainCharactor*)(main_charactor))->Stun();
 			}
-			else if (CheckFight()) log("danh1");
+			//else if (CheckFight()) log("danh1");
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 10) {
 			if (!fight) {
 				this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION); 
 				((MainCharactor*)(main_charactor))->Stun();
 			}
-			else if (CheckFight()) log("danh2");
+			//else if (CheckFight()) log("danh2");
 
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
@@ -211,22 +227,6 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 bool GamePlay::CheckPush()
 {
 	return true;
-}
-
-bool GamePlay::CheckFight()
-{
-	float ySpider = this->spider->GetSprite()->getPosition().y;
-	float yCharac = this->main_charactor->GetSprite()->getPosition().y;
-	float ySpiderSize = this->spider->GetSprite()->getContentSize().height;
-	float yCharacSize = this->main_charactor->GetSprite()->getContentSize().height;
-
-	/*if (fight && (yCharac > ySpider - (ySpiderSize / 2) && yCharac < ySpider + (ySpiderSize / 2))) {
-	return true;
-}*/
-	if (fight)
-		return true;
-
-	return false;
 }
 
 void GamePlay::CreateBloodBar()
@@ -334,13 +334,8 @@ void GamePlay::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor*)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
-	// update spider
-	spider->Update(deltaTime);
+	
 	UpdateController();
-
-
-		// update spider
-		//spider->Update(deltaTime);
 
 		this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 	}	
@@ -445,17 +440,11 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		if (mapMoveDistance != Vec2(0, 0))
 		{
 			_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
-
-			spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
-
-			rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);
+			for (int i = 0; i < spiders.size(); i++)
+			{
+				spiders.at(i)->GetSprite()->setPosition(spiders.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+			}
 		}
-
-		/*_tileMap->setPosition(_tileMap->getPosition() + viewPoint);
-	diamond->GetSprite()->setPosition(diamond->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-	spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + ccpSub(viewPoint, p));
-
-	rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + ccpSub(viewPoint, p));*/
 	}	
 
 GamePlay::GamePlay()
