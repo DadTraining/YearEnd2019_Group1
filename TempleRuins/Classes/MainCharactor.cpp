@@ -13,13 +13,13 @@ Sprite * MainCharactor::Clone(Sprite * sprite)
 	return sprite_clone;
 }
 
-
 MainCharactor::~MainCharactor()
 {
 }
 
 
 void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown)
+
 {
 	this->fight = fight;
 	this->moveLeft = moveLeft;
@@ -90,12 +90,12 @@ void MainCharactor::CreateSprite()
 	physicbody->setGravityEnable(false);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
+	physicbody->setGravityEnable(false);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm
 	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
 }
-
 
 void MainCharactor::InitialAction()
 {
@@ -130,7 +130,6 @@ void MainCharactor::InitialAction()
 	animate_stun->setTag(Actions::C_STUN);
 }
 
-
 void MainCharactor::setDiamond(int diamon)
 {
 	this->numDiamond = diamon;
@@ -140,7 +139,6 @@ int MainCharactor::getDiamond()
 {
 	return this->numDiamond;
 }
-
 
 void MainCharactor::Update(float deltaTime)
 {
@@ -176,7 +174,6 @@ void MainCharactor::Update(float deltaTime)
 	}*/
 }
 
-
 void MainCharactor::Push()
 {
 	//???
@@ -204,7 +201,6 @@ void MainCharactor::Fight()
 	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 	this->GetSprite()->runAction(action_fight);
 }
-
 
 void MainCharactor::Wait()
 {
@@ -239,7 +235,7 @@ void MainCharactor::MoveLeft()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+	//this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
 }
 
 void MainCharactor::MoveRight()

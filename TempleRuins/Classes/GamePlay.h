@@ -34,6 +34,7 @@ private:
 
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
+	cocos2d::ui::Button* mBump;
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
@@ -59,6 +60,7 @@ public:
 	bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
+	void Fight(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
