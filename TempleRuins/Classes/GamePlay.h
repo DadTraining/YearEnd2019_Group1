@@ -18,8 +18,10 @@ private:
 	bool push;
 	bool moveLeft;
 	bool moveRight;
-	bool moveUp;
 	bool jump;
+	bool stun;
+	bool moveUp;
+	bool moveDown;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
@@ -31,6 +33,22 @@ private:
 	Objject* rock;
 
 	ui::LoadingBar *bloodBar_2;
+
+	//
+	cocos2d::EventKeyboard::KeyCode mCurrentKey;
+
+	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
+
+	cocos2d::Point mCurrentTouchPoint;
+	cocos2d::Sprite* mMoveLeftController;
+	cocos2d::Sprite* mMoveLeftControllerPressed;
+	cocos2d::Sprite* mMoveRightController;
+	cocos2d::Sprite* mMoveRightControllerPressed;
+	cocos2d::Sprite* mMoveUpController;
+	cocos2d::Sprite* mMoveUpControllerPressed;
+	cocos2d::Sprite* mMoveDownController;
+	cocos2d::Sprite* mMoveDownControllerPressed;
+
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -48,6 +66,19 @@ public:
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 	void update(float deltaTime);
 
+	//
+	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
+	void EnablePressedControlUpDown(bool isUp, bool pressed);
+
+	void UpdateController();
+	//
+	
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);
 

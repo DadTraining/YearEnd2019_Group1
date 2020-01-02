@@ -38,6 +38,7 @@ private:
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
+	bool moveDown;
 
 	Scene *scene;
 	Layer *layer;
@@ -50,7 +51,7 @@ private:
 
 	FightHammer* f;
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown);
 	void Init();
 	void InitialState();
 	void CreateSprite();
@@ -67,6 +68,8 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+	void MoveUp();
+	void MoveDown();
 
 	void RotateLeft();
 	void RotateRight();
