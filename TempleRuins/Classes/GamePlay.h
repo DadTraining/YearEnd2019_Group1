@@ -17,9 +17,10 @@ private:
 	bool push;
 	bool moveLeft;
 	bool moveRight;
-	bool moveUp;
 	bool jump;
 	bool stun;
+	bool moveUp;
+	bool moveDown;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
@@ -32,6 +33,8 @@ private:
 	Objject* diamond;
 	Objject* rock;
 
+	ui::LoadingBar *bloodBar_2;
+
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
 	cocos2d::ui::Button* mBump;
@@ -43,10 +46,13 @@ private:
 	cocos2d::Sprite* mMoveLeftControllerPressed;
 	cocos2d::Sprite* mMoveRightController;
 	cocos2d::Sprite* mMoveRightControllerPressed;
+	cocos2d::Sprite* mMoveUpController;
+	cocos2d::Sprite* mMoveUpControllerPressed;
+	cocos2d::Sprite* mMoveDownController;
+	cocos2d::Sprite* mMoveDownControllerPressed;
 
 	cocos2d::TMXObjectGroup* mObjectGroup;
 	std::vector<Spider*> spiders;
-
 
 public:
 	static Scene* createGame();
@@ -74,11 +80,8 @@ public:
 
 	virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event  *event);
 
-	void EnablePressedControl(bool isLeft, bool pressed);
-
-	void MoveLeft();
-
-	void MoveRight();
+	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
+	void EnablePressedControlUpDown(bool isUp, bool pressed);
 
 	void UpdateController();
 	//

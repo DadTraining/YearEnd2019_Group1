@@ -1,6 +1,6 @@
 #pragma once
 #include "Objject.h"
-
+#include "FightHammer.h"
 #include "ui/CocosGUI.h"
 
 #define SCALE_SPRITE 0.12
@@ -49,11 +49,9 @@ private:
 	Action *action_wait;
 	Action *action_run;
 
-	ui::LoadingBar *bloodBar_1;
-	ui::LoadingBar *bloodBar_2;
-
+	FightHammer* f;
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown);
 	void Init();
 	void InitialState();
 	void CreateSprite();
@@ -70,6 +68,8 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+	void MoveUp();
+	void MoveDown();
 
 	void RotateLeft();
 	void RotateRight();

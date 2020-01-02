@@ -14,36 +14,44 @@ void Spider::Init()
 
 void Spider::Update(float deltaTime)
 {
-	static bool check = true;
-	static float i = 0;
-	i += deltaTime;
+	if (this->GetBlood() <= 0 && state) {
+		// if blood < 0 => spider die
+		this->GetSprite()->removeFromParentAndCleanup(true);
+		this->state = false;
+	}
 
-	if (i >= 4)
-	{
-		check = !check;
+	if (state) {
+		static bool check = true;
+		static float i = 0;
+		i += deltaTime;
 
-		this->GetSprite()->stopAllActions();
+		if (i >= 4)
+		{
+			check = !check;
+
+			this->GetSprite()->stopAllActions();
+			if (check)
+			{
+				//goDown();
+				goLeft();
+			}
+			else
+			{
+				//goUp();
+				goRight();
+			}
+
+			i = 0;
+		}
+
 		if (check)
 		{
-			//goDown();
-			goLeft();
+			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
 		}
 		else
 		{
-			//goUp();
-			goRight();
+			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
 		}
-
-		i = 0;
-	}
-
-	if (check)
-	{
-		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
-	}
-	else
-	{
-		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
 	}
 }
 
@@ -113,6 +121,16 @@ void Spider::goRight()
 {
 	this->GetSprite()->setFlippedX(true);
 	this->GetSprite()->runAction(action_side);
+}
+
+void Spider::setState(bool state)
+{
+	this->state = state;
+}
+
+bool Spider::isAlive()
+{
+	return this->state;
 }
 
 void Spider::RotateLeft()
