@@ -161,10 +161,10 @@ void MainCharactor::Update(float deltaTime)
 		RotateRight();
 	}
 	else if (moveUp && !fight) {
-		MoveUp();
+		//MoveUp();
 	}
 	else if (moveDown && !fight) {
-		MoveDown();
+		//MoveDown();
 	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
@@ -222,9 +222,6 @@ void MainCharactor::Wait()
 		this->GetSprite()->stopAllActions();
 		this->GetSprite()->runAction(action_wait);
 	}
-	
-	//isLeft = false;
-	//isRight = false;
 }
 
 void MainCharactor::Run()

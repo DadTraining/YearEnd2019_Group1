@@ -4,7 +4,6 @@
 #include "Spider.h"
 #include "Diamond.h"
 #include "Rock.h"
-
 #include "cocos2d.h"
 
 #define BLOOD_REDUCTION 5
@@ -26,9 +25,11 @@ private:
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
+	CCTMXLayer *_phy;
+
+
 
 	Objject* main_charactor;
-	Objject* spider;
 	Objject* diamond;
 	Objject* rock;
 
@@ -50,6 +51,9 @@ private:
 	cocos2d::Sprite* mMoveDownController;
 	cocos2d::Sprite* mMoveDownControllerPressed;
 
+	cocos2d::TMXObjectGroup* mObjectGroup;
+	std::vector<Spider*> spiders;
+
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -60,6 +64,7 @@ public:
 	void InitialButton();
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact &contact);
+	//bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
 	void Fight(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
