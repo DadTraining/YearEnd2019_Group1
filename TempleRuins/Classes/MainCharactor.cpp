@@ -75,7 +75,7 @@ void MainCharactor::CreateSprite()
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
-	main->setPosition(500, 230);
+	//main->setPosition(500, 230);
 	this->layer->addChild(main);   
 
 
