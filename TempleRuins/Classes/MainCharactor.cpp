@@ -76,10 +76,9 @@ void MainCharactor::CreateSprite()
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
-	main->setPosition(400, 230);
+	main->setPosition(550, 230);
+	main->setAnchorPoint(Vec2(0.5f, 0.0f));
 	this->layer->addChild(main);   
-
-//	this->GetSprite()->setTag(20);
 
 
 	// create physic
@@ -87,11 +86,16 @@ void MainCharactor::CreateSprite()
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	//physicbody->setMass(100);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm
 	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
+
+	// danh bua
+	f = new FightHammer();
+	f->getFrameFight()->setPosition(-10, -10);
+	this->layer->addChild(f->getFrameFight());
+	f->getFrameFight()->getPhysicsBody()->setDynamic(false);
 }
 
 
@@ -143,19 +147,16 @@ int MainCharactor::getDiamond()
 void MainCharactor::Update(float deltaTime)
 {
 	if (fight && !(moveLeft || moveRight)) {
-		if (!(fight && fight_1)) Fight();
+		if (!(fight && fight_1)) {
+			Fight();
+		}	
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
-		//MoveLeft();
 	}
 	else if (moveRight && !fight) {
 		RotateRight();
-		//MoveRight();
 	}
-	/*else if (!(jump && jump_1) && (jump != jump_1)) {
-		Jump();
-	}*/
 	else if (jump) {
 		Jump();
 	}
@@ -164,16 +165,21 @@ void MainCharactor::Update(float deltaTime)
 			Wait();
 		}
 	}
-
 	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 		Wait();
 	}
 	fight_1 = fight;
 	jump_1 = jump;
-	
 	if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
 		Push();
 	}
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
+		f->getFrameFight()->setPosition(Vec2(-10, -10));
+	}
+
+	////////////
+	log("xxxxxxxxxxxx %f", this->GetSprite()->getPosition().x);
+	log("yyyyyyyyyyyy %f", this->GetSprite()->getPosition().y);
 }
 
 
@@ -182,7 +188,6 @@ void MainCharactor::Push()
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
-
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
 		this->GetSprite()->runAction(action_fight);
 	
@@ -190,13 +195,18 @@ void MainCharactor::Push()
 
 void MainCharactor::Fight()
 {
-	
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
-
 	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 	this->GetSprite()->runAction(action_fight);
+
+	if (isRight) {
+		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(25, 40));
+	}
+	else if (isLeft) {
+		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(-25, 40));
+	}
 }
 
 
@@ -207,17 +217,16 @@ void MainCharactor::Wait()
 		this->GetSprite()->runAction(action_wait);
 	}
 	
-	isLeft = false;
-	isRight = false;
+	//isLeft = false;
+	//isRight = false;
 }
 
 void MainCharactor::Run()
 {
-	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_RUN) == 0) {
 		this->GetSprite()->stopAllActions();
+		this->GetSprite()->runAction(action_run);
 	}
-
-	this->GetSprite()->runAction(action_run);
 }
 
 void MainCharactor::Stun()
@@ -250,6 +259,7 @@ void MainCharactor::Jump()
 
 void MainCharactor::RotateLeft()
 {
+	Run();
 	if (!isLeft) {
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
@@ -257,7 +267,7 @@ void MainCharactor::RotateLeft()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
 
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -269,13 +279,14 @@ void MainCharactor::RotateLeft()
 
 void MainCharactor::RotateRight()
 {
+	Run();
 	if (!isRight) {
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 
 	}

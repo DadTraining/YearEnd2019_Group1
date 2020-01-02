@@ -5,11 +5,10 @@ bool right1 = false;
 bool up = false;
 bool down = false;
 
-
-Scene * TestMapScene1::createMap()
+Scene *TestMapScene1::createMap()
 {
-	CCScene * scene = CCScene::create();
-	TestMapScene1* layer = TestMapScene1::create();
+	CCScene *scene = CCScene::create();
+	TestMapScene1 *layer = TestMapScene1::create();
 	scene->addChild(layer);
 	return scene;
 	//return TestMapScene1::create();
@@ -17,7 +16,8 @@ Scene * TestMapScene1::createMap()
 
 bool TestMapScene1::init()
 {
-	if (!Layer::init()) {
+	if (!Layer::init())
+	{
 		return false;
 	}
 
@@ -26,15 +26,15 @@ bool TestMapScene1::init()
 	//map->setScale(0.5);
 	background = map->layerNamed("Background");
 	wall = map->layerNamed("MapLv1");
-
-	meta = map->layerNamed("MapLv2");
+	meta = map->layerNamed("physics");
 	meta->setVisible(true);
 	wall->setVisible(false);
 
 	this->addChild(map);
 
 	auto objectgroup = map->objectGroupNamed("Objects");
-	if (objectgroup == NULL) {
+	if (objectgroup == NULL)
+	{
 		log("no object grouppppppppppppppppppppppppppp");
 		return false;
 	}
@@ -51,9 +51,7 @@ bool TestMapScene1::init()
 	Main_Charactor = new MainCharactor(this);
 	this->setViewPointCenter(Main_Charactor->GetSprite()->getPosition());
 
-
 	//this->setViewPointCenter(mainCh->getPosition());
-
 
 	//keyboard
 	auto keyListener = EventListenerKeyboard::create();
@@ -61,29 +59,31 @@ bool TestMapScene1::init()
 	keyListener->onKeyReleased = CC_CALLBACK_2(TestMapScene1::OnKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
-
 	scheduleUpdate();
 	return true;
 }
-
-
 
 void TestMapScene1::update(float deltaTime)
 {
 	static float k = 0;
 	k += deltaTime;
-	if (k >= 0.1) {
+	if (k >= 0.1)
+	{
 		CCPoint playerPos = Main_Charactor->GetSprite()->getPosition();
-		if (left1) {
+		if (left1)
+		{
 			playerPos.x -= map->getTileSize().width;
 		}
-		else if (right1) {
+		else if (right1)
+		{
 			playerPos.x += map->getTileSize().width;
 		}
-		else if (up) {
+		else if (up)
+		{
 			playerPos.y += map->getTileSize().height;
 		}
-		else if (down) {
+		else if (down)
+		{
 			playerPos.y -= map->getTileSize().height;
 		}
 
@@ -92,7 +92,6 @@ void TestMapScene1::update(float deltaTime)
 			playerPos.y >= 0 && playerPos.x >= 0)
 		{
 			//this->setPlayerPosition(playerPos);
-			
 		}
 		this->setViewPointCenter(Main_Charactor->GetSprite()->getPosition());
 		k = 0;
@@ -101,23 +100,27 @@ void TestMapScene1::update(float deltaTime)
 	this->Main_Charactor->Update(deltaTime);
 }
 
-void TestMapScene1::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
+void TestMapScene1::OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_A: {
+	case EventKeyboard::KeyCode::KEY_A:
+	{
 		left1 = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_D: {
+	case EventKeyboard::KeyCode::KEY_D:
+	{
 		right1 = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_W: {
+	case EventKeyboard::KeyCode::KEY_W:
+	{
 		up = true;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_S: {
+	case EventKeyboard::KeyCode::KEY_S:
+	{
 		down = true;
 		break;
 	}
@@ -126,24 +129,28 @@ void TestMapScene1::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 	}
 }
 
-void TestMapScene1::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
+void TestMapScene1::OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_A: {
+	case EventKeyboard::KeyCode::KEY_A:
+	{
 		left1 = false;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_D: {
+	case EventKeyboard::KeyCode::KEY_D:
+	{
 		right1 = false;
 		break;
 	}
-	case EventKeyboard::KeyCode::KEY_W: {
+	case EventKeyboard::KeyCode::KEY_W:
+	{
 		up = false;
 		break;
 	}
 
-	case EventKeyboard::KeyCode::KEY_S: {
+	case EventKeyboard::KeyCode::KEY_S:
+	{
 		down = false;
 		break;
 	}
@@ -171,15 +178,17 @@ void TestMapScene1::setPlayerPosition(CCPoint position)
 {
 	CCPoint tileCoord = this->tileCoorforposition(position);
 	int tileGid = meta->tileGIDAt(tileCoord);
-	if (tileGid) {
+	if (tileGid)
+	{
 		auto properties = map->propertiesForGID(tileGid);
-		if (!properties.isNull()) {
+		if (!properties.isNull())
+		{
 			ValueMap dict = properties.asValueMap();
 			Value collision = dict["collidable"];
-			if (!collision.isNull() && collision.asString() == "true") {
+			if (!collision.isNull() && collision.asString() == "true")
+			{
 				return;
 			}
-
 		}
 	}
 	Main_Charactor->GetSprite()->setPosition(position);

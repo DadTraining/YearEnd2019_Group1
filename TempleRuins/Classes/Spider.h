@@ -4,7 +4,7 @@
 #define SPEED_FRAME_SPIDER 0.1f
 #define SCALE_SPIDER 0.1
 #define SPEED_ROTATE 0.01f
-#define BLOOD 4
+#define BLOOD 3
 
 enum actions_spider {
 	GO_UP,
@@ -18,6 +18,7 @@ class Spider : public Objject
 private:
 	bool isLeft;
 	bool isRight;
+	bool state = true;
 
 	Scene* scene;
 	Layer* layer;
@@ -34,6 +35,8 @@ public:
 	void goSide();
 	void goLeft();
 	void goRight();
+	void setState(bool state);
+	bool isAlive();
 
 	void RotateLeft();
 	void RotateRight();

@@ -1,7 +1,5 @@
 #include "Spider.h"
 
-
-
 void Spider::Init()
 {
 
@@ -11,38 +9,49 @@ void Spider::Init()
 	// initial action
 	InitialAction();
 
-
 	goLeft();
 }
 
 void Spider::Update(float deltaTime)
 {
-	static bool check = true;
-	static float i = 0;
-	i += deltaTime;
-
-
-	if (i >= 4) {
-		check = !check;
-
-		this->GetSprite()->stopAllActions();
-		if (check) {
-			//goDown();
-			goLeft();
-		}
-		else {
-			//goUp();
-			goRight();
-		}
-
-		i = 0;
+	if (this->GetBlood() <= 0 && state) {
+		// if blood < 0 => spider die
+		this->GetSprite()->removeFromParentAndCleanup(true);
+		this->state = false;
 	}
 
-	if (check) {
-		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
-	}
-	else {
-		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
+	if (state) {
+		static bool check = true;
+		static float i = 0;
+		i += deltaTime;
+
+		if (i >= 4)
+		{
+			check = !check;
+
+			this->GetSprite()->stopAllActions();
+			if (check)
+			{
+				//goDown();
+				goLeft();
+			}
+			else
+			{
+				//goUp();
+				goRight();
+			}
+
+			i = 0;
+		}
+
+		if (check)
+		{
+			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
+		}
+		else
+		{
+			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
+		}
 	}
 }
 
@@ -87,7 +96,6 @@ void Spider::InitialAction()
 	action_side->retain();
 }
 
-
 void Spider::goUp()
 {
 	this->GetSprite()->runAction(action_up);
@@ -115,10 +123,20 @@ void Spider::goRight()
 	this->GetSprite()->runAction(action_side);
 }
 
+void Spider::setState(bool state)
+{
+	this->state = state;
+}
+
+bool Spider::isAlive()
+{
+	return this->state;
+}
 
 void Spider::RotateLeft()
 {
-	if (!isLeft) {
+	if (!isLeft)
+	{
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
@@ -134,7 +152,8 @@ void Spider::RotateLeft()
 
 void Spider::RotateRight()
 {
-	if (!isRight) {
+	if (!isRight)
+	{
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
@@ -142,18 +161,16 @@ void Spider::RotateRight()
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
 
 		this->GetSprite()->runAction(runaction);
-
 	}
 	isRight = true;
 	isLeft = false;
 }
 
-Spider::Spider(Layer* layer)
+Spider::Spider(Layer *layer)
 {
 	this->layer = layer;
 	Init();
 }
-
 
 Spider::~Spider()
 {
