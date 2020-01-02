@@ -18,9 +18,10 @@ private:
 	bool push;
 	bool moveLeft;
 	bool moveRight;
-	bool moveUp;
 	bool jump;
 	bool stun;
+	bool moveUp;
+	bool moveDown;
 
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
@@ -41,6 +42,10 @@ private:
 	cocos2d::Sprite* mMoveLeftControllerPressed;
 	cocos2d::Sprite* mMoveRightController;
 	cocos2d::Sprite* mMoveRightControllerPressed;
+	cocos2d::Sprite* mMoveUpController;
+	cocos2d::Sprite* mMoveUpControllerPressed;
+	cocos2d::Sprite* mMoveDownController;
+	cocos2d::Sprite* mMoveDownControllerPressed;
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -66,11 +71,8 @@ public:
 
 	virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event  *event);
 
-	void EnablePressedControl(bool isLeft, bool pressed);
-
-	void MoveLeft();
-
-	void MoveRight();
+	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
+	void EnablePressedControlUpDown(bool isUp, bool pressed);
 
 	void UpdateController();
 	//

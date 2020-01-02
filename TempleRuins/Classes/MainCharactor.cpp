@@ -19,7 +19,7 @@ MainCharactor::~MainCharactor()
 }
 
 
-void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push)
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown)
 {
 	this->fight = fight;
 	this->moveLeft = moveLeft;
@@ -27,7 +27,8 @@ void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jum
 	this->jump = jump;
 	this->stun = stun;
 	this->push = push;
-
+	this->moveUp = moveUp;
+	this->moveDown = moveDown;
 }
 
 void MainCharactor::Init()
@@ -57,6 +58,8 @@ void MainCharactor::InitialState()
 	// initial direction
 	moveLeft = false;
 	moveRight = false;
+	moveUp = false;
+	moveDown = false;
 
 	// initial state
 	push = false;
@@ -150,8 +153,11 @@ void MainCharactor::Update(float deltaTime)
 	else if (moveRight && !fight) {
 		RotateRight();
 	}
-	else if (jump) {
-		Jump();
+	else if (moveUp && !fight) {
+		MoveUp();
+	}
+	else if (moveDown && !fight) {
+		MoveDown();
 	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
@@ -281,8 +287,21 @@ void MainCharactor::RotateRight()
 	}
 	isRight = true;
 	isLeft = false;
-
-
 	/*this->GetSprite()->setFlippedX(false);
 	Run();*/
 }
+
+void MainCharactor::MoveUp()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
+}
+
+void MainCharactor::MoveDown()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
+}
+
