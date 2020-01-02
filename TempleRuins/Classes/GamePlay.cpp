@@ -7,7 +7,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	// 'layer' is an autorelease object
 	auto layer = GamePlay::create();
@@ -55,9 +55,6 @@ void GamePlay::CreateMap()
 		_background = _tileMap->layerNamed("Background");
 		_wall = _tileMap->layerNamed("MapLv1");
 
-		
-		
-		//layer_1->addChild(_tileMap);
 		this->addChild(_tileMap);
 }
 
@@ -85,12 +82,18 @@ void GamePlay::InitialObject()
 	this->main_charactor = new MainCharactor(this);
 	this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 	CreateBloodBar();
+
+	// initial spider
+	this->spider = new Spider(this);
+	this->setViewPointCenter(this->spider->GetSprite()->getPosition());
+
+	// initial rock
+	this->rock = new Rock(this);
 }
 
 void GamePlay::AddDispatcher()
 {
 	// key board
-
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
 	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
@@ -139,6 +142,14 @@ void GamePlay::InitialButton()
 	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);	
+	//Button fight
+
+	mBump = ui::Button::create("Button/hammer_normal.png","Button/hammer_pressed.png");
+	mBump->setScale(0.3);
+	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
+	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
+	addChild(mBump);
+
 
 	//move Up
 	mMoveUpController = Sprite::create("touch_controller_normal.png");
@@ -256,6 +267,19 @@ void GamePlay::CreateBloodBar()
 		this->addChild(bloodBar_1);
 		this->addChild(bloodBar_2);
 	}
+
+void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+{
+	switch (type)
+	{
+	case ui::Widget::TouchEventType::BEGAN:
+		fight = true;
+		break;
+	case ui::Widget::TouchEventType::ENDED:
+		fight = false;
+		break;
+}
+}
 
 void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 	{
@@ -452,7 +476,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			if(((Spider*)(spider))->isAlive())
 			spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
 
-			//rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);
+			rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);
 		}
 	}	
 
@@ -484,7 +508,6 @@ void GamePlay::onTouchEnded(Touch* touch, Event  *event)
 	mCurrentTouchState = ui::Widget::TouchEventType::ENDED;
 	mCurrentTouchPoint = Point(-1, -1);
 }
-
 
 void GamePlay::UpdateController()
 {
@@ -587,6 +610,7 @@ void GamePlay::UpdateController()
 	}
 
 }
+
 void GamePlay::EnablePressedControlLeftRight(bool isLeft, bool pressed) 
 {
 	if (isLeft) {
