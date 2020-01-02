@@ -82,6 +82,7 @@ void MainCharactor::CreateSprite()
 	// create physic
 	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
+	physicbody->setGravityEnable(false);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
 	physicbody->setGravityEnable(false);

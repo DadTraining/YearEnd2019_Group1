@@ -30,6 +30,17 @@ private:
 	Objject* spider;
 	Objject* diamond;
 	Objject* rock;
+
+	//
+	cocos2d::EventKeyboard::KeyCode mCurrentKey;
+
+	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
+
+	cocos2d::Point mCurrentTouchPoint;
+	cocos2d::Sprite* mMoveLeftController;
+	cocos2d::Sprite* mMoveLeftControllerPressed;
+	cocos2d::Sprite* mMoveRightController;
+	cocos2d::Sprite* mMoveRightControllerPressed;
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -48,6 +59,22 @@ public:
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 	void update(float deltaTime);
 
+	//
+	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event  *event);
+
+	void EnablePressedControl(bool isLeft, bool pressed);
+
+	void MoveLeft();
+
+	void MoveRight();
+
+	void UpdateController();
+	//
+	
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);
 
