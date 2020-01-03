@@ -35,12 +35,8 @@ bool SettingScene::init()
 	addChild(background);
 	background->setPosition(width ,height);
 
-	// create soundItem
 	createSound();
-	// create scrollView
 	createAbout();
-	// add background
-	
 	SettingScene::addMenu();
 	return true;
 }
@@ -58,9 +54,11 @@ void SettingScene::addMenu()
 	returnButton->setScale(0.5);
 	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 		{
-			
-			auto myScene = MainMenu::createScene();
-			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, myScene));
+		if (type == ui::Widget::TouchEventType::ENDED) {
+
+			auto scene = MainMenu::create();
+			Director::getInstance()->replaceScene(scene);
+		}
 		});
 	returnButton->setPosition(Vec2(visibleSize.width /8, visibleSize.height / 2));
 	
@@ -75,6 +73,8 @@ void SettingScene::addMenu()
 
 	auto soundItem = MenuItemImage::create("./button/sound.png", " ",
 		[&](Ref* pSender) {
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
 			activeSound();
 		});
 	soundItem->setScale(0.5);
@@ -208,8 +208,6 @@ void SettingScene::createAbout() {
 	label->setPosition(inSize);
 	
 	layerAbout->addChild(label);
-
-
 
 }
 

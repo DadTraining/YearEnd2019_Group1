@@ -8,15 +8,12 @@
 class MainMenu : public cocos2d::Scene
 {
 public:
-    static cocos2d::Scene* createScene();
-
-    virtual bool init();
+	float countT = 0;
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	void update(FLOAT deltaTime);
     
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-    
-    // implement the "static create()" method manually
-    CREATE_FUNC(MainMenu);
+      CREATE_FUNC(MainMenu);
 };
 
 #endif // __MAINMENU_SCENE_H__
