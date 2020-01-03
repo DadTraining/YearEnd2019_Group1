@@ -148,7 +148,7 @@ void GamePlay::InitialButton()
 	//move Left
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftController->setPosition(Vec2(80, 80));
+	mMoveLeftController->setPosition(Vec2(50, 50));
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -313,7 +313,7 @@ void GamePlay::CreateBloodBar()
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
+	bloodBar_1->setPosition(Vec2(150, this->main_charactor->getVisibleSize().height - 30));
 
 	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
@@ -535,6 +535,7 @@ void GamePlay::UpdateController()
 			mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
 			mCurrentTouchPoint = Point(66, 1);
 		}
+
 		if (mCurrentKey == EventKeyboard::KeyCode::KEY_UP_ARROW) //jump
 		{
 			mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
