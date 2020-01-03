@@ -313,7 +313,7 @@ void GamePlay::CreateBloodBar()
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
+	bloodBar_1->setPosition(Vec2(150, this->main_charactor->getVisibleSize().height - 30));
 
 	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
