@@ -70,7 +70,7 @@ void Spider::Update(float deltaTime)
 void Spider::InitialSPider()
 {
 	// initial blood
-	this->SetBlood(BLOOD);
+	this->SetBlood(BLOOD_SPIDER);
 
 	// initial sprite
 	this->SetSprite(Sprite::create("spider_01.png"));
@@ -163,7 +163,7 @@ void Spider::RotateLeft()
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
-		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+		auto runaction = ActionFloat::create(SPEED_ROTATE_SPIDER, 0.0f, 180.f, rotatecallback);
 
 		//Run();
 		this->GetSprite()->runAction(runaction);
@@ -180,7 +180,7 @@ void Spider::RotateRight()
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
-		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+		auto runaction = ActionFloat::create(SPEED_ROTATE_SPIDER, 180.f, 0.0f, rotatecallback);
 
 		this->GetSprite()->runAction(runaction);
 	}

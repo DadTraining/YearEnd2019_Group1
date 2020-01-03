@@ -3,13 +3,6 @@
 #include "FightHammer.h"
 #include "ui/CocosGUI.h"
 
-#define SCALE_SPRITE 0.12
-#define SPEED_FRAME 0.2f
-#define SPEED_FIGHT 0.2f
-#define SPEED_RUN 6
-#define SPEED_ROTATE 0.01f
-#define BLOOD 100
-
 enum Actions
 {
 	C_PUSH,
