@@ -4,6 +4,9 @@
 #include <map>
 #include <string.h>
 
+using namespace std;
+USING_NS_CC;
+
 enum Action_Spider {
 	S_UP,
 	S_DOWN,
@@ -22,8 +25,7 @@ enum Action_Charactor {
 	CH_STUN
 };
 
-using namespace std;
-USING_NS_CC;
+
 class ResourceManager
 {
 private:
@@ -61,7 +63,7 @@ public:
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);
-	string Get_Path(string s);
+	std::string Get_Path(string s);
 	~ResourceManager();
 };
 

@@ -1,17 +1,17 @@
 #pragma once
 #include "Objject.h"
-
+#include "FightHammer.h"
 #include "ui/CocosGUI.h"
 
-
-#define SCALE_SPRITE 0.1
+#define SCALE_SPRITE 0.12
 #define SPEED_FRAME 0.2f
 #define SPEED_FIGHT 0.2f
 #define SPEED_RUN 6
 #define SPEED_ROTATE 0.01f
 #define BLOOD 100
 
-enum Actions {
+enum Actions
+{
 	C_PUSH,
 	C_FIGHT,
 	C_WAIT,
@@ -38,20 +38,20 @@ private:
 	bool moveLeft;
 	bool moveRight;
 	bool moveUp;
+	bool moveDown;
 
-	Scene* scene;
-	Layer* layer;
-	Animate* animate_push;
-	Animate* animate_stun;
+	Scene *scene;
+	Layer *layer;
+	Animate *animate_push;
+	Animate *animate_stun;
 
 	Action *action_fight;
 	Action *action_wait;
 	Action *action_run;
 
-	ui::LoadingBar* bloodBar_1;
-	ui::LoadingBar* bloodBar_2;
+	FightHammer* f;
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown);
 	void Init();
 	void InitialState();
 	void CreateSprite();
@@ -68,13 +68,14 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+	void MoveUp();
+	void MoveDown();
 
 	void RotateLeft();
 	void RotateRight();
-	MainCharactor(Layer* layer);
-	Sprite* Clone(Sprite* sprite);
+	MainCharactor(Layer *layer);
+	Sprite *Clone(Sprite *sprite);
 	~MainCharactor();
 
 	void UpdateVelocity(Point velocity);
 };
-

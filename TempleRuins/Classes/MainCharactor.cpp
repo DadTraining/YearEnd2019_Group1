@@ -13,20 +13,22 @@ Sprite * MainCharactor::Clone(Sprite * sprite)
 	return sprite_clone;
 }
 
-
 MainCharactor::~MainCharactor()
 {
 }
 
 
-void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump)
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown)
 
 {
 	this->fight = fight;
 	this->moveLeft = moveLeft;
 	this->moveRight = moveRight;
 	this->jump = jump;
-
+	this->stun = stun;
+	this->push = push;
+	this->moveUp = moveUp;
+	this->moveDown = moveDown;
 }
 
 void MainCharactor::Init()
@@ -56,6 +58,8 @@ void MainCharactor::InitialState()
 	// initial direction
 	moveLeft = false;
 	moveRight = false;
+	moveUp = false;
+	moveDown = false;
 
 	// initial state
 	push = false;
@@ -76,24 +80,29 @@ void MainCharactor::CreateSprite()
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
 	main->setScale(SCALE_SPRITE);
-	main->setPosition(400, 230);
+	main->setPosition(550, 230);
+	main->setAnchorPoint(Vec2(0.5f, 0.0f));
 	this->layer->addChild(main);   
-
-//	this->GetSprite()->setTag(20);
 
 
 	// create physic
 	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
+	physicbody->setGravityEnable(false);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	//physicbody->setMass(100);
+	physicbody->setGravityEnable(false);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm
 	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
-}
 
+	// danh bua
+	f = new FightHammer();
+	f->getFrameFight()->setPosition(-10, -10);
+	this->layer->addChild(f->getFrameFight());
+	f->getFrameFight()->getPhysicsBody()->setDynamic(false);
+}
 
 void MainCharactor::InitialAction()
 {
@@ -128,7 +137,6 @@ void MainCharactor::InitialAction()
 	animate_stun->setTag(Actions::C_STUN);
 }
 
-
 void MainCharactor::setDiamond(int diamon)
 {
 	this->numDiamond = diamon;
@@ -139,63 +147,74 @@ int MainCharactor::getDiamond()
 	return this->numDiamond;
 }
 
-
 void MainCharactor::Update(float deltaTime)
 {
 	if (fight && !(moveLeft || moveRight)) {
-		if (!(fight && fight_1)) Fight();
+		if (!(fight && fight_1)) {
+			Fight();
+		}	
 	}
 	else if (moveLeft && !fight) {
 		RotateLeft();
-		MoveLeft();
 	}
 	else if (moveRight && !fight) {
 		RotateRight();
-		MoveRight();
 	}
-	else if (!(jump && jump_1) && (jump != jump_1)) {
-		Jump();
+	else if (moveUp && !fight) {
+		//MoveUp();
+	}
+	else if (moveDown && !fight) {
+		//MoveDown();
 	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 			Wait();
 		}
 	}
-
 	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 		Wait();
 	}
 	fight_1 = fight;
 	jump_1 = jump;
+
 	
-	if ((push && !fight) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)) {
-		Push();
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
+		f->getFrameFight()->setPosition(Vec2(-10, -10));
 	}
 }
 
-
 void MainCharactor::Push()
 {
+	//???
+	/*
+	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+		this->GetSprite()->stopAllActions();
+	}
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
+		this->GetSprite()->runAction(animate_push);
+		*/
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
 
-	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
-		this->GetSprite()->runAction(action_fight);
-	
+	this->GetSprite()->runAction(RepeatForever::create(animate_push));
 }
 
 void MainCharactor::Fight()
 {
-	
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
-
 	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 	this->GetSprite()->runAction(action_fight);
-}
 
+	if (isRight) {
+		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(25, 40));
+	}
+	else if (isLeft) {
+		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(-25, 40));
+	}
+}
 
 void MainCharactor::Wait()
 {
@@ -203,18 +222,14 @@ void MainCharactor::Wait()
 		this->GetSprite()->stopAllActions();
 		this->GetSprite()->runAction(action_wait);
 	}
-	
-	isLeft = false;
-	isRight = false;
 }
 
 void MainCharactor::Run()
 {
-	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_RUN) == 0) {
 		this->GetSprite()->stopAllActions();
+		this->GetSprite()->runAction(action_run);
 	}
-
-	this->GetSprite()->runAction(action_run);
 }
 
 void MainCharactor::Stun()
@@ -230,7 +245,7 @@ void MainCharactor::MoveLeft()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+	//this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
 }
 
 void MainCharactor::MoveRight()
@@ -247,6 +262,7 @@ void MainCharactor::Jump()
 
 void MainCharactor::RotateLeft()
 {
+	Run();
 	if (!isLeft) {
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
@@ -254,7 +270,7 @@ void MainCharactor::RotateLeft()
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
 
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 	}
 	isLeft = true;
@@ -266,20 +282,34 @@ void MainCharactor::RotateLeft()
 
 void MainCharactor::RotateRight()
 {
+	Run();
 	if (!isRight) {
 		this->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
 		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
-		Run();
+		//Run();
 		this->GetSprite()->runAction(runaction);
 
 	}
 	isRight = true;
 	isLeft = false;
-
-
 	/*this->GetSprite()->setFlippedX(false);
 	Run();*/
 }
+
+void MainCharactor::MoveUp()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
+}
+
+void MainCharactor::MoveDown()
+{
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
+}
+

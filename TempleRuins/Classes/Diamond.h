@@ -1,7 +1,7 @@
 #pragma once
 #include "Objject.h"
 
-#define SCALE_SPRITE 0.3
+#define SCALE_SPRITE 0.6
 
 class Diamond :
 	public Objject

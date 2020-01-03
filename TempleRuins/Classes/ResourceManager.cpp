@@ -20,9 +20,9 @@ void ResourceManager::Init(const std::string path)
 	Load(m_dataFolderPath);
 }
 
-void ResourceManager::Load(string fileName)
+void ResourceManager::Load(std::string fileName)
 {
-	string s = FileUtils::getInstance()->getStringFromFile(fileName);
+	std::string s = FileUtils::getInstance()->getStringFromFile(fileName);
 	vector<std::string> arr_source = Split(s, "\r\n");
 
 	for (size_t i = 0; i < arr_source.size(); i++) {
@@ -37,7 +37,7 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto sprite = Sprite::create(path);
@@ -57,7 +57,7 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto sprite = Sprite::create(path);
@@ -77,7 +77,7 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto button = ui::Button::create(path, "");
@@ -97,7 +97,7 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto item = Sprite::create(path);
@@ -117,10 +117,10 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path plist
-				string path_1 = Get_Path(arr_source[i]);
+				std::string path_1 = Get_Path(arr_source[i]);
 
 				i++;			      // path png
-				string path_2 = Get_Path(arr_source[i]);
+				std::string path_2 = Get_Path(arr_source[i]);
 
 				// load plist
 				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
@@ -188,10 +188,10 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path 1
-				string path_1 = Get_Path(arr_source[i]);
+				std::string path_1 = Get_Path(arr_source[i]);
 
 				i++;                  // path 2
-				string path_2 = Get_Path(arr_source[i]);
+				std::string path_2 = Get_Path(arr_source[i]);
 
 				// load plist
 				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
@@ -289,7 +289,7 @@ std::vector<std::string> ResourceManager::Split(std::string str1, std::string st
 	return arr;
 }
 
-int ResourceManager::Get_ID(string s)
+int ResourceManager::Get_ID(std::string s)
 {
 	int id;
 	std::vector<std::string> arr_id = Split(s, " ");
@@ -298,9 +298,9 @@ int ResourceManager::Get_ID(string s)
 	return id;
 }
 
-string ResourceManager::Get_Path(string s)
+std::string ResourceManager::Get_Path(std::string s)
 {
-	string path = "";
+	std::string path = "";
 	std::vector<std::string> arr_path = Split(s, " ");
 	path = arr_path[1];
 

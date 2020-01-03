@@ -115,6 +115,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <PostBuildEvent>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy "$(ProjectDir)a\b\c" "$(OutputPath)"</Message>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -164,8 +167,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\CountTimer.cpp" />
     <ClCompile Include="..\Classes\Diamond.cpp" />
+    <ClCompile Include="..\Classes\FightHammer.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
     <ClCompile Include="..\Classes\Item_game.cpp" />
     <ClCompile Include="..\Classes\MainCharactor.cpp" />
@@ -179,7 +182,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\CountTimer.h" />
+    <ClInclude Include="..\Classes\Defines.h" />
     <ClInclude Include="..\Classes\Diamond.h" />
+    <ClInclude Include="..\Classes\FightHammer.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\Item_game.h" />
     <ClInclude Include="..\Classes\MainCharactor.h" />
