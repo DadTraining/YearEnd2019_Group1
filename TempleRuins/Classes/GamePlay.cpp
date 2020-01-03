@@ -148,7 +148,7 @@ void GamePlay::InitialButton()
 	//move Left
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftController->setPosition(Vec2(80, 80));
+	mMoveLeftController->setPosition(Vec2(50, 50));
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -535,6 +535,7 @@ void GamePlay::UpdateController()
 			mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
 			mCurrentTouchPoint = Point(66, 1);
 		}
+
 		if (mCurrentKey == EventKeyboard::KeyCode::KEY_UP_ARROW) //jump
 		{
 			mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
