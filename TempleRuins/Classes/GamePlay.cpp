@@ -122,6 +122,11 @@ void GamePlay::InitialObject()
 			diamon->GetSprite()->setPosition(Vec2(posX, posY));
 			diamons.push_back(diamon);
 		}
+		else if (type == 6) {
+			Objject* rock = new Rock(this);
+			rock->GetSprite()->setPosition(Vec2(posX, posY));
+			rocks.push_back(rock);
+		}
 	}
 }
 
@@ -490,6 +495,12 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			for (int i = 0; i < diamons.size(); i++)
 			{
 				diamons.at(i)->GetSprite()->setPosition(diamons.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+			}
+
+			// update rock
+			for (int i = 0; i < rocks.size(); i++)
+			{
+				rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 			}
 		}
 	}	

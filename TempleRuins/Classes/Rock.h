@@ -1,6 +1,6 @@
 #pragma once
 #include "Objject.h"
-#define SCALE_OBJECT 0.16
+#define SCALE_OBJECT 0.15
 
 class Rock : public Objject
 {

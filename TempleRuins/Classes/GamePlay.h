@@ -37,7 +37,6 @@ private:
 	CCTMXLayer *_phy;
 
 	Objject* main_charactor;
-	Objject* rock;
 
 	ui::LoadingBar *bloodBar_2;
 
@@ -62,6 +61,7 @@ private:
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
+	std::vector<Objject*> rocks;
 
 public:
 	static Scene *createGame();
