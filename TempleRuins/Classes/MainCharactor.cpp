@@ -48,9 +48,6 @@ void MainCharactor::Init()
 
 void MainCharactor::InitialState()
 {
-	// number diamond
-	this->numDiamond = 0;
-
 	// check direction
 	isLeft = false;
 	isRight = true;
@@ -135,16 +132,6 @@ void MainCharactor::InitialAction()
 	animate_stun = Animate::create(animation);
 	animate_stun->retain();
 	animate_stun->setTag(Actions::C_STUN);
-}
-
-void MainCharactor::setDiamond(int diamon)
-{
-	this->numDiamond = diamon;
-}
-
-int MainCharactor::getDiamond()
-{
-	return this->numDiamond;
 }
 
 void MainCharactor::Update(float deltaTime)

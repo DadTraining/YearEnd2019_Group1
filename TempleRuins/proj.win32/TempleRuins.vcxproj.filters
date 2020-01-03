@@ -34,6 +34,12 @@
     <ClCompile Include="..\Classes\FightHammer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Diamond.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Glass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -76,6 +82,9 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\FightHammer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Glass.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

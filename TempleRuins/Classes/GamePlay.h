@@ -4,6 +4,7 @@
 #include "Spider.h"
 #include "Diamond.h"
 #include "Rock.h"
+#include "Glass.h"
 #include "cocos2d.h"
 
 #define BLOOD_REDUCTION 5
@@ -13,6 +14,9 @@ using namespace cocos2d;
 class GamePlay : public Layer
 {
 private:
+	int numDiamond;
+	Label* LabelNumDiamon;
+
 	bool fight;
 	bool push;
 	bool moveLeft;
@@ -27,10 +31,7 @@ private:
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 
-
-
 	Objject* main_charactor;
-	Objject* diamond;
 	Objject* rock;
 
 	ui::LoadingBar *bloodBar_2;
@@ -53,7 +54,8 @@ private:
 
 	cocos2d::TMXObjectGroup* mObjectGroup;
 	std::vector<Spider*> spiders;
-
+	std::vector<Objject*> glasss;
+	std::vector<Objject*> diamons;
 public:
 	static Scene* createGame();
 	virtual bool init();
@@ -67,6 +69,7 @@ public:
 	//bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
+	void CreateNumDiamon();
 	void Fight(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
@@ -88,9 +91,6 @@ public:
 	
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);
-
-
-	void AddDiamond();
 
 	CREATE_FUNC(GamePlay);
 	GamePlay();

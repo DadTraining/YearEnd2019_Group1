@@ -7,7 +7,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 	// 'layer' is an autorelease object
 	auto layer = GamePlay::create();
@@ -64,6 +64,9 @@ void GamePlay::CreateMap()
 
 void GamePlay::InitialState()
 {
+	// initial number diamon
+	this->numDiamond = 0;
+
 	// initial state
 	fight = false;
 
@@ -104,12 +107,31 @@ void GamePlay::InitialObject()
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
+			CreateNumDiamon();
 		}
 		else if (type == 2)
 		{
 			Spider* spider = new Spider(this);
 			spider->GetSprite()->setPosition(Vec2(posX, posY));
+			spider->setCatogory(true);
 			spiders.push_back(spider);
+		}
+		/*else if (type == 3)
+		{
+			Spider* spider = new Spider(this);
+			spider->GetSprite()->setPosition(Vec2(posX, posY));
+			spider->setCatogory(false);
+			spiders.push_back(spider);
+		}*/
+		else if (type == 4) {
+			Objject* glass = new Glass(this);
+			glass->GetSprite()->setPosition(Vec2(posX, posY));
+			glasss.push_back(glass);
+		}
+		else if (type == 5) {
+			Objject* diamon = new Diamond(this);
+			diamon->GetSprite()->setPosition(Vec2(posX, posY));
+			diamons.push_back(diamon);
 		}
 	}
 }
@@ -215,6 +237,7 @@ void GamePlay::InitialPhysics()
 				physic->setContactTestBitmask(true);
 				physic->setDynamic(false);
 				physic->setMass(100);
+				physic->setTag(70);
 				tileSet->setPhysicsBody(physic);
 			}
 		}
@@ -239,12 +262,16 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 			((MainCharactor*)(main_charactor))->Stun();
 
 		}
+
+		// main charactor vs diamond
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 30)
 		{
+			numDiamond++;
 			nodeB->removeFromParentAndCleanup(true);
 		}
 		else if (nodeA->getTag() == 30 && nodeB->getTag() == 20)
 		{
+			numDiamond++;
 			nodeA->removeFromParentAndCleanup(true);
 		}
 		else if (nodeA->getTag() == 20 && nodeB->getTag() == 50)
@@ -255,6 +282,19 @@ bool GamePlay::OnContactBegin(PhysicsContact & contact)
 		{
 			((MainCharactor*)(main_charactor))->Push();
 		}
+
+		// main charactor vs glass
+		if (nodeA->getTag() == 20 && nodeB->getTag() == 80) {
+			nodeB->removeFromParentAndCleanup(true);
+		}
+		else if (nodeA->getTag() == 80 && nodeB->getTag() == 20) {
+			nodeA->removeFromParentAndCleanup(true);
+		}
+
+		//if (nodeA->getTag() == 10 && nodeB->getTag() == 70 || nodeA->getTag() == 70 && nodeB->getTag() == 10) {
+		//	// dao nguoc di chuyen con nhen
+
+		//}
 
 		// fight
 		/*else if (nodeA->getTag() == 60 && nodeB->getTag() == 10) {
@@ -275,20 +315,34 @@ bool GamePlay::CheckPush()
 
 void GamePlay::CreateBloodBar()
 	{
-		Layer *layer_1 = Layer::create();
 		auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 		bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 		bloodBar_1->setPercent(100);
-		bloodBar_1->setPosition(Vec2(this->main_charactor->getVisibleSize().width / 2, this->main_charactor->getVisibleSize().height - 30));
+		bloodBar_1->setPosition(Vec2(150, this->main_charactor->getVisibleSize().height - 30));
 
 		bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 		bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
 		bloodBar_2->setPercent(this->main_charactor->GetBlood());
 		bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-		this->addChild(bloodBar_1);
-		this->addChild(bloodBar_2);
+		this->addChild(bloodBar_1, 1);
+		this->addChild(bloodBar_2, 2);
 	}
+
+void GamePlay::CreateNumDiamon()
+{
+	// sprite diamon
+	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(5);
+	NumDiamon->setScale(0.4);
+	NumDiamon->setPosition(bloodBar_2->getPosition() + Vec2(200, 0));
+	this->addChild(NumDiamon, 2);
+
+	// label number
+	CCString *num = CCString::createWithFormat("%i", numDiamond);
+	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
+	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
+	this->addChild(LabelNumDiamon, 2);
+}
 
 void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
@@ -399,6 +453,10 @@ void GamePlay::update(float deltaTime)
 
 	// update blood
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
+
+	// update number diamond
+	CCString *num = CCString::createWithFormat("%i", numDiamond);
+	LabelNumDiamon->setString(num->getCString());
 }	
 
 void GamePlay::setViewPointCenter(CCPoint position)
@@ -498,9 +556,22 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 			rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);*/
 
+			// update spider
 			for (int i = 0; i < spiders.size(); i++)
 			{
 				spiders.at(i)->GetSprite()->setPosition(spiders.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+			}
+
+			// update glass
+			for (int i = 0; i < glasss.size(); i++)
+			{
+				glasss.at(i)->GetSprite()->setPosition(glasss.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+			}
+
+			// update diamon
+			for (int i = 0; i < diamons.size(); i++)
+			{
+				diamons.at(i)->GetSprite()->setPosition(diamons.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 			}
 		}
 	}	

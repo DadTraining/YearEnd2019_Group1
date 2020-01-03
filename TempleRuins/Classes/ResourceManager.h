@@ -34,6 +34,7 @@ private:
 	map<int, ui::Button*> m_button;
 	map<int, Vector<SpriteFrame*>> m_spider_action;
 	map<int, Vector<SpriteFrame*>> m_charactor_action;
+	map<int, Vector<SpriteFrame*>> m_diamond_action;
 
 	ResourceManager();
 	static ResourceManager* instance;
@@ -58,6 +59,7 @@ public:
 	Vector<SpriteFrame*> GetCharactorWait();
 	Vector<SpriteFrame*> GetCharactorRun();
 	Vector<SpriteFrame*> GetCharactorStun();
+	Vector<SpriteFrame*> GetFrameDiamond();
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);
