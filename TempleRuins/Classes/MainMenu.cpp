@@ -81,13 +81,11 @@ bool MainMenu::init()
 	
 	
  auto play = ResourceManager::GetInstance()->GetButtonById(0);
-
     play->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
-
     play->setScale(0.3);
     play->removeFromParent();
 
-    addChild(play,2);
+    addChild(play);
     play->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
 		auto audio = SimpleAudioEngine::getInstance();
@@ -100,15 +98,13 @@ bool MainMenu::init()
         });
 
 
+
     auto setting = ResourceManager::GetInstance()->GetButtonById(1);
-
-   
     setting->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height /2.3));
-
     setting->setScale(0.5);
     setting->removeFromParent();
 	
-    addChild(setting,2);
+    addChild(setting);
     setting->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         { auto audio = SimpleAudioEngine::getInstance();
 	audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
@@ -126,11 +122,7 @@ bool MainMenu::init()
 	shop->setScale(0.5);
 	shop->removeFromParent();
 
-	addChild(shop, 2);
-	
-	
-   
-   
+	addChild(shop);
     return true;
 }
 

@@ -196,12 +196,12 @@ void SettingScene::createAbout() {
 	returnButton->setPosition(Vec2(100, layerAbout->getContentSize().height - 40));
 	returnButton->setScale(0.5f);
 	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-		{auto audio = SimpleAudioEngine::getInstance();
+		{
+		
+		auto audio = SimpleAudioEngine::getInstance();
 	audio->playEffect("./Sounds/fire.wav", false, 1.0f, 1.0f, 1.0f);
 			layerAbout->setVisible(false);
 		});
-
-
 
 	auto inSize = Vec2(layerAbout->getContentSize().width / 2, layerAbout->getContentSize().height / 2);
 	auto label = Label::createWithSystemFont("Game Mysterious Temple Ruins", "Arial", 25);
