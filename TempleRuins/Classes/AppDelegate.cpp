@@ -25,8 +25,6 @@
 #include "AppDelegate.h"
 
 #include "ResourceManager.h"
-
-
 #include "LoadingLogo.h"
 #include "MainMenu.h"
 
@@ -107,7 +105,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-	auto scene = LoadingLogo::createScene();
+	auto scene = MainMenu::create();
 
     // run
     director->runWithScene(scene);

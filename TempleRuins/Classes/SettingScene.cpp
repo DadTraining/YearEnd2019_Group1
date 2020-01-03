@@ -3,6 +3,8 @@
 # include "SettingScene.h"
 # include "SimpleAudioEngine.h"
 #include <ResourceManager.h>
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 Scene* SettingScene::createScene()
 {
@@ -80,6 +82,8 @@ void SettingScene::addMenu()
 
 	auto aboutItem = MenuItemImage::create("./button/about.png", " ",
 		[&](Ref* pSender) {
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
 			activeAbout();
 		});
 	aboutItem->setScale(0.5);
@@ -87,6 +91,8 @@ void SettingScene::addMenu()
 
 	auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
 		[&](Ref* pSender) {
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
 			exit(0);
 		});
 
@@ -122,14 +128,57 @@ void SettingScene::createSound() {
 	returnButton->setPosition(Vec2(100, layerSound->getContentSize().height - 40));
 	returnButton->setScale(0.5f);
 	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-		{
+		{auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
 			layerSound->setVisible(false);
 		});
 
 
 
+	auto label = Label::createWithSystemFont("SOUNDS", "Arial", 25);
+	label->setPosition(Vec2(layerSound->getContentSize().width / 4.7, layerSound->getContentSize().height / 1.5));
+
+	layerSound->addChild(label);
+
+	static auto slider = ui::Slider::create();
+	slider->loadBarTexture("slider_bar_bg.png");
+	slider->loadSlidBallTextures("slider_ball_normal.png", "slider_ball_pressed.png", "slider_ball_disable.png");
+	slider->loadProgressBarTexture("slider_bar_pressed.png");
+	slider->setPercent(10);
+	slider->setPosition(Vec2(layerSound->getContentSize().width / 2, layerSound->getContentSize().height / 1.5));
+	slider->addClickEventListener([](Ref* event) {
+
+		auto audio = SimpleAudioEngine::getInstance();
+	
+		audio->setEffectsVolume(0.5);
+		audio->setBackgroundMusicVolume(0.5);
+		log("Slider: %d", slider->getPercent());
+	});
+	layerSound->addChild(slider);
+
+
+
+
+
+	/*auto label2 = Label::createWithSystemFont("MUSIC", "Arial", 25);
+	label2->setPosition(Vec2(layerSound->getContentSize().width / 4.7, layerSound->getContentSize().height / 2.5));
+	layerSound->addChild(label2);
+
+	static auto slider2 = ui::Slider::create();
+	slider2->loadBarTexture("slider_bar_bg.png");
+	slider2->loadSlidBallTextures("slider_ball_normal.png", "slider_ball_pressed.png", "slider_ball_disable.png");
+	slider2->loadProgressBarTexture("slider_bar_pressed.png");
+	slider2->setPercent(10);
+	slider2->setPosition(Vec2(layerSound->getContentSize().width / 2, layerSound->getContentSize().height /2.5));
+	slider2->addClickEventListener([](Ref* event) {
+		
+		log("Slider: %d", slider2->getPercent());
+	});
+	layerSound->addChild(slider2);*/
+
 
 }
+
 
 void SettingScene::createAbout() {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -147,7 +196,8 @@ void SettingScene::createAbout() {
 	returnButton->setPosition(Vec2(100, layerAbout->getContentSize().height - 40));
 	returnButton->setScale(0.5f);
 	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-		{
+		{auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("./Sounds/fire.wav", false, 1.0f, 1.0f, 1.0f);
 			layerAbout->setVisible(false);
 		});
 

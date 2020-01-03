@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  
  http://www.cocos2d-x.org
@@ -29,6 +29,8 @@
 #include "GamePlay.h"
 
 USING_NS_CC;
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 Scene* MainMenu::createScene()
 {
@@ -60,7 +62,7 @@ bool MainMenu::init()
 	background->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height/1.1 );
 
 
-	auto label = Label::create("Temple Ruin","Marker Felt.ttf",45);
+	auto label = Label::createWithTTF("Temple Ruin","./fonts/Marker Felt.ttf",45);
 	label->setColor(Color3B::ORANGE);
 	label->removeFromParent();
 	label->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height /1.2);
@@ -69,12 +71,15 @@ bool MainMenu::init()
 	label->enableOutline(Color4B::WHITE, 1);
 
 	addChild(label);
+	auto audio = SimpleAudioEngine::getInstance();
+
+	audio->playBackgroundMusic("./Sounds/19.mp3", true);
 
 	
 
 
 	
-
+	
  auto play = ResourceManager::GetInstance()->GetButtonById(0);
 
     play->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
@@ -85,6 +90,9 @@ bool MainMenu::init()
     addChild(play,2);
     play->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
+		auto audio = SimpleAudioEngine::getInstance();
+	    audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+
             if (type == ui::Widget::TouchEventType::ENDED) {
                 auto scene = GamePlay::createGame();
                 Director::getInstance()->replaceScene(scene);
@@ -99,10 +107,11 @@ bool MainMenu::init()
 
     setting->setScale(0.5);
     setting->removeFromParent();
-
+	
     addChild(setting,2);
     setting->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-        {
+        { auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
             if (type == ui::Widget::TouchEventType::ENDED) {
                 auto scene = SettingScene::create();
                 Director::getInstance()->replaceScene(scene);
