@@ -167,15 +167,19 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\CountTimer.cpp" />
     <ClCompile Include="..\Classes\Diamond.cpp" />
     <ClCompile Include="..\Classes\FightHammer.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
     <ClCompile Include="..\Classes\Glass.cpp" />
     <ClCompile Include="..\Classes\Item_game.cpp" />
+    <ClCompile Include="..\Classes\LoadingLogo.cpp" />
     <ClCompile Include="..\Classes\MainCharactor.cpp" />
+    <ClCompile Include="..\Classes\MainMenu.cpp" />
     <ClCompile Include="..\Classes\Objject.cpp" />
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\Rock.cpp" />
+    <ClCompile Include="..\Classes\SettingScene.cpp" />
     <ClCompile Include="..\Classes\Spider.cpp" />
     <ClCompile Include="..\Classes\TestMapScene1.cpp" />
     <ClCompile Include="main.cpp" />
@@ -189,10 +193,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\Glass.h" />
     <ClInclude Include="..\Classes\Item_game.h" />
+    <ClInclude Include="..\Classes\LoadingLogo.h" />
     <ClInclude Include="..\Classes\MainCharactor.h" />
+    <ClInclude Include="..\Classes\MainMenu.h" />
     <ClInclude Include="..\Classes\Objject.h" />
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\Rock.h" />
+    <ClInclude Include="..\Classes\SettingScene.h" />
     <ClInclude Include="..\Classes\Spider.h" />
     <ClInclude Include="..\Classes\TestMapScene1.h" />
     <ClInclude Include="main.h" />

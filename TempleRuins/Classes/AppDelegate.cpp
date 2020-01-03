@@ -25,7 +25,7 @@
 #include "AppDelegate.h"
 #include "ResourceManager.h"
 #include "GamePlay.h"
-#include "TestMapScene1.h"
+#include "LoadingLogo.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -107,7 +107,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
 		
     //auto scene = TestMapScene1::createMap();
-    auto scene = GamePlay::createGame();
+	auto scene = LoadingLogo::createScene();
     // run
 
     director->runWithScene(scene);
