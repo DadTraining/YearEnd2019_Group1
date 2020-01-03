@@ -19,6 +19,7 @@ private:
 	bool isLeft;
 	bool isRight;
 	bool state = true;
+	bool catogory = true;
 
 	Scene* scene;
 	Layer* layer;
@@ -37,6 +38,8 @@ public:
 	void goRight();
 	void setState(bool state);
 	bool isAlive();
+	void setCatogory(bool cotogory);
+	bool isCatogory();
 
 	void RotateLeft();
 	void RotateRight();

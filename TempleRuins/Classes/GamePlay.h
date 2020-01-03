@@ -5,6 +5,7 @@
 #include "Spider.h"
 #include "Diamond.h"
 #include "Rock.h"
+#include "Glass.h"
 #include "cocos2d.h"
 
 #define BLOOD_REDUCTION 5
@@ -15,6 +16,9 @@ USING_NS_CC;
 class GamePlay : public Layer
 {
 private:
+	int numDiamond;
+	Label* LabelNumDiamon;
+
 	bool fight;
 	bool push;
 	bool moveLeft;
@@ -32,9 +36,8 @@ private:
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 
-	Objject *main_charactor;
-	Objject *diamond;
-	Objject *rock;
+	Objject* main_charactor;
+	Objject* rock;
 
 	ui::LoadingBar *bloodBar_2;
 
@@ -45,17 +48,20 @@ private:
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
 	cocos2d::Point mCurrentTouchPoint;
-	cocos2d::Sprite *mMoveLeftController;
-	cocos2d::Sprite *mMoveLeftControllerPressed;
-	cocos2d::Sprite *mMoveRightController;
-	cocos2d::Sprite *mMoveRightControllerPressed;
-	cocos2d::Sprite *mMoveUpController;
-	cocos2d::Sprite *mMoveUpControllerPressed;
-	cocos2d::Sprite *mMoveDownController;
-	cocos2d::Sprite *mMoveDownControllerPressed;
 
-	cocos2d::TMXObjectGroup *mObjectGroup;
-	std::vector<Spider *> spiders;
+	cocos2d::Sprite* mMoveLeftController;
+	cocos2d::Sprite* mMoveLeftControllerPressed;
+	cocos2d::Sprite* mMoveRightController;
+	cocos2d::Sprite* mMoveRightControllerPressed;
+	cocos2d::Sprite* mMoveUpController;
+	cocos2d::Sprite* mMoveUpControllerPressed;
+	cocos2d::Sprite* mMoveDownController;
+	cocos2d::Sprite* mMoveDownControllerPressed;
+
+	cocos2d::TMXObjectGroup* mObjectGroup;
+	std::vector<Spider*> spiders;
+	std::vector<Objject*> glasss;
+	std::vector<Objject*> diamons;
 
 public:
 	static Scene *createGame();
@@ -71,6 +77,7 @@ public:
 	//bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
+	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
 	void update(float deltaTime);
@@ -90,8 +97,6 @@ public:
 
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);
-
-	void AddDiamond();
 
 	CREATE_FUNC(GamePlay);
 	GamePlay();

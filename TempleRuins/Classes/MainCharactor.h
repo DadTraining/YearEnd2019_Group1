@@ -22,7 +22,6 @@ enum Actions
 class MainCharactor : public Objject
 {
 private:
-	int numDiamond;
 	bool isLeft;
 	bool isRight;
 
@@ -56,8 +55,6 @@ public:
 	void InitialState();
 	void CreateSprite();
 	void InitialAction();
-	void setDiamond(int diamon);
-	int getDiamond();
 
 	void Update(float deltaTime);
 	void Push();

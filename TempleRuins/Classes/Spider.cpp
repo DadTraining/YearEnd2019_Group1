@@ -20,39 +20,51 @@ void Spider::Update(float deltaTime)
 		this->state = false;
 	}
 
+	// true doc  false ngang
 	if (state) {
-		static bool check = true;
-		static float i = 0;
-		i += deltaTime;
-
-		if (i >= 4)
-		{
-			check = !check;
-
-			this->GetSprite()->stopAllActions();
-			if (check)
-			{
-				//goDown();
-				goLeft();
-			}
-			else
-			{
-				//goUp();
-				goRight();
-			}
-
-			i = 0;
+		if (isCatogory()) {
+			goDown();
+			goUp();
 		}
-
-		if (check)
-		{
-			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
-		}
-		else
-		{
-			this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
+		else {
+			goLeft();
+			goRight();
 		}
 	}
+
+	//if (state) {
+	//	static bool check = true;
+	//	static float i = 0;
+	//	i += deltaTime;
+
+	//	if (i >= 4)
+	//	{
+	//		check = !check;
+
+	//		this->GetSprite()->stopAllActions();
+	//		if (check)
+	//		{
+	//			//goDown();
+	//			goLeft();
+	//		}
+	//		else
+	//		{
+	//			//goUp();
+	//			goRight();
+	//		}
+
+	//		i = 0;
+	//	}
+
+	//	if (check)
+	//	{
+	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
+	//	}
+	//	else
+	//	{
+	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
+	//	}
+	//}
 }
 
 void Spider::InitialSPider()
@@ -131,6 +143,16 @@ void Spider::setState(bool state)
 bool Spider::isAlive()
 {
 	return this->state;
+}
+
+void Spider::setCatogory(bool cotogory)
+{
+	this->catogory = catogory;
+}
+
+bool Spider::isCatogory()
+{
+	return this->catogory;
 }
 
 void Spider::RotateLeft()

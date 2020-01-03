@@ -16,26 +16,31 @@ Diamond::~Diamond()
 Sprite* Diamond::Clone(cocos2d::Sprite* sprite)
 {
 	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
+	sprite_clone->retain();
 	return sprite_clone;
 }
 
 void Diamond::Init()
 {
 	//create sprite
-	auto diamond = Sprite::create("Diamond/1_03.png");
-	diamond->retain();
-	this->SetSprite(diamond);
+	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(5)));
 	this->GetSprite()->setScale(SCALE_SPRITE);
-//	this->GetSprite()->setPosition(600, 300);
+	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 	this->layer->addChild(this->GetSprite());
 
+	// run action
+	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetFrameDiamond(), 0.2);
+	auto animate = Animate::create(animation);
+	animate->retain();
+	this->GetSprite()->runAction(RepeatForever::create(animate));
+
 	//add physic
-	auto physicsBody1 = PhysicsBody::createBox(diamond->getContentSize());
-	physicsBody1->setDynamic(false);
+	auto physicsBody1 = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	physicsBody1->setDynamic(true);
 	physicsBody1->setRotationEnable(false);
-	diamond->setPhysicsBody(physicsBody1);
-	diamond->getPhysicsBody()->setContactTestBitmask(1);
-	diamond->setTag(30);
+	this->GetSprite()->setPhysicsBody(physicsBody1);
+	this->GetSprite()->getPhysicsBody()->setContactTestBitmask(1);
+	this->GetSprite()->setTag(30);
 }
 void Diamond::Update(float deltaTime) 
 {

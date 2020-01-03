@@ -234,6 +234,41 @@ void ResourceManager::Load(std::string fileName)
 				number--;
 			}
 		}
+		else if (arr_name[0] == "#ACTION_DIAMOND") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path 1
+				string path_1 = Get_Path(arr_source[i]);
+
+				i++;                  // path 2
+				string path_2 = Get_Path(arr_source[i]);
+
+				// load plist
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
+
+				Vector<SpriteFrame*> frame_diamond;
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_03.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_04.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_05.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_06.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_07.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_08.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_09.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_10.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_11.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_12.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_13.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_14.png"));
+
+				m_diamond_action.insert(pair<int, Vector<SpriteFrame*>>(0, frame_diamond));
+
+				number--;
+			}
+		}
 
 	}
 }
@@ -335,4 +370,9 @@ Vector<SpriteFrame*> ResourceManager::GetCharactorRun()
 Vector<SpriteFrame*> ResourceManager::GetCharactorStun()
 {
 	return m_charactor_action.at(Action_Charactor::CH_STUN);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetFrameDiamond()
+{
+	return m_diamond_action.at(0);
 }
