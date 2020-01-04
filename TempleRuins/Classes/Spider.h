@@ -1,11 +1,6 @@
 #pragma once
 #include "Objject.h"
 
-#define SPEED_FRAME_SPIDER 0.1f
-#define SCALE_SPIDER 0.15
-#define SPEED_ROTATE 0.01f
-#define BLOOD 3
-
 enum actions_spider {
 	GO_UP,
 	GO_DOWN,
