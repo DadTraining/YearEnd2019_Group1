@@ -10,6 +10,7 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	Sprite* Clone(Sprite* sprite);
+	Size getSize();
 	CountTimer(Scene* scene, int timeRemain);
 	~CountTimer();
 };

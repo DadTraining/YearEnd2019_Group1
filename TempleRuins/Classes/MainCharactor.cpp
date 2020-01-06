@@ -91,11 +91,11 @@ void MainCharactor::CreateSprite()
 	physicbody->setGravityEnable(false);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
-   	main->setTag(20); //tag dùng để xác định đối tượng va chạm
+   	main->setTag(TAG_CHARACTOR); //tag dùng để xác định đối tượng va chạm
 	this->GetSprite()->getPhysicsBody()->setLinearDamping(0.5f);
 
 	// danh bua
-	f = new FightHammer();
+	f = new FightHammer(30, 20, TAG_FIGHT);
 	f->getFrameFight()->setPosition(-10, -10);
 	this->layer->addChild(f->getFrameFight());
 	f->getFrameFight()->getPhysicsBody()->setDynamic(false);
@@ -105,9 +105,9 @@ void MainCharactor::InitialAction()
 {
 	// push
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME_CHARACTOR);
-	animate_push = Animate::create(animation);
-	animate_push->retain();
-	animate_push->setTag(Actions::C_PUSH);
+	action_push = Animate::create(animation);
+	action_push->setTag(Actions::C_PUSH);
+	action_push->retain();
 
 	// wait
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorWait(), SPEED_FRAME_CHARACTOR);
@@ -147,12 +147,6 @@ void MainCharactor::Update(float deltaTime)
 	else if (moveRight && !fight) {
 		RotateRight();
 	}
-	else if (moveUp && !fight) {
-		//MoveUp();
-	}
-	else if (moveDown && !fight) {
-		//MoveDown();
-	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 			Wait();
@@ -167,24 +161,30 @@ void MainCharactor::Update(float deltaTime)
 	
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
 		f->getFrameFight()->setPosition(Vec2(-10, -10));
+
+		/*if (isRight) {
+			collis->getFrameFight()->setPosition(this->GetSprite()->getPosition() +
+				ccp(this->getSize().width / 2 +
+					collis->getSize().width / 2, 40));
+		}
+		else if (isLeft) {
+			collis->getFrameFight()->setPosition(this->GetSprite()->getPosition() +
+				ccp(-(this->getSize().width / 2 +
+					collis->getSize().width / 2), 40));
+		}*/
 	}
+
+	//this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(50, 0));
 }
 
 void MainCharactor::Push()
 {
-	//???
-	/*
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
-	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
-		this->GetSprite()->runAction(animate_push);
-		*/
-	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
-		this->GetSprite()->stopAllActions();
+	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0) {
+		this->GetSprite()->runAction(action_push);
 	}
-
-	this->GetSprite()->runAction(RepeatForever::create(animate_push));
 }
 
 void MainCharactor::Fight()
@@ -194,13 +194,6 @@ void MainCharactor::Fight()
 	}
 	if(this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 	this->GetSprite()->runAction(action_fight);
-
-	if (isRight) {
-		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(25, 40));
-	}
-	else if (isLeft) {
-		f->getFrameFight()->setPosition(this->GetSprite()->getPosition() + ccp(-25, 40));
-	}
 }
 
 void MainCharactor::Wait()
@@ -239,7 +232,7 @@ void MainCharactor::MoveRight()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX + SPEED_RUN, posY);
+	this->GetSprite()->setPosition(posX + SPEED_CHARACTOR_RUN, posY);
 }
 
 void MainCharactor::Jump()
@@ -290,13 +283,18 @@ void MainCharactor::MoveUp()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
+	this->GetSprite()->setPosition(posX, posY + SPEED_CHARACTOR_RUN);
 }
 
 void MainCharactor::MoveDown()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
+	this->GetSprite()->setPosition(posX, posY - SPEED_CHARACTOR_RUN);
+}
+
+Size MainCharactor::getSize()
+{
+	return this->GetSprite()->getContentSize() * SCALE_CHARACTOR;
 }
 

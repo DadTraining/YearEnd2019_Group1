@@ -2,6 +2,11 @@
 
 
 
+Size FightHammer::getSize()
+{
+	return Size(x, y);
+}
+
 Sprite * FightHammer::getFrameFight()
 {
 	return this->sprite;
@@ -12,16 +17,22 @@ Sprite * FightHammer::clone(Sprite * sprite)
 	return Sprite::createWithTexture(sprite->getTexture());
 }
 
-FightHammer::FightHammer()
+FightHammer::FightHammer(float x, float y, int tag)
 {
-	//physic = PhysicsBody::createEdgeBox(Size(40.0f, 60.0f), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-	physic = PhysicsBody::createBox(Size(30, 20));
+	// create size
+	this->x = x;
+	this->y = y;
+	this->tag = tag;
+
+	// physic
+	physic = PhysicsBody::createBox(Size(x, y));
 	physic->setRotationEnable(false);
 	physic->setContactTestBitmask(1);
-	this->sprite = clone(Sprite::create());
+	physic->setDynamic(false);
+	this->sprite = Sprite::create();
 	sprite->setPhysicsBody(physic);
 	sprite->retain();
-	sprite->setTag(60);
+	sprite->setTag(tag);
 }
 
 

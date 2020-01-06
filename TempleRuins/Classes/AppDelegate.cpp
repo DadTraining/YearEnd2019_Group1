@@ -44,7 +44,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(1600, 900);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1600 / 2, 900 / 2);
 
 AppDelegate::AppDelegate()
 {
@@ -92,7 +92,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     }
 
     // turn on display FPS
-    director->setDisplayStats(false);
+    director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -107,7 +107,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
 		
     //auto scene = TestMapScene1::createMap();
-	auto scene = LoadingLogo::createScene();
+	//auto scene = LoadingLogo::createScene();
+	auto scene = GamePlay::createGame();
     // run
 
     director->runWithScene(scene);

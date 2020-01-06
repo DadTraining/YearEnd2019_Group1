@@ -74,19 +74,23 @@ public:
 	void enablePressedControl(bool isLeft, bool pressed);
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact &contact);
-	//bool CheckFight();
 	bool CheckPush();
 	void CreateBloodBar();
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
+	////////////////// test push rock
+	void push_rock();
+	int check_push();
+	float distance(Objject* main, Objject* rock);
+
+
+
 	void update(float deltaTime);
 
 	//
 	virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
-
 	virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
-
 	virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
 
 	void EnablePressedControlLeftRight(bool isLeft, bool pressed);

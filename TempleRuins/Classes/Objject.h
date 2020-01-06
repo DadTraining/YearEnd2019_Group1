@@ -18,6 +18,7 @@ public:
 	Sprite* GetSprite();
 	virtual void Init() = 0;
 	virtual void Update(float deltaTime) = 0;
+	virtual Size getSize() = 0;
 	Objject();
 	~Objject();
 	void UpdateVelocity(Point velocity);

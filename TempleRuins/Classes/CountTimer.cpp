@@ -44,6 +44,11 @@ Sprite * CountTimer::Clone(Sprite * sprite)
 	return sprite_clone;
 }
 
+Size CountTimer::getSize()
+{
+	return Size();
+}
+
 CountTimer::CountTimer(Scene* scene, int timeRemain)
 {
 	this->timeRemain = timeRemain;
