@@ -28,6 +28,13 @@ private:
 	bool moveUp;
 	bool moveDown;
 
+	//spider
+	bool spiderMoveLeft;
+	bool spiderMoveRight;
+	bool spiderMoveUp;
+	bool spiderMoveDown;
+	//
+
 	cocos2d::ui::Button *mFireController;
 	cocos2d::ui::Button *mJumpController;
 
@@ -36,6 +43,7 @@ private:
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 
+	Spider *spider;
 	Objject* main_charactor;
 
 	ui::LoadingBar *bloodBar_2;

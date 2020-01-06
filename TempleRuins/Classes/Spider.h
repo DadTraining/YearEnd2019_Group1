@@ -11,10 +11,13 @@ enum actions_spider {
 class Spider : public Objject
 {
 private:
+	bool moveLeft;
+	bool moveRight;
+	bool moveUp;
+	bool moveDown;
 	bool isLeft;
 	bool isRight;
-	bool state = true;
-	bool catogory = true;
+	bool catogory;
 
 	Scene* scene;
 	Layer* layer;
@@ -26,19 +29,21 @@ public:
 	void InitialSPider();
 	void InitialAction();
 	void Update(float deltaTime);
+
+	void SetState( bool moveLeft, bool moveRight, bool moveUp, bool moveDown);
+	void SetCatogory(bool catogory);
+	bool GetCatogory();
+
 	void goUp();
 	void goDown();
 	void goSide();
 	void goLeft();
 	void goRight();
-	void setState(bool state);
-	bool isAlive();
-	void setCatogory(bool cotogory);
-	bool isCatogory();
 
 	void RotateLeft();
 	void RotateRight();
 	Spider(Layer* layer);
+	Sprite* Clone(Sprite* sprite);
 	~Spider();
 };
 

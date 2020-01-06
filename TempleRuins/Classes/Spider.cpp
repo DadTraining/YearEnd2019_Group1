@@ -14,57 +14,32 @@ void Spider::Init()
 
 void Spider::Update(float deltaTime)
 {
-	if (this->GetBlood() <= 0 && state) {
-		// if blood < 0 => spider die
-		this->GetSprite()->removeFromParentAndCleanup(true);
-		this->state = false;
-	}
-
 	// true doc  false ngang
-	if (state) {
-		if (isCatogory()) {
-			goDown();
-			goUp();
-		}
-		else {
-			goLeft();
-			goRight();
+
+	if (GetCatogory()) {
+		log("get catogory true");
+		if (moveUp) {
+			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(0, 130));
+			
+		}else if (moveDown) {
+			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(0, -130));
 		}
 	}
-
-	//if (state) {
-	//	static bool check = true;
-	//	static float i = 0;
-	//	i += deltaTime;
-
-	//	if (i >= 4)
-	//	{
-	//		check = !check;
-
-	//		this->GetSprite()->stopAllActions();
-	//		if (check)
-	//		{
-	//			//goDown();
-	//			goLeft();
-	//		}
-	//		else
-	//		{
-	//			//goUp();
-	//			goRight();
-	//		}
-
-	//		i = 0;
-	//	}
-
-	//	if (check)
-	//	{
-	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
-	//	}
-	//	else
-	//	{
-	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
-	//	}
-	//}
+	else {
+		log("get catogory false");
+		if(moveLeft)
+		{
+			log("get catogory move left preeeeeeeeeeeeeeee");
+			RotateLeft();
+			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(-130, 0));
+			log("get catogory move left post");
+		}
+		else if (moveRight) {
+			RotateRight();
+			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(130, 0));
+//			goRight();
+		}
+	}
 }
 
 void Spider::InitialSPider()
@@ -73,18 +48,22 @@ void Spider::InitialSPider()
 	this->SetBlood(BLOOD_SPIDER);
 
 	// initial sprite
-	this->SetSprite(Sprite::create("spider_01.png"));
-	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
-	this->GetSprite()->setScale(SCALE_SPIDER);
-	this->layer->addChild(this->GetSprite());
-	this->GetSprite()->setTag(10);
+	auto spider = Clone(Sprite::create("spider_01.png"));
+	this->SetSprite(spider);
+	spider->setPosition(this->getVisibleSize() / 2);
+	spider->setScale(SCALE_SPIDER);
+	this->layer->addChild(spider);
+	spider->setTag(10);
+	spider->setAnchorPoint(Vec2(0,0));
+
 
 	// physic
-	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	auto physicbody = PhysicsBody::createBox(spider->getContentSize());
 	physicbody->setDynamic(false);
-	this->GetSprite()->setPhysicsBody(physicbody);
+	spider->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
 	physicbody->setContactTestBitmask(1);
+//	physicbody->setVelocity(Vec2(0,10));
 }
 
 void Spider::InitialAction()
@@ -106,11 +85,18 @@ void Spider::InitialAction()
 	action_side = RepeatForever::create(Animate::create(animation));
 	action_side->setTag(actions_spider::GO_LEFT);
 	action_side->retain();
+
+	// action right
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderSide(), SPEED_FRAME_SPIDER);
+	action_side = RepeatForever::create(Animate::create(animation));
+	action_side->setTag(actions_spider::GO_RIGHT);
+	action_side->retain();
 }
 
 void Spider::goUp()
 {
 	this->GetSprite()->runAction(action_up);
+	this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(0, 5));
 }
 
 void Spider::goDown()
@@ -126,34 +112,22 @@ void Spider::goSide()
 void Spider::goLeft()
 {
 	this->GetSprite()->runAction(action_side);
-	this->GetSprite()->setFlippedX(false);
+	float posX = this->GetSprite()->getPosition().x;
+	float posY = this->GetSprite()->getPosition().y;
+//	this->UpdateVelocity(Vec2(posX - SPEED_RUN, posY));
+	
+//	this->GetSprite()->setPosition(posX - SPEED_RUN, posY);
+	
 }
 
 void Spider::goRight()
 {
 	this->GetSprite()->setFlippedX(true);
-	this->GetSprite()->runAction(action_side);
+
 }
 
-void Spider::setState(bool state)
-{
-	this->state = state;
-}
 
-bool Spider::isAlive()
-{
-	return this->state;
-}
 
-void Spider::setCatogory(bool cotogory)
-{
-	this->catogory = catogory;
-}
-
-bool Spider::isCatogory()
-{
-	return this->catogory;
-}
 
 void Spider::RotateLeft()
 {
@@ -194,6 +168,31 @@ Spider::Spider(Layer *layer)
 	Init();
 }
 
+Sprite * Spider::Clone(Sprite * sprite)
+{
+	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
+	sprite_clone->retain();
+	return sprite_clone;
+}
+
 Spider::~Spider()
 {
+}
+
+void Spider::SetState( bool moveLeft, bool moveRight,  bool moveUp, bool moveDown)
+{
+	this->moveLeft = moveLeft;
+	this->moveRight = moveRight;
+	this->moveUp = moveUp;
+	this->moveDown = moveDown;
+}
+
+void Spider::SetCatogory(bool catogory) 
+{
+	this->catogory = catogory; 
+}
+
+bool Spider::GetCatogory() 
+{
+	return this->catogory;
 }

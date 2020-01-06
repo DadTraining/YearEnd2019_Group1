@@ -7,7 +7,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 	// 'layer' is an autorelease object
 	auto layer = GamePlay::create();
@@ -70,12 +70,18 @@ void GamePlay::InitialState()
 	// initial state
 	fight = false;
 
-	// initial direction
+	// initial main charactor direction
 	moveLeft = false;
 	moveRight = false;
 	moveUp = false;
 	moveDown = false;
 	jump = false;
+
+	// initial spider
+	spiderMoveLeft = false;
+	spiderMoveRight = false;
+	spiderMoveUp = false;
+	spiderMoveDown = false;
 }
 
 void GamePlay::InitialObject()
@@ -100,10 +106,11 @@ void GamePlay::InitialObject()
 		}
 		else if (type == 2)
 		{
-			Spider *spider = new Spider(this);
-			spider->GetSprite()->setPosition(Vec2(posX, posY));
-			spider->setCatogory(true);
-			spiders.push_back(spider);
+			this->spider = new Spider(this);
+			this->spider->GetSprite()->setPosition(Vec2(posX, posY));
+			spider->SetCatogory(true);
+			spider->SetState(false, false, false, true);
+			this->spiders.push_back(spider);
 		}
 		/*else if (type == 3)
 		{
@@ -361,17 +368,21 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 void GamePlay::update(float deltaTime)
 
 {
-		// update main charactor
-		main_charactor->Update(deltaTime);
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
+	// update main charactor
+	main_charactor->Update(deltaTime);
+	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
 
-		UpdateController();
+	UpdateController();
 
-		// update spider
-		//spider->Update(deltaTime);
+	// update spider
+	for (int i = 0; i < spiders.size(); i++)
+	{
+		spiders.at(i)->Update(deltaTime);
+		spiders.at(i)->SetState(spiderMoveLeft, spiderMoveRight, spiderMoveUp, spiderMoveDown);
+	}
 
-		// set view
-		this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
+	// set view
+	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
 	// update blood
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
@@ -379,7 +390,7 @@ void GamePlay::update(float deltaTime)
 	// update number diamond
 	CCString *num = CCString::createWithFormat("%i", numDiamond);
 	LabelNumDiamon->setString(num->getCString());
-}	
+}
 
 
 void GamePlay::setViewPointCenter(CCPoint position)
