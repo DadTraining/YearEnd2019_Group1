@@ -47,6 +47,7 @@ bool GamePlay::init()
 
 	return true;
 }
+
 void GamePlay::CreateMap()
 {
 	auto layer_1 = Layer::create();
@@ -154,25 +155,29 @@ void GamePlay::InitialButton()
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
+	mMoveLeftController->setOpacity(50);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
 	mMoveLeftControllerPressed->setVisible(false);
+	mMoveLeftControllerPressed->setOpacity(50);
 	addChild(mMoveLeftControllerPressed);
 
 	//move Right
 	mMoveRightController = Sprite::create("touch_controller_normal.png");
 	mMoveRightController->setFlippedX(true);
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
-	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width + 90, 0));
+	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
+	mMoveRightController->setOpacity(50);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveRightControllerPressed->setFlippedX(true);
 	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
+	mMoveRightControllerPressed->setOpacity(50);
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);
 	
@@ -181,6 +186,7 @@ void GamePlay::InitialButton()
 	mBump->setScale(0.3);
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
+	mBump->setOpacity(50);
 	addChild(mBump);
 
 	//move Up
@@ -357,9 +363,7 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	}
 }
 
-
 void GamePlay::update(float deltaTime)
-
 {
 		// update main charactor
 		main_charactor->Update(deltaTime);
@@ -427,7 +431,6 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		}
 		else if (moveUp)
 		{
-
 			if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 			{
 				mcMoveDistance = Vec2(0, 5);

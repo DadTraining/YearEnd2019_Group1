@@ -83,12 +83,11 @@ void MainCharactor::CreateSprite()
 
 
 	// create physic
-	auto physicbody = PhysicsBody::createBox(main->getContentSize() - Size(0, 100));
+	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
 	physicbody->setGravityEnable(false);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	physicbody->setGravityEnable(false);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(20); //tag dùng để xác định đối tượng va chạm

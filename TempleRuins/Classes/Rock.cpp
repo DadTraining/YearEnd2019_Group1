@@ -12,7 +12,7 @@ void Rock::Init()
 	auto physicsBody = PhysicsBody::createBox(rock->getContentSize());
 	physicsBody->setDynamic(true);
 	physicsBody->setRotationEnable(false);
-	physicsBody->setMass(500);
+	physicsBody->setMass(100);
 	rock->setPhysicsBody(physicsBody);
 	
 	// colission
