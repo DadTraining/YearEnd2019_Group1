@@ -18,7 +18,7 @@ MainCharactor::~MainCharactor()
 }
 
 
-void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown)
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push)
 
 {
 	this->fight = fight;
@@ -27,8 +27,6 @@ void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jum
 	this->jump = jump;
 	this->stun = stun;
 	this->push = push;
-	this->moveUp = moveUp;
-	this->moveDown = moveDown;
 }
 
 void MainCharactor::Init()
@@ -55,8 +53,6 @@ void MainCharactor::InitialState()
 	// initial direction
 	moveLeft = false;
 	moveRight = false;
-	moveUp = false;
-	moveDown = false;
 
 	// initial state
 	push = false;
@@ -85,7 +81,7 @@ void MainCharactor::CreateSprite()
 	// create physic
 	auto physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
-	physicbody->setGravityEnable(false);
+	physicbody->setGravityEnable(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
 
@@ -146,12 +142,6 @@ void MainCharactor::Update(float deltaTime)
 	else if (moveRight && !fight) {
 		RotateRight();
 	}
-	else if (moveUp && !fight) {
-		//MoveUp();
-	}
-	else if (moveDown && !fight) {
-		//MoveDown();
-	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 			Wait();
@@ -171,14 +161,6 @@ void MainCharactor::Update(float deltaTime)
 
 void MainCharactor::Push()
 {
-	//???
-	/*
-	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
-		this->GetSprite()->stopAllActions();
-	}
-	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0)
-		this->GetSprite()->runAction(animate_push);
-		*/
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
@@ -223,7 +205,6 @@ void MainCharactor::Stun()
 	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
 		this->GetSprite()->stopAllActions();
 	}
-
 	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
 }
 
@@ -283,19 +264,5 @@ void MainCharactor::RotateRight()
 	isLeft = false;
 	/*this->GetSprite()->setFlippedX(false);
 	Run();*/
-}
-
-void MainCharactor::MoveUp()
-{
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY + SPEED_RUN);
-}
-
-void MainCharactor::MoveDown()
-{
-	float posX = this->GetSprite()->getPosition().x;
-	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY - SPEED_RUN);
 }
 
