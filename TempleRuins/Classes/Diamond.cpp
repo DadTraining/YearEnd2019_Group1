@@ -24,7 +24,7 @@ void Diamond::Init()
 {
 	//create sprite
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(5)));
-	this->GetSprite()->setScale(SCALE_SPRITE);
+	this->GetSprite()->setScale(SCALE_DIAMOND);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 	this->layer->addChild(this->GetSprite());
 

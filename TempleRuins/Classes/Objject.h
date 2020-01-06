@@ -1,6 +1,7 @@
 #pragma once
 #include "ResourceManager.h"
 #include "cocos2d.h"
+#include "Defines.h"
 
 USING_NS_CC;
 class Objject

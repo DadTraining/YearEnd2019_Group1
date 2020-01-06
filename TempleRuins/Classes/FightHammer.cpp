@@ -14,7 +14,8 @@ Sprite * FightHammer::clone(Sprite * sprite)
 
 FightHammer::FightHammer()
 {
-	physic = PhysicsBody::createEdgeBox(Size(40.0f, 60.0f), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+	//physic = PhysicsBody::createEdgeBox(Size(40.0f, 60.0f), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+	physic = PhysicsBody::createBox(Size(30, 20));
 	physic->setRotationEnable(false);
 	physic->setContactTestBitmask(1);
 	this->sprite = clone(Sprite::create());

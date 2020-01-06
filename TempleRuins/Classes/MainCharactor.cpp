@@ -71,12 +71,12 @@ void MainCharactor::InitialState()
 void MainCharactor::CreateSprite()
 {
 	// initial blood
-	this->SetBlood(BLOOD);
+	this->SetBlood(BLOOD_CHARACTOR);
 	
 	// create sprite
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	this->SetSprite(main);
-	main->setScale(SCALE_SPRITE);
+	main->setScale(SCALE_CHARACTOR);
 	main->setPosition(550, 230);
 	main->setAnchorPoint(Vec2(0.5f, 0.0f));
 	this->layer->addChild(main);   
@@ -104,19 +104,19 @@ void MainCharactor::CreateSprite()
 void MainCharactor::InitialAction()
 {
 	// push
-	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME);
+	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorPush(), SPEED_FRAME_CHARACTOR);
 	animate_push = Animate::create(animation);
 	animate_push->retain();
 	animate_push->setTag(Actions::C_PUSH);
 
 	// wait
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorWait(), SPEED_FRAME);
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorWait(), SPEED_FRAME_CHARACTOR);
 	action_wait = Animate::create(animation);
 	action_wait->setTag(Actions::C_WAIT);
 	action_wait->retain();
 
 	// run
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorRun(), SPEED_FRAME);
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorRun(), SPEED_FRAME_CHARACTOR);
 	action_run = RepeatForever::create(Animate::create(animation));
 	action_run->setTag(Actions::C_RUN);
 	action_run->retain();
@@ -128,7 +128,7 @@ void MainCharactor::InitialAction()
 	action_fight->retain();
 
 	// stun
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME);
+	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME_CHARACTOR);
 	animate_stun = Animate::create(animation);
 	animate_stun->retain();
 	animate_stun->setTag(Actions::C_STUN);
@@ -255,7 +255,7 @@ void MainCharactor::RotateLeft()
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
-		auto runaction = ActionFloat::create(SPEED_ROTATE, 0.0f, 180.f, rotatecallback);
+		auto runaction = ActionFloat::create(SPEED_ROTATE_CHARACTOR, 0.0f, 180.f, rotatecallback);
 
 		//Run();
 		this->GetSprite()->runAction(runaction);
@@ -275,7 +275,7 @@ void MainCharactor::RotateRight()
 		auto rotatecallback = [=](float value) {
 			this->GetSprite()->setRotation3D(Vec3(0, value, 0));
 		};
-		auto runaction = ActionFloat::create(SPEED_ROTATE, 180.f, 0.0f, rotatecallback);
+		auto runaction = ActionFloat::create(SPEED_ROTATE_CHARACTOR, 180.f, 0.0f, rotatecallback);
 		//Run();
 		this->GetSprite()->runAction(runaction);
 
