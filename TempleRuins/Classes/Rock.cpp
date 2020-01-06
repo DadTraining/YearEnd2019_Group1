@@ -4,13 +4,13 @@ void Rock::Init()
 {
 	// sprite
 	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(2));
-	//rock->setRotation(30);
 	this->SetSprite(rock);
 	rock->setScale(SCALE_ROCK);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 
 	// physics
 	auto physicsBody = PhysicsBody::createBox(rock->getContentSize());
+	//auto physicsBody = PhysicsBody::createCircle
 	physicsBody->setDynamic(true);
 	physicsBody->setRotationEnable(false);
 	physicsBody->setMass(500);

@@ -85,10 +85,10 @@ void MainCharactor::CreateSprite()
 	// create physic
 	auto physicbody = PhysicsBody::createBox(main->getContentSize() - Size(0, 100));
 	physicbody->setDynamic(true);
-	physicbody->setGravityEnable(false);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	physicbody->setGravityEnable(false);
+	physicbody->setGravityEnable(true);
+	physicbody->setMass(500);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
    	main->setTag(TAG_CHARACTOR); //tag dùng để xác định đối tượng va chạm
@@ -157,32 +157,16 @@ void MainCharactor::Update(float deltaTime)
 	}
 	fight_1 = fight;
 	jump_1 = jump;
-
 	
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
 		f->getFrameFight()->setPosition(Vec2(-10, -10));
-
-		/*if (isRight) {
-			collis->getFrameFight()->setPosition(this->GetSprite()->getPosition() +
-				ccp(this->getSize().width / 2 +
-					collis->getSize().width / 2, 40));
-		}
-		else if (isLeft) {
-			collis->getFrameFight()->setPosition(this->GetSprite()->getPosition() +
-				ccp(-(this->getSize().width / 2 +
-					collis->getSize().width / 2), 40));
-		}*/
 	}
-
-	//this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(50, 0));
 }
 
 void MainCharactor::Push()
 {
-	if (this->GetSprite()->getNumberOfRunningActions() > 0) {
-		this->GetSprite()->stopAllActions();
-	}
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_PUSH) == 0) {
+		this->GetSprite()->stopAllActions();
 		this->GetSprite()->runAction(action_push);
 	}
 }

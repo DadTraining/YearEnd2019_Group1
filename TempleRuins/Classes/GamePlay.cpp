@@ -358,6 +358,7 @@ void GamePlay::push_rock()
 			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
 			Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
+		((MainCharactor*)(main_charactor))->Push();
 	}
 }
 
