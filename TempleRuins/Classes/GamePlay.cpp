@@ -356,13 +356,32 @@ int GamePlay::check_push()
 	float min_horizontal = distance(p_main.x, p_rock.x);
 
 	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
-	float _dis_vertical = main_charactor->getSize().height / 2 + rocks.at(0)->getSize().height / 2;
 
-	float min_vertical = distance(p_main.y, rocks.at(index)->GetSprite()->getPosition().y);
-
-	if (min_horizontal <= _dis_horizontal && min_vertical < _dis_vertical) {
-		return index;
+	for (int i = 1; i < rocks.size(); i++) {
+		float dis = distance(p_main.x, rocks.at(i)->GetSprite()->getPosition().x);
+		if (dis < min_horizontal) {
+			min_horizontal = dis;
+			index = i;
+		}
 	}
+
+	p_rock = rocks.at(index)->GetSprite()->getPosition();
+
+	if (p_main.y > p_rock.y - 5 && p_main.y < p_rock.y + 5) {
+		if (p_rock.x < p_main.x) {
+			log("%f, %f", min_horizontal - rocks.at(0)->getSize().width / 2 - 10, _dis_horizontal);
+			if ((min_horizontal - rocks.at(0)->getSize().width / 2 - 30) <= _dis_horizontal) {
+				return index;
+			}
+		}
+		else if (p_rock.x > p_main.x) {
+			if ((min_horizontal + rocks.at(0)->getSize().width / 2) <= _dis_horizontal) {
+				return index;
+			}
+		}
+	}
+
+
 
 	return -1;
 }
@@ -404,6 +423,7 @@ void GamePlay::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
+	// controller
 	UpdateController();
 
 	// set view
@@ -468,18 +488,18 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 		{
-			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
+			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
 		}
 		else
 		{
 				float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
-			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
+			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
 				{
-					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
 				}
 				else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
 				{
-					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
+					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
 				}
 		}
 	}
@@ -502,7 +522,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		}
 	}
 
-	if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
+	else if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
 		_tileMap->getPosition().y < 0) {
 		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
 		{
@@ -512,11 +532,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		{
 			if (_tileMap->getPosition().y <= -SPEED_CHARACTOR_RUN)
 			{
-				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN-3);
-			}
-			else if (main_charactor->GetSprite()->getPosition().y >= SPEED_CHARACTOR_RUN)
-			{
-				//mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 		}
 		if (moveLeft) {
@@ -535,12 +551,8 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	if (mapMoveDistance != Vec2(0, 0))
 	{
+		// update map
 		_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
-
-		/*if(((Spider*)(spider))->isAlive())
-		spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
-
-		rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);*/
 
 		// update spider
 		for (int i = 0; i < spiders.size(); i++)
@@ -636,6 +648,7 @@ void GamePlay::UpdateController()
 		moveLeft = false;
 		moveRight = false;
 		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
+		mCurrentTouchState = ui::Widget::TouchEventType::CANCELED;
 		break;
 	}
 }
