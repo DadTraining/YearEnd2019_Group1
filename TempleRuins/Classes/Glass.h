@@ -9,6 +9,7 @@ public:
 	void Update(float deltaTime);
 	Glass(Layer* layer);
 	Sprite *Clone(Sprite *sprite);
+	Size getSize();
 	~Glass();
 };
 

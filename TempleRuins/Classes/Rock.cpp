@@ -10,6 +10,7 @@ void Rock::Init()
 
 	// physics
 	auto physicsBody = PhysicsBody::createBox(rock->getContentSize());
+	//auto physicsBody = PhysicsBody::createCircle
 	physicsBody->setDynamic(true);
 	physicsBody->setRotationEnable(false);
 	physicsBody->setMass(100);
@@ -17,7 +18,7 @@ void Rock::Init()
 	
 	// colission
 	this->GetSprite()->getPhysicsBody()->setContactTestBitmask(1);
-	rock->setTag(50);
+	rock->setTag(TAG_ROCK);
 	this->layer->addChild(rock);
 }
 
@@ -35,6 +36,11 @@ Sprite * Rock::Clone(Sprite * sprite)
 {
 	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
 	return sprite_clone;
+}
+
+Size Rock::getSize()
+{
+	return this->GetSprite()->getContentSize() * SCALE_ROCK;
 }
 
 

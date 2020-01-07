@@ -27,6 +27,7 @@ private:
 	bool stun;
 	bool moveUp;
 	bool moveDown;
+	bool fall;
 
 	cocos2d::ui::Button *mFireController;
 	cocos2d::ui::Button *mJumpController;
@@ -61,7 +62,6 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
-
 public:
 	static Scene *createGame();
 	virtual bool init();
@@ -70,29 +70,35 @@ public:
 	void InitialObject();
 	void AddDispatcher();
 	void InitialButton();
-	void enablePressedControl(bool isLeft, bool pressed);
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact &contact);
-	//bool CheckFight();
-	bool CheckPush();
 	void CreateBloodBar();
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
+	// push rock
+	void push_rock();
+	int check_push();
+	float distance(float main, float rock);
+	
+	// update
 	void update(float deltaTime);
 
-	//
+	// touch
 	virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
-
 	virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
-
 	virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
 
-	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
 
+	// key
+	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
+	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
+
+
+	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
+	void EnablePressedControlUpDown(bool isUp, bool pressed);
 	void UpdateController();
-	//
 
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);
