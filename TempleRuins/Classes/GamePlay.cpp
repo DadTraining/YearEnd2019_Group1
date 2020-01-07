@@ -129,12 +129,19 @@ void GamePlay::InitialObject()
 
 void GamePlay::AddDispatcher()
 {
+	// key board
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyPressed = CC_CALLBACK_2(GamePlay::OnKeyPressed, this);
+	keylistener->onKeyReleased = CC_CALLBACK_2(GamePlay::OnKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
+
 	// listener contact
 	auto contacListener = EventListenerPhysicsContact::create();
 	contacListener->onContactBegin = CC_CALLBACK_1(GamePlay::OnContactBegin, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contacListener, this);
 
-	//touch
+	// touch
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->setSwallowTouches(true);
 	touchListener->onTouchBegan = CC_CALLBACK_2(GamePlay::onTouchBegan, this);
@@ -236,7 +243,7 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 {
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
-	
+
 	if (nodeA && nodeB)
 	{
 		// charactor vs spider
@@ -345,19 +352,23 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 
 void GamePlay::push_rock()
 {
+	push = false;
 	int index = -1;
 	index = check_push();
 	if (index != -1) {
+		push = true;
+
 		Sprite* _rock = rocks.at(index)->GetSprite();
 
 		if (_rock->getPosition().x > main_charactor->GetSprite()->getPosition().x) {
 			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
-			Vec2(SPEED_CHARACTOR_RUN, 0));
+				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
 		else {
 			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
-			Vec2(SPEED_CHARACTOR_RUN, 0));
+				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
+		
 		((MainCharactor*)(main_charactor))->Push();
 	}
 }
@@ -402,9 +413,6 @@ void GamePlay::update(float deltaTime)
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
 
 	UpdateController();
-
-	// update spider
-	//spider->Update(deltaTime);
 
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
@@ -667,6 +675,85 @@ void GamePlay::UpdateController()
 		moveDown = false;
 		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
 		break;
+	}
+}
+
+void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
+{
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_Q:
+	{
+		if (moveLeft || moveRight)
+		{
+			fight = false;
+		}
+		else
+		{
+			fight = true;
+		}
+
+		break;
+	}
+
+	case EventKeyboard::KeyCode::KEY_A:
+	{
+		moveLeft = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_D:
+	{
+		moveRight = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_W:
+	{
+		moveUp = true;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_S:
+	{
+		moveDown = true;
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
+{
+	{
+		switch (keycode)
+		{
+		case EventKeyboard::KeyCode::KEY_Q:
+		{
+			fight = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_A:
+		{
+			moveLeft = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_D:
+		{
+			moveRight = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_W:
+		{
+			moveUp = false;
+			break;
+		}
+		case EventKeyboard::KeyCode::KEY_S:
+		{
+			moveDown = false;
+			break;
+		}
+		default:
+			break;
+		}
 	}
 }
 

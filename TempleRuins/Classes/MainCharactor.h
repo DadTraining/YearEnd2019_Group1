@@ -32,10 +32,9 @@ private:
 	bool moveUp;
 	bool moveDown;
 
-	Scene *scene;
 	Layer *layer;
-	Animate *animate_stun;
 
+	Action *action_stun;
 	Action *action_push;
 	Action *action_fight;
 	Action *action_wait;

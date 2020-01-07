@@ -48,6 +48,7 @@ void MainCharactor::Init()
 
 void MainCharactor::InitialState()
 {
+
 	// check direction
 	isLeft = false;
 	isRight = true;
@@ -129,9 +130,9 @@ void MainCharactor::InitialAction()
 
 	// stun
 	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetCharactorStun(), SPEED_FRAME_CHARACTOR);
-	animate_stun = Animate::create(animation);
-	animate_stun->retain();
-	animate_stun->setTag(Actions::C_STUN);
+	action_stun = Animate::create(animation);
+	action_stun->setTag(Actions::C_STUN);
+	action_stun->retain();
 }
 
 void MainCharactor::Update(float deltaTime)
@@ -190,9 +191,11 @@ void MainCharactor::Wait()
 
 void MainCharactor::Run()
 {
-	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_RUN) == 0) {
-		this->GetSprite()->stopAllActions();
-		this->GetSprite()->runAction(action_run);
+	if (!push) {
+		if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_RUN) == 0) {
+			this->GetSprite()->stopAllActions();
+			this->GetSprite()->runAction(action_run);
+		}
 	}
 }
 
@@ -202,7 +205,7 @@ void MainCharactor::Stun()
 		this->GetSprite()->stopAllActions();
 	}
 
-	this->GetSprite()->runAction(RepeatForever::create(animate_stun));
+	this->GetSprite()->runAction(action_stun);
 }
 
 void MainCharactor::MoveLeft()

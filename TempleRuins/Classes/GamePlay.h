@@ -84,14 +84,17 @@ public:
 	int check_push();
 	float distance(Objject* main, Objject* rock);
 
-
-
 	void update(float deltaTime);
 
-	//
+	// touch
 	virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
 	virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
 	virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
+
+
+	// key
+	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
+	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 
 	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
 	void EnablePressedControlUpDown(bool isUp, bool pressed);
