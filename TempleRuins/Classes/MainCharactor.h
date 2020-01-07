@@ -38,6 +38,7 @@ private:
 	Action *action_fight;
 	Action *action_wait;
 	Action *action_run;
+	cocos2d::PhysicsBody* physicbody;
 
 	FightHammer* f;
 public:
@@ -56,6 +57,7 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+	
 
 	void RotateLeft();
 	void RotateRight();

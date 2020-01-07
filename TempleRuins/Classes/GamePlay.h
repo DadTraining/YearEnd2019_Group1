@@ -43,6 +43,8 @@ private:
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
 	cocos2d::ui::Button *mBump;
+	cocos2d::ui::Button *mJump;
+
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
@@ -76,6 +78,7 @@ public:
 	void CreateBloodBar();
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
+	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
 	void update(float deltaTime);
 

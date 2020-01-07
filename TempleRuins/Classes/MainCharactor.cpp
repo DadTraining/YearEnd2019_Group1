@@ -79,7 +79,7 @@ void MainCharactor::CreateSprite()
 
 
 	// create physic
-	auto physicbody = PhysicsBody::createBox(main->getContentSize());
+	physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
 	physicbody->setGravityEnable(true);
 	main->setPhysicsBody(physicbody);
@@ -224,7 +224,8 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
+	//this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
+	physicbody->applyImpulse(Vec2(0, 5000));
 }
 
 void MainCharactor::RotateLeft()
