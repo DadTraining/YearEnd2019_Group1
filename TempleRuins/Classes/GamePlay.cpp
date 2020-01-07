@@ -190,14 +190,14 @@ void GamePlay::InitialButton()
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
-	mBump->setOpacity(0);
+	mBump->setOpacity(50);
 	addChild(mBump);
 
 	//Button Jump
 	mJump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
 	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	//mJump->setOpacity(50);
+	mJump->setOpacity(50);
 	addChild(mJump);
 }
 
