@@ -155,7 +155,7 @@ void GamePlay::InitialButton()
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
-	mMoveLeftController->setOpacity(50);
+	mMoveLeftController->setOpacity(0);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -170,7 +170,7 @@ void GamePlay::InitialButton()
 	mMoveRightController->setFlippedX(true);
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
 	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	mMoveRightController->setOpacity(50);
+	mMoveRightController->setOpacity(0);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -183,11 +183,22 @@ void GamePlay::InitialButton()
 	
 	//Button fight
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
-	mBump->setScale(0.3);
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
-	mBump->setOpacity(50);
+	mBump->setOpacity(0);
 	addChild(mBump);
+
+	//Button Jump
+	mJump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
+	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
+	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
+	//mJump->setOpacity(50);
+	addChild(mJump);
+
+
+
+
+
 }
 
 void GamePlay::InitialPhysics()
@@ -336,6 +347,21 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	}
 }
 
+void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+{
+	switch (type)
+	{
+	case ui::Widget::TouchEventType::BEGAN:
+		log("began");
+		jump = true;
+		break;
+	case ui::Widget::TouchEventType::ENDED:
+		log("ended");
+		jump = false;
+		break;
+	}
+}
+
 void GamePlay::update(float deltaTime)
 {
 		// update main charactor
@@ -361,6 +387,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 		Vec2 mapMoveDistance = Vec2(0, 0);
 		Vec2 mcMoveDistance = Vec2(0, 0);
+
 		if (moveRight)
 		{
 			if (main_charactor->GetSprite()->getPosition().x < winSize.width / 2)

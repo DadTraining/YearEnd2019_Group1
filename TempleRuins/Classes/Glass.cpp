@@ -8,7 +8,7 @@ void Glass::Init()
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(4)));
 	this->GetSprite()->retain();
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
-	this->GetSprite()->setScale(0.15);
+	//this->GetSprite()->setScale(0.15);
 	this->layer->addChild(this->GetSprite());
 	this->GetSprite()->setTag(80);
 
