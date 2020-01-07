@@ -71,19 +71,18 @@ public:
 	void InitialObject();
 	void AddDispatcher();
 	void InitialButton();
-	void enablePressedControl(bool isLeft, bool pressed);
 	void InitialPhysics();
 	bool OnContactBegin(PhysicsContact &contact);
-	bool CheckPush();
 	void CreateBloodBar();
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
-	////////////////// test push rock
+	// push rock
 	void push_rock();
 	int check_push();
-	float distance(Objject* main, Objject* rock);
-
+	float distance(float main, float rock);
+	
+	// update
 	void update(float deltaTime);
 
 	// touch
@@ -96,11 +95,10 @@ public:
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 
+
 	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
 	void EnablePressedControlUpDown(bool isUp, bool pressed);
-
 	void UpdateController();
-	//
 
 	void setViewPointCenter(CCPoint position);
 	CCPoint tileCoorforposition(CCPoint position);

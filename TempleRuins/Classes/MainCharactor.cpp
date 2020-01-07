@@ -76,11 +76,10 @@ void MainCharactor::CreateSprite()
 	
 	// create sprite
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
-	this->SetSprite(main);
 	main->setScale(SCALE_CHARACTOR);
-	main->setPosition(550, 230);
 	main->setAnchorPoint(Vec2(0.5f, 0.0f));
-	this->layer->addChild(main);   
+	this->SetSprite(main);
+	this->layer->addChild(this->GetSprite());   
 
 
 	// create physic
@@ -97,7 +96,7 @@ void MainCharactor::CreateSprite()
 
 	// danh bua
 	f = new FightHammer(30, 20, TAG_FIGHT);
-	f->getFrameFight()->setPosition(-10, -10);
+	f->getFrameFight()->setPosition(-100, -100);
 	this->layer->addChild(f->getFrameFight());
 	f->getFrameFight()->getPhysicsBody()->setDynamic(false);
 }
@@ -160,7 +159,7 @@ void MainCharactor::Update(float deltaTime)
 	jump_1 = jump;
 	
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
-		f->getFrameFight()->setPosition(Vec2(-10, -10));
+		f->getFrameFight()->setPosition(Vec2(-100, -100));
 	}
 }
 
@@ -258,7 +257,6 @@ void MainCharactor::RotateRight()
 		auto runaction = ActionFloat::create(SPEED_ROTATE_CHARACTOR, 180.f, 0.0f, rotatecallback);
 		//Run();
 		this->GetSprite()->runAction(runaction);
-
 	}
 	isRight = true;
 	isLeft = false;

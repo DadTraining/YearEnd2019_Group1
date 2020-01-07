@@ -263,29 +263,23 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		{
 			numDiamond++;
 			nodeB->removeFromParentAndCleanup(true);
+			//nodeB->setPosition(Vec2(-200, -200));
 		}
 		else if (nodeA->getTag() == TAG_DIAMOND && nodeB->getTag() == TAG_CHARACTOR)
 		{
 			numDiamond++;
 			nodeA->removeFromParentAndCleanup(true);
-		}
-
-		// main charactor vs rock
-		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_ROCK)
-		{
-			log("cham1");
-		}
-		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_CHARACTOR)
-		{
-			log("cham2");
+			//nodeA->setPosition(Vec2(-200, -200));
 		}
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			nodeB->removeFromParentAndCleanup(true);
+			//nodeB->removeFromParentAndCleanup(true);
+			nodeB->setPosition(Vec2(-100, -100));
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			nodeA->removeFromParentAndCleanup(true);
+			//nodeA->removeFromParentAndCleanup(true);
+			nodeA->setPosition(Vec2(-100, -100));
 		}
 
 		// fight
@@ -297,11 +291,6 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		}
 	}
 
-	return true;
-}
-
-bool GamePlay::CheckPush()
-{
 	return true;
 }
 
@@ -376,31 +365,39 @@ void GamePlay::push_rock()
 int GamePlay::check_push()
 {
 	int index = 0;
-	float min = distance(main_charactor, rocks.at(0));
+	Vec2 p_main = main_charactor->GetSprite()->getPosition();
+	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition();
+	float min_horizontal = distance(p_main.x, p_rock.x);
 
 	for (int i = 1; i < rocks.size(); i++)
 	{
-		if (distance(main_charactor, rocks.at(i)) < min) {
-			min = distance(main_charactor, rocks.at(i));
+		float dis = distance(p_main.x, rocks.at(i)->GetSprite()->getPosition().x);
+		if (dis < min_horizontal) {
+			min_horizontal = dis;
 			index = i;
 		}
 	}
 
 	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
+	float _dis_vertical = main_charactor->getSize().height / 2 + rocks.at(0)->getSize().height / 2;
 
-	if (min <= _dis_horizontal) {
+	float min_vertical = distance(p_main.y, rocks.at(index)->GetSprite()->getPosition().y);
+
+	if (min_horizontal <= _dis_horizontal && min_vertical < _dis_vertical) {
 		return index;
 	}
 
 	return -1;
 }
 
-float GamePlay::distance(Objject* main, Objject* rock)
+float GamePlay::distance(float main, float rock)
 {
-	Vec2 P_main = main->GetSprite()->getPosition();
-	Vec2 P_rock = rock->GetSprite()->getPosition();
+	//Vec2 P_main = main->GetSprite()->getPosition();
+	//Vec2 P_rock = rock->GetSprite()->getPosition();
 
-	float dis = sqrt((P_main.x - P_rock.x)*(P_main.x - P_rock.x) + (P_main.y - P_rock.y)*(P_main.y - P_rock.y));
+	//float dis = sqrt((P_main.x - P_rock.x)*(P_main.x - P_rock.x) + (P_main.y - P_rock.y)*(P_main.y - P_rock.y));
+	float dis = abs(main - rock);
+
 	return dis;
 }
 
@@ -571,7 +568,7 @@ void GamePlay::onTouchMoved(Touch * touch, Event * event)
 {
 	mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
 	mCurrentTouchPoint = touch->getLocation();
-	log("Touch Moved (%f, %f)", touch->getLocation().x, touch->getLocation().y);
+	//log("Touch Moved (%f, %f)", touch->getLocation().x, touch->getLocation().y);
 }
 
 void GamePlay::onTouchEnded(Touch * touch, Event * event)
