@@ -44,6 +44,7 @@ bool GamePlay::init()
 
 	return true;
 }
+
 void GamePlay::CreateMap()
 {
 	auto layer_1 = Layer::create();
@@ -73,6 +74,7 @@ void GamePlay::InitialState()
 	moveUp = false;
 	moveDown = false;
 	jump = false;
+	fall = false;
 }
 
 void GamePlay::InitialObject()
@@ -158,61 +160,45 @@ void GamePlay::InitialButton()
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
+	mMoveLeftController->setOpacity(0);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
 	mMoveLeftControllerPressed->setVisible(false);
+	mMoveLeftControllerPressed->setOpacity(50);
 	addChild(mMoveLeftControllerPressed);
 
 	//move Right
 	mMoveRightController = Sprite::create("touch_controller_normal.png");
 	mMoveRightController->setFlippedX(true);
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
-	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width + 90, 0));
+	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
+	mMoveRightController->setOpacity(0);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveRightControllerPressed->setFlippedX(true);
 	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
+	mMoveRightControllerPressed->setOpacity(50);
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);
 
 	//Button fight
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
-	mBump->setScale(0.3);
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
+	mBump->setOpacity(0);
 	addChild(mBump);
 
-	//move Up
-	mMoveUpController = Sprite::create("touch_controllerUp_normal.png");
-	//mMoveUpController->setFlippedY(true);
-	mMoveUpController->setAnchorPoint(Vec2(0, 0));
-	mMoveUpController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width + 70, 0) / 2 + Vec2(0, mMoveLeftController->getContentSize().height));
-	addChild(mMoveUpController);
-
-	mMoveUpControllerPressed = Sprite::create("touch_controllerUp_pressed.png");
-	mMoveUpControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveUpControllerPressed->setPosition(mMoveUpController->getPosition());
-	mMoveUpControllerPressed->setVisible(false);
-	addChild(mMoveUpControllerPressed);
-
-	//move Down
-	mMoveDownController = Sprite::create("touch_controllerUp_normal.png");
-	mMoveDownController->setAnchorPoint(Vec2(0, 0));
-	mMoveDownController->setFlippedY(true);
-	mMoveDownController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width + 80, 0) / 2 - Vec2(0, mMoveLeftController->getContentSize().height - 18));
-	addChild(mMoveDownController);
-
-	mMoveDownControllerPressed = Sprite::create("touch_controllerUp_pressed.png");
-	mMoveDownControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveDownControllerPressed->setPosition(mMoveDownController->getPosition());
-	mMoveDownControllerPressed->setFlippedY(true);
-	mMoveDownControllerPressed->setVisible(false);
-	addChild(mMoveDownControllerPressed);
+	//Button Jump
+	mJump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
+	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
+	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
+	//mJump->setOpacity(50);
+	addChild(mJump);
 }
 
 void GamePlay::InitialPhysics()
@@ -331,10 +317,10 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
-		fight = true;
+		//fight = true;
 		break;
 	case ui::Widget::TouchEventType::ENDED:
-		fight = false;
+		//fight = false;
 		break;
 	}
 }
@@ -357,7 +343,7 @@ void GamePlay::push_rock()
 			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
 				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
-		
+
 		((MainCharactor*)(main_charactor))->Push();
 	}
 }
@@ -368,15 +354,6 @@ int GamePlay::check_push()
 	Vec2 p_main = main_charactor->GetSprite()->getPosition();
 	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition();
 	float min_horizontal = distance(p_main.x, p_rock.x);
-
-	for (int i = 1; i < rocks.size(); i++)
-	{
-		float dis = distance(p_main.x, rocks.at(i)->GetSprite()->getPosition().x);
-		if (dis < min_horizontal) {
-			min_horizontal = dis;
-			index = i;
-		}
-	}
 
 	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
 	float _dis_vertical = main_charactor->getSize().height / 2 + rocks.at(0)->getSize().height / 2;
@@ -401,13 +378,31 @@ float GamePlay::distance(float main, float rock)
 	return dis;
 }
 
+void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+{
+	switch (type)
+	{
+	case ui::Widget::TouchEventType::BEGAN:
+		log("began");
+		//jump = true;
+		fall = false;
+		moveUp = true;
+		break;
+	case ui::Widget::TouchEventType::ENDED:
+		log("ended");
+		//jump = false;
+		fall = true;
+		moveUp = false;
+		break;
+	}
+}
 
 void GamePlay::update(float deltaTime)
 
 {
 	// update main charactor
 	main_charactor->Update(deltaTime);
-	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
+	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
 	UpdateController();
 
@@ -424,7 +419,6 @@ void GamePlay::update(float deltaTime)
 	// push rock
 	push_rock();
 }
-
 
 void GamePlay::setViewPointCenter(CCPoint position)
 {
@@ -469,7 +463,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			}
 		}
 	}
-	else if (moveUp)
+	else if (moveUp || jump)
 	{
 
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
@@ -478,16 +472,15 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		}
 		else
 		{
-
-			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+				float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
 			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
-			{
-				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
-			{
-				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
-			}
+				{
+					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+				}
+				else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
+				{
+					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
+				}
 		}
 	}
 	else if (moveDown)
@@ -508,6 +501,32 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			}
 		}
 	}
+
+	if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
+		_tileMap->getPosition().y < 0) {
+		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
+		{
+			//mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+		}
+		else
+		{
+			if (_tileMap->getPosition().y <= -SPEED_CHARACTOR_RUN)
+			{
+				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN-3);
+			}
+			else if (main_charactor->GetSprite()->getPosition().y >= SPEED_CHARACTOR_RUN)
+			{
+				//mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+			}
+		}
+		if (moveLeft) {
+			mcMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
+		}
+		if (moveRight) {
+			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
+		}
+	}
+
 
 	if (mcMoveDistance != Vec2(0, 0))
 	{
@@ -579,30 +598,6 @@ void GamePlay::onTouchEnded(Touch * touch, Event * event)
 
 void GamePlay::UpdateController()
 {
-	//cheat key
-	if (mCurrentKey == EventKeyboard::KeyCode::KEY_LEFT_ARROW) //move left
-	{
-		mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-		mCurrentTouchPoint = Point(1, 1);
-	}
-	if (mCurrentKey == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) //move right
-	{
-		mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-		mCurrentTouchPoint = Point(66, 1);
-	}
-
-	if (mCurrentKey == EventKeyboard::KeyCode::KEY_UP_ARROW) //jump
-	{
-		mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-		mCurrentTouchPoint = Point(130, 1);
-	}
-
-	if (mCurrentKey == EventKeyboard::KeyCode::KEY_SPACE) //jump
-	{
-		mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-		mCurrentTouchPoint = Point(194, 1);
-	}
-
 	switch (mCurrentTouchState)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
@@ -633,44 +628,14 @@ void GamePlay::UpdateController()
 		{
 			EnablePressedControlLeftRight(false, false);
 		}
-
-		if (Rect(mMoveUpController->getPosition().x, mMoveUpController->getPosition().y, mMoveUpController->getContentSize().width, mMoveUpController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_UP_ARROW) //move up
-		{
-			EnablePressedControlUpDown(true, true);
-			moveLeft = false;
-			moveRight = false;
-			moveUp = true;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlUpDown(true, false);
-		}
-
-		if (Rect(mMoveDownController->getPosition().x, mMoveDownController->getPosition().y, mMoveDownController->getContentSize().width, mMoveDownController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_DOWN_ARROW) //move down
-		{
-			EnablePressedControlUpDown(false, true);
-			moveLeft = false;
-			moveRight = false;
-			moveUp = false;
-			moveDown = true;
-		}
-		else
-		{
-			EnablePressedControlUpDown(false, false);
-		}
-
 		break;
+
 	case ui::Widget::TouchEventType::ENDED:
 		EnablePressedControlLeftRight(true, false);
 		EnablePressedControlLeftRight(false, false);
-		EnablePressedControlUpDown(true, false);
-		EnablePressedControlUpDown(false, false);
 		moveLeft = false;
 		moveRight = false;
-		moveUp = false;
-		moveDown = false;
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push, moveUp, moveDown);
+		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 		break;
 	}
 }
@@ -719,40 +684,40 @@ void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
 }
 
 void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
+
 {
+	switch (keycode)
 	{
-		switch (keycode)
-		{
-		case EventKeyboard::KeyCode::KEY_Q:
-		{
-			fight = false;
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_A:
-		{
-			moveLeft = false;
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_D:
-		{
-			moveRight = false;
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_W:
-		{
-			moveUp = false;
-			break;
-		}
-		case EventKeyboard::KeyCode::KEY_S:
-		{
-			moveDown = false;
-			break;
-		}
-		default:
-			break;
-		}
+	case EventKeyboard::KeyCode::KEY_Q:
+	{
+		fight = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_A:
+	{
+		moveLeft = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_D:
+	{
+		moveRight = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_W:
+	{
+		moveUp = false;
+		break;
+	}
+	case EventKeyboard::KeyCode::KEY_S:
+	{
+		moveDown = false;
+		break;
+	}
+	default:
+		break;
 	}
 }
+
 
 void GamePlay::EnablePressedControlLeftRight(bool isLeft, bool pressed)
 {
@@ -765,18 +730,5 @@ void GamePlay::EnablePressedControlLeftRight(bool isLeft, bool pressed)
 	{
 		mMoveRightController->setVisible(!pressed);
 		mMoveRightControllerPressed->setVisible(pressed);
-	}
-}
-void GamePlay::EnablePressedControlUpDown(bool isUp, bool pressed)
-{
-	if (isUp)
-	{
-		mMoveUpController->setVisible(!pressed);
-		mMoveUpControllerPressed->setVisible(pressed);
-	}
-	else
-	{
-		mMoveDownController->setVisible(!pressed);
-		mMoveDownControllerPressed->setVisible(pressed);
 	}
 }

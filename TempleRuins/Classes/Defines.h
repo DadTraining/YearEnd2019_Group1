@@ -27,7 +27,7 @@
 #define TAG_ROCK 50
 
 // define glass
-#define SCALE_GLASS 0.15
+#define SCALE_GLASS 0
 #define TAG_GLASS 80
 
 // define map

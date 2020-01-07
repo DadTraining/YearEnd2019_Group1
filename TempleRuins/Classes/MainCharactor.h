@@ -29,8 +29,6 @@ private:
 
 	bool moveLeft;
 	bool moveRight;
-	bool moveUp;
-	bool moveDown;
 
 	Layer *layer;
 
@@ -39,10 +37,11 @@ private:
 	Action *action_fight;
 	Action *action_wait;
 	Action *action_run;
+	cocos2d::PhysicsBody* physicbody;
 
 	FightHammer* f;
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push);
 	void Init();
 	void InitialState();
 	void CreateSprite();
@@ -57,9 +56,11 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+
 	void MoveUp();
 	void MoveDown();
 	Size getSize();
+
 
 	void RotateLeft();
 	void RotateRight();

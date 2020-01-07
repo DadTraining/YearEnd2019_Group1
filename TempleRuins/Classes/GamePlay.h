@@ -27,6 +27,7 @@ private:
 	bool stun;
 	bool moveUp;
 	bool moveDown;
+	bool fall;
 
 	cocos2d::ui::Button *mFireController;
 	cocos2d::ui::Button *mJumpController;
@@ -43,6 +44,8 @@ private:
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
 	cocos2d::ui::Button *mBump;
+	cocos2d::ui::Button *mJump;
+
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
@@ -52,17 +55,13 @@ private:
 	cocos2d::Sprite* mMoveLeftControllerPressed;
 	cocos2d::Sprite* mMoveRightController;
 	cocos2d::Sprite* mMoveRightControllerPressed;
-	cocos2d::Sprite* mMoveUpController;
-	cocos2d::Sprite* mMoveUpControllerPressed;
-	cocos2d::Sprite* mMoveDownController;
-	cocos2d::Sprite* mMoveDownControllerPressed;
+
 
 	cocos2d::TMXObjectGroup* mObjectGroup;
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
-
 public:
 	static Scene *createGame();
 	virtual bool init();
@@ -76,6 +75,7 @@ public:
 	void CreateBloodBar();
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
+	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 
 	// push rock
 	void push_rock();

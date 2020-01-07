@@ -11,11 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{456,710}</string>
+                <string>{425,562}</string>
                 <key>spriteSourceSize</key>
-                <string>{456,710}</string>
+                <string>{425,562}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{456,710}}</string>
+                <string>{{0,0},{425,562}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -26,11 +26,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{430,710}</string>
+                <string>{402,642}</string>
                 <key>spriteSourceSize</key>
-                <string>{430,710}</string>
+                <string>{402,642}</string>
                 <key>textureRect</key>
-                <string>{{456,0},{430,710}}</string>
+                <string>{{425,0},{402,642}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -41,11 +41,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{586,710}</string>
+                <string>{763,535}</string>
                 <key>spriteSourceSize</key>
-                <string>{586,710}</string>
+                <string>{763,535}</string>
                 <key>textureRect</key>
-                <string>{{886,0},{586,710}}</string>
+                <string>{{0,642},{763,535}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -61,9 +61,9 @@
             <key>realTextureFileName</key>
             <string>fight.png</string>
             <key>size</key>
-            <string>{1472,710}</string>
+            <string>{827,1177}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:a5b3d461ea288f4d01df55d695b94cdc:11b6d0ec9f10566accd85b396334c651:61dd7437dcad0349b25f7fe12580d28d$</string>
+            <string>$TexturePacker:SmartUpdate:af3e6370fe99dd426fcdb773e2b29353:41e01a054c5199a2f16379843731fdc7:61dd7437dcad0349b25f7fe12580d28d$</string>
             <key>textureFileName</key>
             <string>fight.png</string>
         </dict>

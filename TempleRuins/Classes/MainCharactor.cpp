@@ -18,7 +18,7 @@ MainCharactor::~MainCharactor()
 }
 
 
-void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push, bool moveUp, bool moveDown)
+void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push)
 
 {
 	this->fight = fight;
@@ -27,8 +27,6 @@ void MainCharactor::setState(bool fight, bool moveLeft, bool moveRight, bool jum
 	this->jump = jump;
 	this->stun = stun;
 	this->push = push;
-	this->moveUp = moveUp;
-	this->moveDown = moveDown;
 }
 
 void MainCharactor::Init()
@@ -56,8 +54,6 @@ void MainCharactor::InitialState()
 	// initial direction
 	moveLeft = false;
 	moveRight = false;
-	moveUp = false;
-	moveDown = false;
 
 	// initial state
 	push = false;
@@ -83,7 +79,7 @@ void MainCharactor::CreateSprite()
 
 
 	// create physic
-	auto physicbody = PhysicsBody::createBox(main->getContentSize() - Size(0, 100));
+	physicbody = PhysicsBody::createBox(main->getContentSize());
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
@@ -147,6 +143,9 @@ void MainCharactor::Update(float deltaTime)
 	else if (moveRight && !fight) {
 		RotateRight();
 	}
+	else if (jump) {
+		Jump();
+	}
 	else {
 		if ((this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 			Wait();
@@ -155,8 +154,8 @@ void MainCharactor::Update(float deltaTime)
 	if ((fight && fight_1) && (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)) {
 		Wait();
 	}
+
 	fight_1 = fight;
-	jump_1 = jump;
 	
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0) {
 		f->getFrameFight()->setPosition(Vec2(-100, -100));
@@ -223,7 +222,9 @@ void MainCharactor::MoveRight()
 
 void MainCharactor::Jump()
 {
-	this->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
+	if (jump) {
+		physicbody->applyImpulse(Vec2(0, 5000));
+	}
 }
 
 void MainCharactor::RotateLeft()
@@ -282,4 +283,3 @@ Size MainCharactor::getSize()
 {
 	return this->GetSprite()->getContentSize() * SCALE_CHARACTOR;
 }
-
