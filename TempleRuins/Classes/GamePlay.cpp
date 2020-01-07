@@ -52,10 +52,10 @@ void GamePlay::CreateMap()
 {
 	auto layer_1 = Layer::create();
 	_tileMap = new CCTMXTiledMap();
-	_tileMap->initWithTMXFile("map.tmx");
-
+	_tileMap->initWithTMXFile("map2.tmx");
+	_tileMap->setScale(2);
 	_background = _tileMap->layerNamed("Background");
-	_wall = _tileMap->layerNamed("MapLv1");
+	_wall = _tileMap->layerNamed("MapLv2");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
@@ -88,24 +88,28 @@ void GamePlay::InitialObject()
 
 		auto properties = object.asValueMap();
 		int posX = properties.at("x").asInt();
+		log("%f",posX);
 		int posY = properties.at("y").asInt();
+		log("%f", posY);
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1)
 		{
 			this->main_charactor = new MainCharactor(this);
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
+			log("%f----------%f",posX,posY);
+			log("%f_______%f", this->main_charactor->GetSprite()->getPosition().x, this->main_charactor->GetSprite()->getPosition().y);
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
 			CreateNumDiamon();
 		}
-		else if (type == 2)
+		/*else if (type == 2)
 		{
 			Spider *spider = new Spider(this);
 			spider->GetSprite()->setPosition(Vec2(posX, posY));
 			spider->setCatogory(true);
 			spiders.push_back(spider);
-		}
+		}*/
 		/*else if (type == 3)
 		{
 			Spider* spider = new Spider(this);
@@ -113,7 +117,7 @@ void GamePlay::InitialObject()
 			spider->setCatogory(false);
 			spiders.push_back(spider);
 		}*/
-		else if (type == 4) {
+		/*else if (type == 4) {
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX, posY));
 			glasss.push_back(glass);
@@ -127,7 +131,7 @@ void GamePlay::InitialObject()
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
-		}
+		}*/
 	}
 }
 
@@ -194,11 +198,6 @@ void GamePlay::InitialButton()
 	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
 	mJump->setOpacity(50);
 	addChild(mJump);
-
-
-
-
-
 }
 
 void GamePlay::InitialPhysics()
