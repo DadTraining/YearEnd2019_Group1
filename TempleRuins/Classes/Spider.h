@@ -26,6 +26,7 @@ public:
 	void InitialSPider();
 	void InitialAction();
 	void Update(float deltaTime);
+	Size getSize();
 	void goUp();
 	void goDown();
 	void goSide();
