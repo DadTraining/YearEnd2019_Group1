@@ -4,10 +4,14 @@
 
 void CountTimer::Init()
 {
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	// initial 
 	this->SetSprite(Clone(ResourceManager::GetInstance()->GetLoadById(0)));
+	
 	auto countTimer = ProgressTimer::create(this->GetSprite());
-	countTimer->setPosition(300,300);
+	countTimer->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	countTimer->setScale(0.3);
 	countTimer->setType(ProgressTimer::Type::RADIAL);
 	countTimer->setPercentage(100);
 	countTimer->setReverseProgress(true);
@@ -38,6 +42,11 @@ Sprite * CountTimer::Clone(Sprite * sprite)
 {
 	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
 	return sprite_clone;
+}
+
+Size CountTimer::getSize()
+{
+	return Size();
 }
 
 CountTimer::CountTimer(Scene* scene, int timeRemain)

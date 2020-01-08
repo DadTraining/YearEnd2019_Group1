@@ -12,5 +12,6 @@ public:
 	~Diamond();
 	void Init();
 	void Update(float deltaTime);
+	Size getSize();
 };
 

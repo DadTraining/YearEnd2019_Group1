@@ -9,7 +9,6 @@ void Spider::Init()
 	// initial action
 	InitialAction();
 
-	goLeft();
 }
 
 void Spider::Update(float deltaTime)
@@ -17,22 +16,23 @@ void Spider::Update(float deltaTime)
 	// true doc  false ngang
 
 	if (GetCatogory()) {
-		log("get catogory true");
-		if (moveUp) {
+		if (getSpiderMoveUp()) {
 			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(0, 130));
-			
-		}else if (moveDown) {
+			/*auto moveby = MoveBy::create(2, Vec2(0, 130));
+			this->GetSprite()->runAction(moveby);*/
+
+		}else if (getSpiderMoveDown()) {
 			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(0, -130));
+			/*auto moveby = MoveBy::create(2, Vec2(0, -130));
+			this->GetSprite()->runAction(moveby);*/
 		}
+		
 	}
 	else {
-		log("get catogory false");
 		if(moveLeft)
 		{
-			log("get catogory move left preeeeeeeeeeeeeeee");
 			RotateLeft();
 			this->GetSprite()->getPhysicsBody()->setVelocity(Vec2(-130, 0));
-			log("get catogory move left post");
 		}
 		else if (moveRight) {
 			RotateRight();
@@ -42,28 +42,35 @@ void Spider::Update(float deltaTime)
 	}
 }
 
+Size Spider::getSize()
+{
+	return this->GetSprite()->getContentSize() * SCALE_SPIDER;
+}
+
 void Spider::InitialSPider()
 {
 	// initial blood
 	this->SetBlood(BLOOD_SPIDER);
 
 	// initial sprite
-	auto spider = Clone(Sprite::create("spider_01.png"));
-	this->SetSprite(spider);
-	spider->setPosition(this->getVisibleSize() / 2);
-	spider->setScale(SCALE_SPIDER);
-	this->layer->addChild(spider);
-	spider->setTag(10);
-	spider->setAnchorPoint(Vec2(0,0));
-
+	this->SetSprite(Sprite::create("spider_01.png"));
+	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
+	this->GetSprite()->setScale(SCALE_SPIDER);
+	this->layer->addChild(this->GetSprite());
+	this->GetSprite()->setTag(TAG_SPIDER);
 
 	// physic
-	auto physicbody = PhysicsBody::createBox(spider->getContentSize());
-	physicbody->setDynamic(false);
-	spider->setPhysicsBody(physicbody);
+	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	physicbody->setDynamic(true);
+	physicbody->setGravityEnable(false);
+	this->GetSprite()->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
 	physicbody->setContactTestBitmask(1);
+	physicbody->setContactTestBitmask(true);
 //	physicbody->setVelocity(Vec2(0,10));
+
+	//
+	
 }
 
 void Spider::InitialAction()
@@ -195,4 +202,14 @@ void Spider::SetCatogory(bool catogory)
 bool Spider::GetCatogory() 
 {
 	return this->catogory;
+}
+
+bool Spider::getSpiderMoveUp() 
+{
+	return this->moveUp;
+}
+
+bool Spider::getSpiderMoveDown()
+{
+	return this->moveDown;
 }

@@ -6,19 +6,37 @@
 #define SCALE_SPIDER 0.15
 #define SPEED_ROTATE_SPIDER 0.01f
 #define BLOOD_SPIDER 3
+#define TAG_SPIDER 10
 
 // define main charactor
 #define SCALE_CHARACTOR 0.12
 #define SPEED_FRAME_CHARACTOR 0.2f
 #define SPEED_FIGHT 0.2f
-#define SPEED_RUN 6
+#define SPEED_CHARACTOR_RUN 5
 #define SPEED_ROTATE_CHARACTOR 0.01f
 #define BLOOD_CHARACTOR 100
+#define TAG_CHARACTOR 20
 
 // define diamond
 #define SCALE_DIAMOND 0.5
+#define TAG_DIAMOND 30
 
 // define rock
 #define SCALE_ROCK 0.15
+#define SPEED_ROCK 50
+#define TAG_ROCK 50
+
+// define glass
+#define SCALE_GLASS 0.15
+#define TAG_GLASS 80
+
+// define map
+#define TAG_MAP 70
+
+// define in fighthammer
+#define TAG_FIGHT 60
+#define TAG_COLLISION 90
+
+
 
 #endif // !_DEFINES_H_
