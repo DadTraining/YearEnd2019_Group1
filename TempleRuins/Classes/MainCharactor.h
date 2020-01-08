@@ -30,11 +30,10 @@ private:
 	bool moveLeft;
 	bool moveRight;
 
-	Scene *scene;
 	Layer *layer;
-	Animate *animate_push;
-	Animate *animate_stun;
 
+	Action *action_stun;
+	Action *action_push;
 	Action *action_fight;
 	Action *action_wait;
 	Action *action_run;
@@ -57,7 +56,11 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
-	
+
+	void MoveUp();
+	void MoveDown();
+	Size getSize();
+
 
 	void RotateLeft();
 	void RotateRight();

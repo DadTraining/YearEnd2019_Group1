@@ -40,8 +40,13 @@ void Diamond::Init()
 	physicsBody1->setRotationEnable(false);
 	this->GetSprite()->setPhysicsBody(physicsBody1);
 	this->GetSprite()->getPhysicsBody()->setContactTestBitmask(1);
-	this->GetSprite()->setTag(30);
+	this->GetSprite()->setTag(TAG_DIAMOND);
 }
 void Diamond::Update(float deltaTime) 
 {
+}
+
+Size Diamond::getSize()
+{
+	return this->GetSprite()->getContentSize() * SCALE_DIAMOND;
 }

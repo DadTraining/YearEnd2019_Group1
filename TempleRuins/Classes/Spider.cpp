@@ -67,6 +67,11 @@ void Spider::Update(float deltaTime)
 	//}
 }
 
+Size Spider::getSize()
+{
+	return this->GetSprite()->getContentSize() * SCALE_SPIDER;
+}
+
 void Spider::InitialSPider()
 {
 	// initial blood
@@ -77,7 +82,7 @@ void Spider::InitialSPider()
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
 	this->layer->addChild(this->GetSprite());
-	this->GetSprite()->setTag(10);
+	this->GetSprite()->setTag(TAG_SPIDER);
 
 	// physic
 	auto physicbody = PhysicsBody::createBox(this->GetSprite()->getContentSize());
