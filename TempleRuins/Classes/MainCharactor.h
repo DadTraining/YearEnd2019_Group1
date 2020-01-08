@@ -29,6 +29,9 @@ private:
 
 	bool moveLeft;
 	bool moveRight;
+	
+	///////
+	bool k = true;
 
 	Layer *layer;
 

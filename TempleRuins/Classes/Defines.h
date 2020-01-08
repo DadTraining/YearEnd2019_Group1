@@ -32,6 +32,7 @@
 
 // define map
 #define TAG_MAP 70
+#define TAG_THANG 100
 
 // define in fighthammer
 #define TAG_FIGHT 60

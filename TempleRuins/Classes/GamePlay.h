@@ -36,6 +36,14 @@ private:
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
+	CCTMXLayer *_thang;
+
+	Vec2 _thang_1;
+	Vec2 _thang_2;
+
+	///////////
+	Vec2 _ground_Pos;
+	void checkGround();
 
 	Objject* main_charactor;
 
@@ -76,6 +84,7 @@ public:
 	void CreateNumDiamon();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
+	void climb();
 
 	// push rock
 	void push_rock();

@@ -2,6 +2,16 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
+void GamePlay::checkGround()
+{
+	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+	float dis = distance(_main_pos.y, _ground_Pos.y);
+	//log("%f", dis);
+	if (dis <= 5) {
+		log("cham dat");
+	}
+}
+
 Scene *GamePlay::createGame()
 {
 	// 'scene' is an autorelease object
@@ -21,7 +31,6 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
-
 	CreateMap();
 
 	// initial physics for map
@@ -55,6 +64,7 @@ void GamePlay::CreateMap()
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
+	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
 	this->addChild(_tileMap);
@@ -125,6 +135,15 @@ void GamePlay::InitialObject()
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
+		}
+		else if (type == 7) {
+			_thang_1 = Vec2(posX, posY);
+		}
+		else if (type == 8) {
+			_thang_2 = Vec2(posX, posY);
+		}
+		else if (type == 9) {
+			_ground_Pos = Vec2(posX, posY);
 		}
 	}
 }
@@ -218,11 +237,30 @@ void GamePlay::InitialPhysics()
 				physic->setContactTestBitmask(true);
 				physic->setDynamic(false);
 				physic->setMass(100);
-				physic->setTag(TAG_MAP);
 				tileSet->setPhysicsBody(physic);
+				tileSet->setTag(TAG_MAP);
 			}
 		}
 	}
+
+	// thang
+	/*Size thang_size = _thang->getLayerSize();
+	for (int i = 0; i < thang_size.width; i++)
+	{
+		for (int j = 0; j < thang_size.height; j++) {
+			auto tileSet = _thang->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physic->setCollisionBitmask(1);
+				physic->setContactTestBitmask(true);
+				physic->setDynamic(false);
+				physic->setGravityEnable(false);
+				tileSet->setPhysicsBody(physic);
+				tileSet->setTag(TAG_THANG);
+			}
+		}
+	}*/
 }
 
 bool GamePlay::OnContactBegin(PhysicsContact &contact)
@@ -333,14 +371,15 @@ void GamePlay::push_rock()
 	if (index != -1) {
 		push = true;
 
-		Sprite* _rock = rocks.at(index)->GetSprite();
+		Vec2 p_rock = rocks.at(index)->GetSprite()->getPosition();
+		Vec2 p_main = main_charactor->GetSprite()->getPosition();
 
-		if (_rock->getPosition().x > main_charactor->GetSprite()->getPosition().x) {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
+		if (p_rock.x < p_main.x) {
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
 				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
-		else {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
+		else if (p_rock.x > p_main.x) {
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
 				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
 
@@ -369,8 +408,7 @@ int GamePlay::check_push()
 
 	if (p_main.y > p_rock.y - 5 && p_main.y < p_rock.y + 5) {
 		if (p_rock.x < p_main.x) {
-			log("%f, %f", min_horizontal - rocks.at(0)->getSize().width / 2 - 10, _dis_horizontal);
-			if ((min_horizontal - rocks.at(0)->getSize().width / 2 - 30) <= _dis_horizontal) {
+			if ((min_horizontal - rocks.at(0)->getSize().width / 2 - 60) <= _dis_horizontal) {
 				return index;
 			}
 		}
@@ -416,6 +454,28 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	}
 }
 
+void GamePlay::climb()
+{
+	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
+	Vec2 _mapPos = _tileMap->getPosition();
+	Vec2 _winSize = Director::sharedDirector()->getWinSize();
+	
+	float _dis_1 = _thang_1.x - (0 - _mapPos.x);
+	float _dis_2 = _thang_2.x - (0 - _mapPos.x);
+	float _dis_1y = _thang_1.y - (0 - _mapPos.y);
+	float _dis_2y = _thang_2.y - (0 - _mapPos.y);
+	
+	if (_mainPos.x >= _dis_1 - 30 && _mainPos.x <= _dis_1 + 30 && _mainPos.y <= _dis_1y) {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+	}
+	else if (_mainPos.x >= _dis_2 - 30 && _mainPos.x <= _dis_2 + 30 && _mainPos.y <= _dis_2y) {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+	}
+	else {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
+	}
+}
+
 void GamePlay::update(float deltaTime)
 
 {
@@ -438,6 +498,12 @@ void GamePlay::update(float deltaTime)
 
 	// push rock
 	push_rock();
+
+	// leo thang
+	climb();
+
+	////////////// ground
+	checkGround();
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
