@@ -71,6 +71,7 @@ void MainCharactor::CreateSprite()
 	// create sprite
 	auto main = Clone(ResourceManager::GetInstance()->GetSpriteById(3));
 	main->setScale(SCALE_CHARACTOR);
+
 	//main->setPosition(550, 230);
 	main->setAnchorPoint(Vec2(0.5f, 0.0f));
 	this->SetSprite(main);
