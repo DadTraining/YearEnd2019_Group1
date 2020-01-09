@@ -38,7 +38,6 @@
     <ClCompile Include="..\Classes\MainMenu.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameOver.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -68,7 +67,6 @@
     <ClInclude Include="..\Classes\Rock.h" />
     <ClInclude Include="..\Classes\Spider.h" />
     <ClInclude Include="..\Classes\CountTimer.h" />
-    <ClInclude Include="..\Classes\GameOver.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
   </ItemGroup>
   <ItemGroup>

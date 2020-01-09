@@ -59,7 +59,7 @@ bool MapGame::init()
 		Director::getInstance()->replaceScene(scene);
 	});
  //auto play = ResourceManager::GetInstance()->GetButtonById(0);
-	auto gameplay1 = ui::Button::create("mapUI1.png","mapUI1_pressed.png");
+	auto gameplay1 = ui::Button::create("TempleRuins.png","TempleRuins_pressed.png");
 	gameplay1->setPosition(Vec2(250, visibleSize.height /3));
 	gameplay1->setScale(0.15);
 
@@ -80,7 +80,7 @@ bool MapGame::init()
         });
 	addChild(gameplay1);
 
-	auto gameplay2 = ui::Button::create("mapUI2.png", "mapUI2_pressed.png");
+	auto gameplay2 = ui::Button::create("TuinpleRems.png", "TuinpleRems_pressed.png");
 	gameplay2->setPosition(Vec2(550, visibleSize.height / 3));
 	gameplay2->setScale(0.15);
 
