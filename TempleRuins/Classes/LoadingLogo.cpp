@@ -47,15 +47,6 @@ auto logo = Sprite::create("play_pressed.png");
 	addChild(logo);
 
 
-	auto turn = ControlMusic::GetInstance()->isMusic();
-	if (turn == true)
-	{
-		auto audio = SimpleAudioEngine::getInstance();
-		//log("asd");
-		audio->playBackgroundMusic("Sounds/menu.mp3", true);
-		log("2");
-	}
-
 
 	//count = new CountTimer(this, TIME_LOAD);
 
