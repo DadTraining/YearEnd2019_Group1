@@ -19,23 +19,8 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
-    <ClCompile Include="..\Classes\Objject.cpp" />
-    <ClCompile Include="..\Classes\Item_game.cpp" />
-    <ClCompile Include="..\Classes\GamePlayScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CountTimer.cpp" />
     <ClCompile Include="..\Classes\MainCharactor.cpp" />
-    <ClCompile Include="..\Classes\Rock.cpp" />
-    <ClCompile Include="..\Classes\Spider.cpp" />
-    <ClCompile Include="..\Classes\GamePlay.cpp" />
-    <ClCompile Include="..\Classes\MainMenu.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\LoadingLogo.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameOver.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MapGame.cpp">
@@ -44,6 +29,17 @@
     <ClCompile Include="..\Classes\ControlMusic.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Item_game.cpp" />
+    <ClCompile Include="..\Classes\Objject.cpp" />
+    <ClCompile Include="..\Classes\Rock.cpp" />
+    <ClCompile Include="..\Classes\Spider.cpp" />
+    <ClCompile Include="..\Classes\CountTimer.cpp" />
+    <ClCompile Include="..\Classes\GamePlayScene.cpp" />
+    <ClCompile Include="..\Classes\MainMenu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameOver.cpp" />
+    <ClCompile Include="..\Classes\GamePlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -53,23 +49,11 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ResourceManager.h" />
-    <ClInclude Include="..\Classes\Objject.h" />
-    <ClInclude Include="..\Classes\Item_game.h" />
-    <ClInclude Include="..\Classes\GamePlayScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CountTimer.h" />
     <ClInclude Include="..\Classes\MainCharactor.h" />
-    <ClInclude Include="..\Classes\Rock.h" />
-    <ClInclude Include="..\Classes\Spider.h" />
-    <ClInclude Include="..\Classes\GamePlay.h" />
     <ClInclude Include="..\Classes\MainMenu.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingLogo.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameOver.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MapGame.h">
@@ -78,6 +62,14 @@
     <ClInclude Include="..\Classes\ControlMusic.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\GamePlayScene.h" />
+    <ClInclude Include="..\Classes\Item_game.h" />
+    <ClInclude Include="..\Classes\Objject.h" />
+    <ClInclude Include="..\Classes\Rock.h" />
+    <ClInclude Include="..\Classes\Spider.h" />
+    <ClInclude Include="..\Classes\CountTimer.h" />
+    <ClInclude Include="..\Classes\GameOver.h" />
+    <ClInclude Include="..\Classes\GamePlay.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

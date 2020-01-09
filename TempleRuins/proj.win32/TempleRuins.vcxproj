@@ -154,10 +154,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ControlMusic.cpp" />
-    <ClCompile Include="..\Classes\GameOver.cpp" />
-    <ClCompile Include="..\Classes\GamePlayScene.cpp" />
     <ClCompile Include="..\Classes\CountTimer.cpp" />
+    <ClCompile Include="..\Classes\GameOver.cpp" />
     <ClCompile Include="..\Classes\GamePlay.cpp" />
+    <ClCompile Include="..\Classes\GamePlayScene.cpp" />
     <ClCompile Include="..\Classes\Item_game.cpp" />
     <ClCompile Include="..\Classes\LoadingLogo.cpp" />
     <ClCompile Include="..\Classes\MainCharactor.cpp" />
@@ -172,10 +172,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\ControlMusic.h" />
-    <ClInclude Include="..\Classes\GameOver.h" />
-    <ClInclude Include="..\Classes\GamePlayScene.h" />
     <ClInclude Include="..\Classes\CountTimer.h" />
+    <ClInclude Include="..\Classes\GameOver.h" />
     <ClInclude Include="..\Classes\GamePlay.h" />
+    <ClInclude Include="..\Classes\GamePlayScene.h" />
     <ClInclude Include="..\Classes\Item_game.h" />
     <ClInclude Include="..\Classes\LoadingLogo.h" />
     <ClInclude Include="..\Classes\MainCharactor.h" />

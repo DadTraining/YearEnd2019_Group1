@@ -4,7 +4,7 @@
 #include "SimpleAudioEngine.h"
 #include <MainMenu.h>
 #include "ui/CocosGUI.h"
-
+#include "ControlMusic.h"
 using namespace CocosDenshion;
 USING_NS_CC;
 
@@ -47,6 +47,14 @@ auto logo = Sprite::create("play_pressed.png");
 	addChild(logo);
 
 
+	auto turn = ControlMusic::GetInstance()->isMusic();
+	if (turn == true)
+	{
+		auto audio = SimpleAudioEngine::getInstance();
+		//log("asd");
+		audio->playBackgroundMusic("Sounds/menu.mp3", true);
+		log("2");
+	}
 
 
 	//count = new CountTimer(this, TIME_LOAD);

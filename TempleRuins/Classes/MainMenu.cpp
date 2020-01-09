@@ -4,10 +4,13 @@
 #include <ResourceManager.h>
 #include "MapGame.h"
 #include "ControlMusic.h"
-USING_NS_CC;
 #include "SimpleAudioEngine.h"
+USING_NS_CC;
+
 using namespace CocosDenshion;
 
+ui::CheckBox* music_ui;
+ui::CheckBox* sound_ui;
 Size visibleSize;
 cocos2d::Sprite* mSettingLayer;
 Scene* MainMenu::createScene()
@@ -24,7 +27,7 @@ bool MainMenu::init()
 	if (!Scene::init()) {
 		return false;
 	}
-	scheduleUpdate();
+	//scheduleUpdate();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
@@ -39,7 +42,7 @@ bool MainMenu::init()
 	if (turn == true)
 	{
 		auto audio = SimpleAudioEngine::getInstance();
-		//log("asd");
+		log("asd");
 		audio->playBackgroundMusic("Sounds/menu.mp3", true);
 		log("2");
 	}
@@ -127,13 +130,14 @@ void MainMenu::createSetting()
 	musiclb->setColor(Color3B::BLACK);
 	mSettingLayer->addChild(musiclb, 4);
 
-	auto music_ui = ui::CheckBox::create("./setting/95.png", "./setting/96.png");
-	music_ui->setPosition(musiclb->getPosition() + Vec2(140, 0));
+	 music_ui = ui::CheckBox::create("setting/95.png", "setting/96.png");
 	music_ui->setScale(0.588f);
-	music_ui->retain();
+	//music_ui->retain();
 	music_ui->setSelected(ControlMusic::GetInstance()->isMusic());
 	music_ui->addClickEventListener([&](Ref* event)
 	{
+		//music_ui->isSelected();
+
 		if (!music_ui->isSelected())
 		{
 			ControlMusic::GetInstance()->setMusic(true);
@@ -142,26 +146,25 @@ void MainMenu::createSetting()
 		else
 		{
 			ControlMusic::GetInstance()->setMusic(false);   	
-			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		}
 	});
+	music_ui->setPosition(musiclb->getPosition() + Vec2(140, 0));
 	music_ui->setEnabled(true);
 	mSettingLayer->addChild(music_ui, 4);
 
 	auto soundlb = Label::create("SOUND","./fonts/Arial", 22);
 	soundlb->setPosition(120, 170);
 	soundlb->setColor(Color3B::BLACK);
-	soundlb->retain();
+	//soundlb->retain();
 	mSettingLayer->addChild(soundlb, 4);
 
-	auto sound_ui = ui::CheckBox::create("./setting/95.png","./setting/96.png");
-	sound_ui->setPosition(soundlb->getPosition() + Vec2(140, 0));
+	 sound_ui = ui::CheckBox::create("./setting/95.png","./setting/96.png");
 	sound_ui->retain();
 	sound_ui->setScale(0.58f);
 	sound_ui->setSelected(ControlMusic::GetInstance()->isSound());
 	sound_ui->addClickEventListener([&](Ref* event)
-	{
-		sound_ui->isSelected();
+	{		//sound_ui->isSelected();
 	if (!sound_ui->isSelected())
 	{
 	ControlMusic::GetInstance()->setSound(true);
@@ -169,10 +172,12 @@ void MainMenu::createSetting()
 	else
 	{
 	ControlMusic::GetInstance()->setSound(false);
-	SimpleAudioEngine::getInstance()->pauseAllEffects();
+	SimpleAudioEngine::getInstance()->stopAllEffects();
+
 	}
 	
 	});
+	sound_ui->setPosition(soundlb->getPosition() + Vec2(140, 0));
 	sound_ui->setEnabled(true);
 	mSettingLayer->addChild(sound_ui,4);
 
@@ -189,6 +194,6 @@ void MainMenu::activeSetting() {
 }
 
 
-void MainMenu::update(FLOAT deltaTime)
+void MainMenu::update(float deltaTime)
 {
 }

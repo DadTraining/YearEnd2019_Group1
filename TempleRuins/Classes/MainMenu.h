@@ -17,7 +17,7 @@ public:
 
 	void activeSetting();
 
-	void update(FLOAT deltaTime);
+	void update(float deltaTime);
 
 	
       CREATE_FUNC(MainMenu);
