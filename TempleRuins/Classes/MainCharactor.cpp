@@ -9,6 +9,7 @@ MainCharactor::MainCharactor(Layer *layer)
 Sprite *MainCharactor::Clone(Sprite *sprite)
 {
 	auto sprite_clone = Sprite::createWithTexture(sprite->getTexture());
+	sprite_clone->retain();
 	return sprite_clone;
 }
 

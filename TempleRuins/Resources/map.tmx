@@ -158,74 +158,90 @@
 </data>
  </layer>
  <objectgroup id="15" name="Objects">
-  <object id="70" name="MCPos" type="1" x="140.666" y="1231.34" width="31" height="26"/>
-  <object id="75" name="SpiderPos" type="2" x="1148.66" y="1149.34" width="61.3333" height="58.6667"/>
-  <object id="76" name="SpiderPos" type="2" x="1276" y="1148.67" width="61.3333" height="58.6667"/>
-  <object id="77" name="SpiderPos" type="3" x="1466" y="831.333" width="61.3333" height="58.6667"/>
-  <object id="78" name="SpiderPos" type="3" x="314.666" y="317.333" width="61.3333" height="58.6667"/>
-  <object id="79" name="SpiderPos" type="2" x="763.333" y="382.667" width="61.3333" height="58.6667"/>
-  <object id="80" name="SpiderPos" type="3" x="1083.33" y="509.334" width="61.3333" height="58.6667"/>
-  <object id="122" name="GrassPos" type="4" x="445.333" y="510.667" width="60" height="64"/>
-  <object id="123" name="GrassPos" type="4" x="509.333" y="506.667" width="60" height="64"/>
-  <object id="126" name="GrassPos" type="4" x="575.333" y="508.667" width="60" height="64"/>
-  <object id="127" name="GrassPos" type="4" x="953.333" y="892.667" width="60" height="64"/>
-  <object id="128" name="GrassPos" type="4" x="378.333" y="1146.67" width="62" height="64"/>
-  <object id="133" name="GrassPos" type="4" x="963.333" y="1210.67" width="60" height="64"/>
-  <object id="134" name="GrassPos" type="4" x="961.333" y="1278.67" width="60" height="64"/>
-  <object id="135" name="GrassPos" type="4" x="1143.33" y="182.667" width="60" height="64"/>
-  <object id="136" name="GrassPos" type="4" x="1143.33" y="246.667" width="60" height="64"/>
-  <object id="137" name="GrassPos" type="4" x="1145.33" y="314.667" width="60" height="64"/>
-  <object id="138" name="GrassPos" type="4" x="1149.33" y="376.667" width="60" height="64"/>
-  <object id="139" name="GrassPos" type="4" x="1535.33" y="184.667" width="60" height="64"/>
-  <object id="140" name="GrassPos" type="4" x="1537.33" y="248.667" width="60" height="64"/>
-  <object id="141" name="GrassPos" type="4" x="1535.33" y="314.667" width="60" height="64"/>
-  <object id="142" name="GrassPos" type="4" x="1533.33" y="376.667" width="60" height="64"/>
-  <object id="143" name="GrassPos" type="4" x="1339.33" y="570.667" width="60" height="64"/>
-  <object id="144" name="GrassPos" type="4" x="1339.33" y="636.667" width="60" height="64"/>
-  <object id="145" name="GrassPos" type="4" x="1467.33" y="700.667" width="60" height="64"/>
-  <object id="147" name="DiamonPos" type="5" x="1083.33" y="250.667" width="58" height="62"/>
-  <object id="149" name="DiamonPos" type="5" x="1082.33" y="315.667" width="58" height="62"/>
-  <object id="150" name="DiamonPos" type="5" x="1602.33" y="247.667" width="58" height="62"/>
-  <object id="151" name="DiamonPos" type="5" x="1602.33" y="315.667" width="58" height="62"/>
-  <object id="152" name="DiamonPos" type="5" x="1338.33" y="123.667" width="58" height="62"/>
-  <object id="153" name="DiamonPos" type="5" x="1340.33" y="187.667" width="58" height="62"/>
-  <object id="154" name="DiamonPos" type="5" x="442.333" y="379.667" width="58" height="62"/>
-  <object id="155" name="DiamonPos" type="5" x="570.333" y="251.667" width="58" height="62"/>
-  <object id="156" name="DiamonPos" type="5" x="441.757" y="1019.76" width="63" height="62"/>
-  <object id="161" name="DiamonPos" type="5" x="826.333" y="893.667" width="58" height="62"/>
-  <object id="162" name="DiamonPos" type="5" x="888.333" y="892.167" width="58" height="62"/>
-  <object id="164" name="DiamonPos" type="5" x="1144.33" y="961.667" width="58" height="62"/>
-  <object id="165" name="DiamonPos" type="5" x="1208.33" y="959.667" width="58" height="62"/>
-  <object id="166" name="DiamonPos" type="5" x="1268.33" y="959.667" width="58" height="62"/>
-  <object id="167" name="DiamonPos" type="5" x="1324.33" y="957.667" width="58" height="62"/>
-  <object id="168" name="DiamonPos" type="5" x="1388.33" y="955.667" width="58" height="62"/>
-  <object id="169" name="GrassPos" type="4" x="441.666" y="1146.67" width="62" height="64"/>
-  <object id="170" name="GrassPos" type="4" x="506.666" y="1146.34" width="62" height="64"/>
-  <object id="171" name="GrassPos" type="4" x="570" y="1146.67" width="62" height="64"/>
-  <object id="172" name="GrassPos" type="4" x="634.333" y="1146.67" width="62" height="64"/>
-  <object id="173" name="GrassPos" type="4" x="698.666" y="1147" width="62" height="64"/>
-  <object id="174" name="GrassPos" type="4" x="762.666" y="1146.67" width="62" height="64"/>
-  <object id="175" name="GrassPos" type="4" x="827.333" y="1147" width="62" height="64"/>
-  <object id="176" name="GrassPos" type="4" x="891.333" y="1147.67" width="62" height="64"/>
-  <object id="179" name="DiamonPos" type="5" x="504.833" y="1020" width="63" height="62"/>
-  <object id="180" name="DiamonPos" type="5" x="569.833" y="1020.67" width="63" height="62"/>
-  <object id="181" name="DiamonPos" type="5" x="634.5" y="1020.34" width="63" height="62"/>
-  <object id="182" name="DiamonPos" type="5" x="698.833" y="1020.34" width="63" height="62"/>
-  <object id="183" name="DiamonPos" type="5" x="762.5" y="1019.34" width="63" height="62"/>
-  <object id="184" name="DiamonPos" type="5" x="826.833" y="1019" width="63" height="62"/>
-  <object id="185" name="RockPos" type="6" x="378.333" y="1084.17" width="61.5" height="60.5"/>
-  <object id="187" name="RockPos" type="6" x="441.833" y="1084.17" width="63" height="62"/>
-  <object id="188" name="RockPos" type="6" x="506.833" y="1084.67" width="63" height="62"/>
-  <object id="189" name="RockPos" type="6" x="570.333" y="1085.67" width="63" height="62"/>
-  <object id="190" name="RockPos" type="6" x="635.333" y="1086.17" width="63" height="62"/>
-  <object id="191" name="RockPos" type="6" x="699.833" y="1086.17" width="63" height="62"/>
-  <object id="192" name="RockPos" type="6" x="763.833" y="1085.17" width="63" height="62"/>
-  <object id="193" name="RockPos" type="6" x="828.833" y="1084.67" width="63" height="62"/>
-  <object id="194" name="RockPos" type="6" x="890.833" y="1084.67" width="63" height="62"/>
-  <object id="196" name="RockPos" type="6" x="954.833" y="762.667" width="63" height="62"/>
-  <object id="197" name="RockPos" type="6" x="953.833" y="698.167" width="63" height="62"/>
-  <object id="198" name="DiamonPos" type="5" x="953.833" y="827.667" width="58" height="62"/>
-  <object id="199" name="SpiderPos" type="3" x="1470.66" y="1086.67" width="61.3333" height="58.6667"/>
-  <object id="200" name="SpiderPos" type="3" x="1532" y="1022.67" width="61.3333" height="58.6667"/>
+  <object id="70" name="MCPos" type="1" x="77.666" y="1253.67" width="31" height="26"/>
+  <object id="75" name="SpiderPos" type="2" x="1154.33" y="1155.67" width="61.3333" height="58.6667"/>
+  <object id="76" name="SpiderPos" type="2" x="1281.67" y="1155" width="61.3333" height="58.6667"/>
+  <object id="78" name="SpiderPos" type="3" x="320.333" y="323.666" width="61.3333" height="58.6667"/>
+  <object id="79" name="SpiderPos" type="2" x="769" y="389" width="61.3333" height="58.6667"/>
+  <object id="80" name="SpiderPos" type="3" x="1089" y="515.667" width="61.3333" height="58.6667"/>
+  <object id="122" name="GrassPos" type="4" x="451" y="517" width="60" height="64"/>
+  <object id="123" name="GrassPos" type="4" x="515" y="513" width="60" height="64"/>
+  <object id="126" name="GrassPos" type="4" x="581" y="515" width="60" height="64"/>
+  <object id="127" name="GrassPos" type="4" x="959" y="899" width="60" height="64"/>
+  <object id="128" name="GrassPos" type="4" x="384" y="1153" width="62" height="64"/>
+  <object id="133" name="GrassPos" type="4" x="969" y="1217" width="60" height="64"/>
+  <object id="134" name="GrassPos" type="4" x="967" y="1285" width="60" height="64"/>
+  <object id="135" name="GrassPos" type="4" x="1149" y="189" width="60" height="64"/>
+  <object id="136" name="GrassPos" type="4" x="1149" y="253" width="60" height="64"/>
+  <object id="137" name="GrassPos" type="4" x="1151" y="321" width="60" height="64"/>
+  <object id="138" name="GrassPos" type="4" x="1155" y="383" width="60" height="64"/>
+  <object id="139" name="GrassPos" type="4" x="1541" y="191" width="60" height="64"/>
+  <object id="140" name="GrassPos" type="4" x="1543" y="255" width="60" height="64"/>
+  <object id="141" name="GrassPos" type="4" x="1541" y="321" width="60" height="64"/>
+  <object id="142" name="GrassPos" type="4" x="1539" y="383" width="60" height="64"/>
+  <object id="143" name="GrassPos" type="4" x="1345" y="577" width="60" height="64"/>
+  <object id="144" name="GrassPos" type="4" x="1345" y="643" width="60" height="64"/>
+  <object id="145" name="GrassPos" type="4" x="1473" y="707" width="60" height="64"/>
+  <object id="147" name="DiamonPos" type="5" x="1089" y="257" width="58" height="62"/>
+  <object id="149" name="DiamonPos" type="5" x="1088" y="322" width="58" height="62"/>
+  <object id="150" name="DiamonPos" type="5" x="1608" y="254" width="58" height="62"/>
+  <object id="151" name="DiamonPos" type="5" x="1608" y="322" width="58" height="62"/>
+  <object id="152" name="DiamonPos" type="5" x="1344" y="130" width="58" height="62"/>
+  <object id="153" name="DiamonPos" type="5" x="1346" y="194" width="58" height="62"/>
+  <object id="154" name="DiamonPos" type="5" x="448" y="386" width="58" height="62"/>
+  <object id="155" name="DiamonPos" type="5" x="576" y="258" width="58" height="62"/>
+  <object id="156" name="DiamonPos" type="5" x="447.424" y="1026.09" width="63" height="62"/>
+  <object id="161" name="DiamonPos" type="5" x="832" y="900" width="58" height="62"/>
+  <object id="162" name="DiamonPos" type="5" x="894" y="898.5" width="58" height="62"/>
+  <object id="164" name="DiamonPos" type="5" x="1150" y="968" width="58" height="62"/>
+  <object id="165" name="DiamonPos" type="5" x="1214" y="966" width="58" height="62"/>
+  <object id="166" name="DiamonPos" type="5" x="1274" y="966" width="58" height="62"/>
+  <object id="167" name="DiamonPos" type="5" x="1330" y="964" width="58" height="62"/>
+  <object id="168" name="DiamonPos" type="5" x="1394" y="962" width="58" height="62"/>
+  <object id="169" name="GrassPos" type="4" x="447.333" y="1153" width="62" height="64"/>
+  <object id="170" name="GrassPos" type="4" x="512.333" y="1152.67" width="62" height="64"/>
+  <object id="171" name="GrassPos" type="4" x="575.667" y="1153" width="62" height="64"/>
+  <object id="172" name="GrassPos" type="4" x="640" y="1153" width="62" height="64"/>
+  <object id="173" name="GrassPos" type="4" x="704.333" y="1153.33" width="62" height="64"/>
+  <object id="174" name="GrassPos" type="4" x="768.333" y="1153" width="62" height="64"/>
+  <object id="175" name="GrassPos" type="4" x="833" y="1153.33" width="62" height="64"/>
+  <object id="176" name="GrassPos" type="4" x="897" y="1154" width="62" height="64"/>
+  <object id="179" name="DiamonPos" type="5" x="510.5" y="1026.33" width="63" height="62"/>
+  <object id="180" name="DiamonPos" type="5" x="575.5" y="1027" width="63" height="62"/>
+  <object id="181" name="DiamonPos" type="5" x="640.167" y="1026.67" width="63" height="62"/>
+  <object id="182" name="DiamonPos" type="5" x="704.5" y="1026.67" width="63" height="62"/>
+  <object id="183" name="DiamonPos" type="5" x="768.167" y="1025.67" width="63" height="62"/>
+  <object id="184" name="DiamonPos" type="5" x="832.5" y="1025.33" width="63" height="62"/>
+  <object id="185" name="RockPos" type="6" x="384" y="1090.5" width="61.5" height="60.5"/>
+  <object id="187" name="RockPos" type="6" x="447.5" y="1090.5" width="63" height="62"/>
+  <object id="188" name="RockPos" type="6" x="512.5" y="1091" width="63" height="62"/>
+  <object id="189" name="RockPos" type="6" x="576" y="1092" width="63" height="62"/>
+  <object id="190" name="RockPos" type="6" x="641" y="1092.5" width="63" height="62"/>
+  <object id="191" name="RockPos" type="6" x="705.5" y="1092.5" width="63" height="62"/>
+  <object id="192" name="RockPos" type="6" x="769.5" y="1091.5" width="63" height="62"/>
+  <object id="193" name="RockPos" type="6" x="834.5" y="1091" width="63" height="62"/>
+  <object id="194" name="RockPos" type="6" x="896.5" y="1091" width="63" height="62"/>
+  <object id="196" name="RockPos" type="6" x="960.5" y="769" width="63" height="62"/>
+  <object id="197" name="RockPos" type="6" x="959.5" y="704.5" width="63" height="62"/>
+  <object id="198" name="DiamonPos" type="5" x="959.5" y="834" width="58" height="62"/>
+  <object id="201" name="ThangPos" type="7" x="1635.27" y="956.4"/>
+  <object id="202" name="ThangPos" type="8" x="2277.72" y="807.517"/>
+  <object id="203" name="GroundPos" type="9" x="392.97" y="1342.83"/>
+  <object id="204" name="GroundPos" type="10" x="1801.5" y="1022.75"/>
+  <object id="205" name="GroundPos" type="11" x="373" y="1278"/>
+  <object id="206" name="_GroundPos" type="12" x="2121.67" y="959.67"/>
+  <object id="207" name="_GroundPos" type="13" x="2249.5" y="1022"/>
+  <object id="208" name="_GroundPos" type="14" x="2313" y="958.5"/>
+  <object id="209" name="_GroundPos" type="12" x="1417.27" y="766.909"/>
+  <object id="210" name="_GroundPos" type="15" x="2313" y="766.5"/>
+  <object id="211" name="_GroundPos" type="16" x="2632.08" y="830.667"/>
+  <object id="212" name="_GroundPos" type="17" x="2889.17" y="767.333"/>
+  <object id="213" name="_GroundPos" type="21" x="2185" y="575"/>
+  <object id="214" name="_GroundPos" type="20" x="2440.92" y="638.083"/>
+  <object id="215" name="_GroundPos" type="22" x="2762.67" y="513"/>
+  <object id="216" name="_GroundPos" type="19" x="2888.5" y="638.167"/>
+  <object id="217" name="_GroundPos" type="18" x="2953.25" y="702"/>
+  <object id="218" name="_GroundPos" type="23" x="2569" y="446.667"/>
+  <object id="219" name="_GroundPos" type="24" x="2696.88" y="318.375"/>
  </objectgroup>
 </map>

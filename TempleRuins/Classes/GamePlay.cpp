@@ -2,13 +2,47 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
+void GamePlay::checkGround()
+{
+	Vec2 _mapPos = _tileMap->getPosition();
+	_collistionGround = false;
+	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+	float dis = distance_1(_main_pos.y, _ground_Pos.y);
+	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
+	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
+
+	log("%f", _main_pos.x);
+	log("%f", _ground_Pos_1.x - (0 - _mapPos.x));
+	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
+		}
+	}
+	else if (dis_1 <= 10 && (_main_pos.x > (_ground_Pos_1.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
+		}
+	}
+	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_2.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
+		}
+	}
+}
+
+float GamePlay::distance_1(float p_1, float p_2)
+{
+	return p_1 - p_2;
+}
+
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
-#define SCALE_BUTTON 0.3
-
 
 
 Scene *GamePlay::createGame()
@@ -30,7 +64,6 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
-
 	CreateMap();
 
 	// initial physics for map
@@ -67,6 +100,7 @@ void GamePlay::CreateMap()
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
+	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
 	this->addChild(_tileMap);
@@ -120,13 +154,6 @@ void GamePlay::InitialObject()
 			spider->setCatogory(true);
 			spiders.push_back(spider);
 		}
-		/*else if (type == 3)
-		{
-			Spider* spider = new Spider(this);
-			spider->GetSprite()->setPosition(Vec2(posX, posY));
-			spider->setCatogory(false);
-			spiders.push_back(spider);
-		}*/
 		else if (type == 4) {
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX, posY));
@@ -142,6 +169,61 @@ void GamePlay::InitialObject()
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
 		}
+		else if (type == 7) {
+			_thang_1 = Vec2(posX, posY);
+		}
+		else if (type == 8) {
+			_thang_2 = Vec2(posX, posY);
+		}
+		else if (type == 9) {
+			_ground_Pos = Vec2(posX, posY);
+		}
+		else if (type == 10) {
+			_ground_Pos_1 = Vec2(posX, posY);
+		}
+		else if (type == 11) {
+			_ground_Pos_2 = Vec2(posX, posY);
+		}
+		else if (type == 12) {
+			_ground_Pos_12 = Vec2(posX, posY);
+		}
+		else if (type == 13) {
+			_ground_Pos_13 = Vec2(posX, posY);
+		}
+		else if (type == 14) {
+			_ground_Pos_14 = Vec2(posX, posY);
+		}
+		else if (type == 15) {
+			_ground_Pos_15 = Vec2(posX, posY);
+		}
+		else if (type == 16) {
+			_ground_Pos_16 = Vec2(posX, posY);
+		}
+		else if (type == 17) {
+			_ground_Pos_17 = Vec2(posX, posY);
+		}
+		else if (type == 18) {
+			_ground_Pos_18 = Vec2(posX, posY);
+		}
+		else if (type == 19) {
+			_ground_Pos_19 = Vec2(posX, posY);
+		}
+		else if (type == 20) {
+			_ground_Pos_20 = Vec2(posX, posY);
+		}
+		else if (type == 21) {
+			_ground_Pos_21 = Vec2(posX, posY);
+		}
+		else if (type == 22) {
+			_ground_Pos_22 = Vec2(posX, posY);
+		}
+		else if (type == 23) {
+			_ground_Pos_23 = Vec2(posX, posY);
+		}
+		else if (type == 24) {
+			_ground_Pos_24 = Vec2(posX, posY);
+		}
+
 	}
 }
 
@@ -242,8 +324,8 @@ void GamePlay::InitialPhysics()
 				physic->setContactTestBitmask(true);
 				physic->setDynamic(false);
 				physic->setMass(100);
-				physic->setTag(TAG_MAP);
 				tileSet->setPhysicsBody(physic);
+				tileSet->setTag(TAG_MAP);
 			}
 		}
 	}
@@ -402,14 +484,15 @@ void GamePlay::push_rock()
 	if (index != -1) {
 		push = true;
 
-		Sprite* _rock = rocks.at(index)->GetSprite();
+		Vec2 p_rock = rocks.at(index)->GetSprite()->getPosition();
+		Vec2 p_main = main_charactor->GetSprite()->getPosition();
 
-		if (_rock->getPosition().x > main_charactor->GetSprite()->getPosition().x) {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
+		if (p_rock.x < p_main.x) {
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
 				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
-		else {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
+		else if (p_rock.x > p_main.x) {
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
 				Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
 
@@ -425,13 +508,31 @@ int GamePlay::check_push()
 	float min_horizontal = distance(p_main.x, p_rock.x);
 
 	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
-	float _dis_vertical = main_charactor->getSize().height / 2 + rocks.at(0)->getSize().height / 2;
 
-	float min_vertical = distance(p_main.y, rocks.at(index)->GetSprite()->getPosition().y);
-
-	if (min_horizontal <= _dis_horizontal && min_vertical < _dis_vertical) {
-		return index;
+	for (int i = 1; i < rocks.size(); i++) {
+		float dis = distance(p_main.x, rocks.at(i)->GetSprite()->getPosition().x);
+		if (dis < min_horizontal) {
+			min_horizontal = dis;
+			index = i;
+		}
 	}
+
+	p_rock = rocks.at(index)->GetSprite()->getPosition();
+
+	if (p_main.y > p_rock.y - 5 && p_main.y < p_rock.y + 5) {
+		if (p_rock.x < p_main.x) {
+			if ((min_horizontal - rocks.at(0)->getSize().width / 2 - 60) <= _dis_horizontal) {
+				return index;
+			}
+		}
+		else if (p_rock.x > p_main.x) {
+			if ((min_horizontal + rocks.at(0)->getSize().width / 2) <= _dis_horizontal) {
+				return index;
+			}
+		}
+	}
+
+
 
 	return -1;
 }
@@ -479,6 +580,28 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	}
 }
 
+void GamePlay::climb()
+{
+	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
+	Vec2 _mapPos = _tileMap->getPosition();
+	Vec2 _winSize = Director::sharedDirector()->getWinSize();
+
+	float _dis_1 = _thang_1.x - (0 - _mapPos.x);
+	float _dis_2 = _thang_2.x - (0 - _mapPos.x);
+	float _dis_1y = _thang_1.y - (0 - _mapPos.y);
+	float _dis_2y = _thang_2.y - (0 - _mapPos.y);
+
+	if (_mainPos.x >= _dis_1 - 30 && _mainPos.x <= _dis_1 + 30 && _mainPos.y <= _dis_1y) {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+	}
+	else if (_mainPos.x >= _dis_2 - 30 && _mainPos.x <= _dis_2 + 30 && _mainPos.y <= _dis_2y) {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+	}
+	else {
+		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
+	}
+}
+
 void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
@@ -505,6 +628,7 @@ void GamePlay::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
+	// controller
 	UpdateController();
 
 	// set view
@@ -518,7 +642,13 @@ void GamePlay::update(float deltaTime)
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock
-	//push_rock();
+	push_rock();
+
+	// leo thang
+	climb();
+
+	////////////// ground
+	checkGround();
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
@@ -569,18 +699,18 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 		{
-			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
+			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
 		}
 		else
 		{
 				float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
-			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
+			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
 				{
-					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
 				}
 				else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
 				{
-					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
+					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
 				}
 		}
 	}
@@ -603,7 +733,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		}
 	}
 
-	if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
+	else if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
 		_tileMap->getPosition().y < 0) {
 		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
 		{
@@ -613,11 +743,7 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		{
 			if (_tileMap->getPosition().y <= -SPEED_CHARACTOR_RUN)
 			{
-				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN-3);
-			}
-			else if (main_charactor->GetSprite()->getPosition().y >= SPEED_CHARACTOR_RUN)
-			{
-				//mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
+				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 		}
 		if (moveLeft) {
@@ -630,18 +756,15 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 
 	if (mcMoveDistance != Vec2(0, 0))
-	{
+	{//////////////// if() test collision ground
+		if(!(_collistionGround && mcMoveDistance == Vec2(0, -SPEED_CHARACTOR_RUN)))
 		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
 	}
 
 	if (mapMoveDistance != Vec2(0, 0))
 	{
+		// update map
 		_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
-
-		/*if(((Spider*)(spider))->isAlive())
-		spider->GetSprite()->setPosition(spider->GetSprite()->getPosition() + mapMoveDistance);
-
-		rock->GetSprite()->setPosition(rock->GetSprite()->getPosition() + mapMoveDistance);*/
 
 		// update spider
 		for (int i = 0; i < spiders.size(); i++)
@@ -737,6 +860,7 @@ void GamePlay::UpdateController()
 		moveLeft = false;
 		moveRight = false;
 		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
+		mCurrentTouchState = ui::Widget::TouchEventType::CANCELED;
 		break;
 	}
 }

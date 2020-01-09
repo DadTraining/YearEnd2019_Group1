@@ -32,9 +32,13 @@
 
 // define map
 #define TAG_MAP 70
+#define TAG_THANG 100
 
 // define in fighthammer
 #define TAG_FIGHT 60
 #define TAG_COLLISION 90
+
+// define button
+#define SCALE_BUTTON 0.3
 
 #endif // !_DEFINES_H_
