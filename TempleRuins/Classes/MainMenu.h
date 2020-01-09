@@ -11,8 +11,15 @@ public:
 	float countT = 0;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
+	void addButton();
+
+	void createSetting();
+
+	void activeSetting();
+
 	void update(FLOAT deltaTime);
-    
+
+	
       CREATE_FUNC(MainMenu);
 };
 

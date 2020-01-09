@@ -4,21 +4,19 @@
 # include "SimpleAudioEngine.h"
 #include <ResourceManager.h>
 #include "SimpleAudioEngine.h"
+#include "ControlMusic.h"
+#include "ui/CocosGUI.h"
 using namespace CocosDenshion;
-
+ui::Slider* volumeSlider;
+ui::CheckBox* sound;
+ui::CheckBox* music;
 Scene* SettingScene::createScene()
 {
-	return SettingScene::create();
+	auto scene = Scene::create();
+	auto layer = SettingScene::create();
+	scene->addChild(layer);
+	return scene;
 }
-// global variable
-cocos2d::Vec2 originalSize;
-float width;
-float height;
-
-// soundItems
-LayerColor* layerSound;
-// aboutItems
-LayerColor* layerAbout;
 
 bool SettingScene::init()
 {
@@ -26,210 +24,101 @@ bool SettingScene::init()
 	if (!Scene::init()) {
 		return false;
 	}
-	scheduleUpdate();
-	originalSize = Director::getInstance()->getVisibleOrigin();
-	width = Director::getInstance()->getVisibleSize().width / 2 + originalSize.x;
-	height = Director::getInstance()->getVisibleSize().height / 2 + originalSize.y;
-	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
-	background->removeFromParent();
-	addChild(background);
-	background->setPosition(width ,height);
 
-	createSound();
-	createAbout();
-	SettingScene::addMenu();
-	return true;
-}
-
-
-
-void SettingScene::addMenu()
-{
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	auto background = Sprite::create("./setting/bb.jpg");
+	background->removeFromParent();
+	float scale = MAX(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
+	background->setScale(scale);
+	//background->setScale(0.2);
+	addChild(background);
+	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 
 	
-	auto returnButton = ui::Button::create("./button/Resume.png", " ");
-	returnButton->setScale(0.5);
-	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-		{
-		if (type == ui::Widget::TouchEventType::ENDED) {
+	auto bg = Sprite::create("./setting/table.png");
+	bg->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	bg->setScale(0.25);
+	bg->retain();
+	addChild(bg, 1);
+	auto musiclb = Label::create("MUSIC", "./fonts/Arial", 24);
+	musiclb->setPosition(bg->getPosition() + Vec2(-88, 70));
+	musiclb->setColor(Color3B::BLACK);
+	addChild(musiclb, 2);
 
-			auto scene = MainMenu::create();
-			Director::getInstance()->replaceScene(scene);
+	auto music = ui::CheckBox::create("./setting/95.png", "./setting/96.png");
+	music->setPosition(musiclb->getPosition() + Vec2(155, 0));
+	music->setScale(0.6f);
+	music->retain();
+	music->setSelected(ControlMusic::GetInstance()->isMusic());
+	music->addClickEventListener([&](Ref* event)
+	{
+		if (!music->isSelected())
+		{
+			ControlMusic::GetInstance()->setMusic(true);
+			SimpleAudioEngine::getInstance()->playBackgroundMusic("./Sounds/menu.mp3", true);
 		}
-		});
-	returnButton->setPosition(Vec2(visibleSize.width /8, visibleSize.height / 2));
-	
-	addChild(returnButton);
-	
-
-	auto label = Label::create("SETTING", "fonts/MarkerFelt.ttf", 50);
-	label->enableGlow(Color4B::YELLOW);
-	label->enableShadow();
-	auto settingLabel = MenuItemLabel::create(label, nullptr);
-	settingLabel->setPosition(width, height + 400);
-
-	auto soundItem = MenuItemImage::create("./button/sound.png", " ",
-		[&](Ref* pSender) {
-		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
-			activeSound();
-		});
-	soundItem->setScale(0.5);
-	soundItem->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
-
-	auto aboutItem = MenuItemImage::create("./button/about.png", " ",
-		[&](Ref* pSender) {
-		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
-			activeAbout();
-		});
-	aboutItem->setScale(0.5);
-	aboutItem->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /2));
-
-	auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
-		[&](Ref* pSender) {
-		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
-			exit(0);
-		});
-
-	closeItem->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 3));
-
-	Vector<MenuItem*> menuItems;
-	menuItems.pushBack(settingLabel);
-	menuItems.pushBack(soundItem);
-	menuItems.pushBack(aboutItem);
-	menuItems.pushBack(closeItem);
-	// Add menu
-	auto menu = Menu::createWithArray(menuItems);
-	menu->setPosition(0, 0);
-	addChild(menu);
-}
-
-
-
-void SettingScene::createSound() {
-	
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto originSize = Director::getInstance()->getVisibleOrigin();
-	
-	layerSound = LayerColor::create(Color4B(20, 0, 0, 255));
-	auto size = layerSound->getContentSize();
-	layerSound->setContentSize(Size(size.width, size.height -200));
-	layerSound->setVisible(false);
-	layerSound->setPosition(0, 100);
-	addChild(layerSound, 2);
-	// create return button
-	auto returnButton = ui::Button::create("./button/Resume.png", " ");
-	layerSound->addChild(returnButton);
-	returnButton->setPosition(Vec2(100, layerSound->getContentSize().height - 40));
-	returnButton->setScale(0.5f);
-	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-		{auto audio = SimpleAudioEngine::getInstance();
-	audio->playEffect("./Sounds/sfx_clickbutton.wav", false, 1.0f, 1.0f, 1.0f);
-			layerSound->setVisible(false);
-		});
-
-
-
-	auto label = Label::createWithSystemFont("SOUNDS", "Arial", 25);
-	label->setPosition(Vec2(layerSound->getContentSize().width / 4.7, layerSound->getContentSize().height / 1.5));
-
-	layerSound->addChild(label);
-
-	static auto slider = ui::Slider::create();
-	slider->loadBarTexture("slider_bar_bg.png");
-	slider->loadSlidBallTextures("slider_ball_normal.png", "slider_ball_pressed.png", "slider_ball_disable.png");
-	slider->loadProgressBarTexture("slider_bar_pressed.png");
-	slider->setPercent(10);
-	slider->setPosition(Vec2(layerSound->getContentSize().width / 2, layerSound->getContentSize().height / 1.5));
-	slider->addClickEventListener([](Ref* event) {
-
-		auto audio = SimpleAudioEngine::getInstance();
-	
-		audio->setEffectsVolume(0.5);
-		audio->setBackgroundMusicVolume(0.5);
-		log("Slider: %d", slider->getPercent());
-	});
-	layerSound->addChild(slider);
-
-
-
-
-
-	/*auto label2 = Label::createWithSystemFont("MUSIC", "Arial", 25);
-	label2->setPosition(Vec2(layerSound->getContentSize().width / 4.7, layerSound->getContentSize().height / 2.5));
-	layerSound->addChild(label2);
-
-	static auto slider2 = ui::Slider::create();
-	slider2->loadBarTexture("slider_bar_bg.png");
-	slider2->loadSlidBallTextures("slider_ball_normal.png", "slider_ball_pressed.png", "slider_ball_disable.png");
-	slider2->loadProgressBarTexture("slider_bar_pressed.png");
-	slider2->setPercent(10);
-	slider2->setPosition(Vec2(layerSound->getContentSize().width / 2, layerSound->getContentSize().height /2.5));
-	slider2->addClickEventListener([](Ref* event) {
-		
-		log("Slider: %d", slider2->getPercent());
-	});
-	layerSound->addChild(slider2);*/
-
-
-}
-
-
-void SettingScene::createAbout() {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto originSize = Director::getInstance()->getVisibleOrigin();
-
-	layerAbout = LayerColor::create(Color4B(20, 0, 0, 255));
-	auto size = layerAbout->getContentSize();
-	layerAbout->setContentSize(Size(size.width, size.height - 200));
-	layerAbout->setVisible(false);
-	layerAbout->setPosition(0, 100);
-	addChild(layerAbout, 2);
-	
-	auto returnButton = ui::Button::create("./button/Resume.png", " ");
-	layerAbout->addChild(returnButton);
-	returnButton->setPosition(Vec2(100, layerAbout->getContentSize().height - 40));
-	returnButton->setScale(0.5f);
-	returnButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+		else
 		{
-		
-		auto audio = SimpleAudioEngine::getInstance();
-	audio->playEffect("./Sounds/fire.wav", false, 1.0f, 1.0f, 1.0f);
-			layerAbout->setVisible(false);
-		});
+			ControlMusic::GetInstance()->setMusic(false);
+			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+		}
+	});
+	music->setEnabled(true);
+	addChild(music, 3);
 
-	auto inSize = Vec2(layerAbout->getContentSize().width / 2, layerAbout->getContentSize().height / 2);
-	auto label = Label::createWithSystemFont("Game Mysterious Temple Ruins", "Arial", 25);
-	label->setPosition(inSize);
+	/*auto soundlb = Label::create("SOUND", "./fonts/Arial", 24);
+	soundlb->setPosition(bg->getPosition() + Vec2(-83,20));
+	soundlb->setColor(Color3B::BLACK);
+	soundlb->retain();
+	addChild(soundlb, 2);
+
+	auto sound = ui::CheckBox::create("./setting/95.png", "./setting/96.png");
+	sound->setPosition(soundlb->getPosition() + Vec2(150, 0));
+	sound->retain();
+	sound->setScale(0.6f);
+	sound->setSelected(ControlMusic::GetInstance()->isSound());
+	sound->addClickEventListener([&](Ref* event)
+	{
+		sound->isSelected();
+		if (!sound->isSelected())
+		{
+			ControlMusic::GetInstance()->setSound(true);
+
+		}
+		else
+		{
+			ControlMusic::GetInstance()->setSound(false);
+			SimpleAudioEngine::getInstance()->stopAllEffects();
+		}
+
+	});
+	sound->setEnabled(true);
+	addChild(sound, 3);
 	
-	layerAbout->addChild(label);
+	*/
 
+	auto close = ui::Button::create("./setting/close_2.png","");
+	close->setPosition(Vec2(235,405));
+	close->setScale(0.8);
+	addChild(close,3);
+	close->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{ 
+		auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("./Sounds/sfx_clickbutton.wav", false);
+	if (type == ui::Widget::TouchEventType::ENDED) {
+		auto scene = MainMenu::createScene();
+		Director::getInstance()->replaceScene(scene);
+	}
+	});
+	
+	return true;
 }
+	
 
 
 
-void SettingScene::activeAbout() {
-	if (!layerAbout->isVisible()) {
-		layerAbout->setVisible(true);
-	}
-	else {
-		layerAbout->setVisible(false);
-	}
-}
-void SettingScene::activeSound()
-{
-	if (!layerSound->isVisible()) {
-		layerSound->setVisible(true);
-	}
-	else {
-		layerSound->setVisible(false);
-	}
-}
 void SettingScene::update(float deltaTime)
 {
 

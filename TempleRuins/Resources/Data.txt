@@ -9,7 +9,7 @@ ID: 3
 PATH: Sprite/6.png
 #LOAD 1
 ID: 0
-PATH: Load/circle_3.png
+PATH: Load/circle.png
 #BUTTON 4
 ID: 0
 PATH: button/Play.png

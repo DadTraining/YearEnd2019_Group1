@@ -1,6 +1,9 @@
 #include "GamePlay.h"
 
 
+#include "ControlMusic.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 Scene * GamePlay::createGame()
 {
@@ -25,7 +28,12 @@ bool GamePlay::init()
 	moveLeft = false;
 	moveRight = false;
 
-
+	auto turn = ControlMusic::GetInstance()->isMusic();
+	if (turn == true)
+	{
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playBackgroundMusic("./Sounds/menu.wav", true);
+	}
 	// initial main charactor
 	this->main_charactor = new MainCharactor(this);
 

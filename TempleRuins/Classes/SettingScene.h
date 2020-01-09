@@ -22,5 +22,7 @@ public:
 
 
 
+	void addButton();
+
 };
 #endif // __SETTING_SCENE_H__

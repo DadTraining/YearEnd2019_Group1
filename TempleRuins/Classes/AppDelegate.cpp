@@ -28,6 +28,7 @@
 #include "LoadingLogo.h"
 #include "MainMenu.h"
 
+
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
@@ -44,7 +45,6 @@ using namespace CocosDenshion;
 #endif
 
 USING_NS_CC;
-
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(1600 /2 , 900/2);
 
@@ -92,7 +92,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(false);
+    director->setDisplayStats(!false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -105,7 +105,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
-	auto scene = MainMenu::create();
+	auto scene = LoadingLogo::createScene();
+	//auto scene = SettingScene::createScene();
 
     // run
     director->runWithScene(scene);

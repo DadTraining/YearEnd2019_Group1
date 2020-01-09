@@ -1,9 +1,11 @@
-
+﻿
 #include "ResourceManager.h"
 #include "LoadingLogo.h"
 #include "SimpleAudioEngine.h"
 #include <MainMenu.h>
+#include "ui/CocosGUI.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
 
 Scene* LoadingLogo::createScene()
@@ -33,21 +35,62 @@ bool LoadingLogo::init()
 	
 	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
 	background->removeFromParent();
+	float scale = MAX(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
+	background->setScale(scale);
+	//background->setScale(0.2);
 	addChild(background);
-	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 1.1);
+	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+
+auto logo = Sprite::create("play_pressed.png");
+	logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height /1.65);
+	logo->setScale(0.33);
+	addChild(logo);
 
 
 
 
-	count = new CountTimer(this, TIME_LOAD);
+	//count = new CountTimer(this, TIME_LOAD);
 
 
-	this->schedule(schedule_selector(LoadingLogo::changeLoading), TIME_LOAD);
+	//this->schedule(schedule_selector(LoadingLogo::changeLoading), TIME_LOAD);
 
 
-	// update
-	scheduleUpdate();
 
+	auto loadingBarGB = Sprite::create("./Load/bloodbar_bg.png");
+	loadingBarGB->setPosition(Vec2(430, 150));
+	loadingBarGB->setScale(1.3);
+	addChild(loadingBarGB);
+
+
+	static auto loadingbar = ui::LoadingBar::create("./Load/bloodbar.png");
+	loadingbar->setPosition(Vec2(385, 150));
+	loadingbar->setScale(1.28);
+
+
+
+	loadingbar->setPercent(0);
+	
+	loadingbar->setDirection(ui::LoadingBar::Direction::LEFT);
+
+	addChild(loadingbar);
+
+	auto updateLoadingBar = CallFunc::create([]() {
+		if (loadingbar->getPercent() < 100)
+		{
+			loadingbar->setPercent(loadingbar->getPercent() + 1);
+		}
+	});
+
+	auto sequenceRunUpdateLoadingBar = Sequence::createWithTwoActions(updateLoadingBar, DelayTime::create(0.01f));
+	auto repeat = Repeat::create(sequenceRunUpdateLoadingBar, 100);
+	loadingbar->runAction(repeat);
+
+
+	this->schedule(schedule_selector(LoadingLogo::changeLoading), 1.0f);
+	
+	//update
+
+	
 	return true;
 }
 
@@ -60,5 +103,5 @@ void LoadingLogo::changeLoading(float dt) {
 
 void LoadingLogo::update(float deltaTime)
 {
-	count->Update(deltaTime);
+//count->Update(deltaTime);
 }
