@@ -2,6 +2,15 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
+cocos2d::Sprite* mPauseLayer;
+cocos2d::Sprite* mHeader;
+cocos2d::ui::Button *mBump;
+cocos2d::ui::Button *mJump;
+cocos2d::ui::Button *btnPause;
+#define SCALE_BUTTON 0.3
+
+
+
 Scene *GamePlay::createGame()
 {
 	// 'scene' is an autorelease object
@@ -39,6 +48,9 @@ bool GamePlay::init()
 	// add button
 	InitialButton();
 
+	//create pause layer
+	createPauseLayer();
+
 	// update
 	scheduleUpdate();
 
@@ -50,7 +62,7 @@ void GamePlay::CreateMap()
 	auto layer_1 = Layer::create();
 	_tileMap = new CCTMXTiledMap();
 	_tileMap->initWithTMXFile("map.tmx");
-
+	//_tileMap->setScale(2);
 	_background = _tileMap->layerNamed("Background");
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
@@ -86,13 +98,17 @@ void GamePlay::InitialObject()
 
 		auto properties = object.asValueMap();
 		int posX = properties.at("x").asInt();
+		log("%f",posX);
 		int posY = properties.at("y").asInt();
+		log("%f", posY);
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1)
 		{
 			this->main_charactor = new MainCharactor(this);
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
+			log("%f----------%f",posX,posY);
+			log("%f_______%f", this->main_charactor->GetSprite()->getPosition().x, this->main_charactor->GetSprite()->getPosition().y);
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
 			CreateNumDiamon();
@@ -161,6 +177,7 @@ void GamePlay::InitialButton()
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
 	mMoveLeftController->setOpacity(0);
+	mMoveLeftController->setScale(1.5);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -176,6 +193,7 @@ void GamePlay::InitialButton()
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
 	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
 	mMoveRightController->setOpacity(0);
+	mMoveRightController->setScale(1.5);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -186,24 +204,30 @@ void GamePlay::InitialButton()
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);
 
-	//Button fight
+	//Button Fight
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
-	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
+	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
 	mBump->setOpacity(50);
 	addChild(mBump);
 
 	//Button Jump
-	mJump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
+	mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
 	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
 	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
 	mJump->setOpacity(50);
 	addChild(mJump);
+
+	//Button Pause
+	btnPause = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
+	btnPause->setAnchorPoint(Vec2(1, 1));
+	btnPause->setPosition(Director::getInstance()->getVisibleSize() - Size(3, 8));
+	btnPause->addTouchEventListener(CC_CALLBACK_2(GamePlay::Pause, this));
+	addChild(btnPause,2);
 }
 
 void GamePlay::InitialPhysics()
 {
-
 	// ground
 	Size layerSize = _phy->getLayerSize();
 	for (int i = 0; i < layerSize.width; i++)
@@ -235,13 +259,21 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		// charactor vs spider
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
 			((MainCharactor *)(main_charactor))->Stun();
+			if (this->main_charactor->GetBlood() <= 0)
+			{
+				log("die");
+			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
 			((MainCharactor *)(main_charactor))->Stun();
+			if (this->main_charactor->GetBlood() <= 0)
+			{
+				log("die");
+			}
 		}
 
 		// main charactor vs diamond
@@ -282,47 +314,84 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 void GamePlay::CreateBloodBar()
 {
+	auto posY = Director::getInstance()->getVisibleSize().height;
+
+	mHeader = Sprite::create("header.png");
+	mHeader->setFlippedX(true);
+	mHeader->setAnchorPoint(Vec2(1,1));
+	mHeader->setPosition(Director::getInstance()->getVisibleSize());
+	mHeader->setVisible(true);
+	addChild(mHeader,2);
+
 	Layer *layer_1 = Layer::create();
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(150, this->main_charactor->getVisibleSize().height - 30));
+	bloodBar_1->setPosition(Director::getInstance()->getVisibleSize() - Size(230,30));
 
 	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 	bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-	this->addChild(bloodBar_1);
-	this->addChild(bloodBar_2);
+	this->addChild(bloodBar_1,3);
+	this->addChild(bloodBar_2,3);
 }
 
 void GamePlay::CreateNumDiamon()
 {
 	// sprite diamon
 	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(5);
-	NumDiamon->setScale(0.4);
-	NumDiamon->setPosition(bloodBar_2->getPosition() + Vec2(200, 0));
+	NumDiamon->setScale(0.35);
+	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
 	this->addChild(NumDiamon, 2);
 
 	// label number
 	CCString *num = CCString::createWithFormat("%i/50", numDiamond);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
-	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
+	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50,0));
 	this->addChild(LabelNumDiamon, 2);
 }
 
-void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+void GamePlay::createPauseLayer()
 {
-	switch (type)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-		//fight = true;
-		break;
-	case ui::Widget::TouchEventType::ENDED:
-		//fight = false;
-		break;
-	}
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	
+	//create pause layer
+	mPauseLayer = Sprite::create("pause.png");
+	mPauseLayer->setPosition(visibleSize / 2);
+	mPauseLayer->setContentSize(visibleSize);
+	mPauseLayer->setVisible(false);
+	addChild(mPauseLayer,2);
+
+	//Button Home
+	auto btnHome = ui::Button::create("Button/home_normal.png", "Button/home_pressed.png");
+	btnHome->setScale(SCALE_BUTTON);
+	btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
+	btnHome->addClickEventListener([](Ref* event) {
+		Director::getInstance()->resume();
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
+	});
+	mPauseLayer->addChild(btnHome);
+
+	//Button Restart
+	auto btnRestart = ui::Button::create("Button/restart_normal.png", "Button/restart_pressed.png");
+	btnRestart->setScale(SCALE_BUTTON);
+	btnRestart->setPosition(btnHome->getPosition() + Size(0, 70));
+	mPauseLayer->addChild(btnRestart);
+
+	//Button Resume
+	auto btnResume = ui::Button::create("Button/resume_normal.png", "Button/resume_pressed.png");
+	btnResume->setScale(SCALE_BUTTON);
+	btnResume->setPosition(btnRestart->getPosition() + Size(0, 70));
+	btnResume->addClickEventListener([](Ref* event) {
+		Director::getInstance()->resume();
+		btnPause->setVisible(true);
+		mBump->setVisible(true);
+		mJump->setVisible(true);
+		mPauseLayer->setVisible(false);
+	});
+	mPauseLayer->addChild(btnResume);
 }
 
 void GamePlay::push_rock()
@@ -378,6 +447,19 @@ float GamePlay::distance(float main, float rock)
 	return dis;
 }
 
+void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+{
+	switch (type)
+	{
+	case ui::Widget::TouchEventType::BEGAN:
+		fight = true;
+		break;
+	case ui::Widget::TouchEventType::ENDED:
+		fight = false;
+		break;
+	}
+}
+
 void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
@@ -393,6 +475,25 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 		//jump = false;
 		fall = true;
 		moveUp = false;
+		break;
+	}
+}
+
+void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
+{
+	switch (type)
+	{
+	case ui::Widget::TouchEventType::ENDED:
+		auto funcPause = CallFunc::create([]() {
+			Director::getInstance()->pause();
+		});
+		btnPause->setVisible(false);
+		mBump->setVisible(false);
+		mJump->setVisible(false);
+		mPauseLayer->setOpacity(0);
+		mPauseLayer->setVisible(true);
+		auto fadeIn = FadeIn::create(0.3f);
+		mPauseLayer->runAction(Sequence::create(fadeIn, funcPause, nullptr));
 		break;
 	}
 }
@@ -417,7 +518,7 @@ void GamePlay::update(float deltaTime)
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock
-	push_rock();
+	//push_rock();
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
@@ -717,7 +818,6 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 		break;
 	}
 }
-
 
 void GamePlay::EnablePressedControlLeftRight(bool isLeft, bool pressed)
 {
