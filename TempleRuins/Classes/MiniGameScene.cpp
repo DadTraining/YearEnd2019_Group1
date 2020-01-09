@@ -56,6 +56,7 @@ bool MiniGame::init()
 		diamond->getPhysicsBody()->setContactTestBitmask(1);
 		this->addChild(diamond);
 	}
+	
 	// Bar
 	auto edgeSp = Sprite::create();
 	auto boundBody = PhysicsBody::createEdgeBox(cocos2d::Size(visibleSize.width, 1), PhysicsMaterial(0.0f, 0.0f, 0.0f), 0);
@@ -130,12 +131,14 @@ bool MiniGame::onTouchBegan(Touch* touch, Event* event)
 
 bool MiniGame::onContactBegin(PhysicsContact &contact)
 {
+<<<<<<< HEAD
 	auto hide = Hide::create();
 	auto ObjA = contact.getShapeA()->getBody()->getNode();
 	auto ObjB = contact.getShapeB()->getBody()->getNode();
 
 	if (ObjA && ObjB)
 	{
+<<<<<<< HEAD
 		if (ObjA->getTag() == 0)
 		{
 			ObjB->runAction(hide);
@@ -144,7 +147,7 @@ bool MiniGame::onContactBegin(PhysicsContact &contact)
 		else if (ObjB->getTag() == 0)
 		{
 			ObjA->runAction(hide);
-			ObjB->getPhysicsBody()->setEnabled(false);
+			ObjA->getPhysicsBody()->setEnabled(false);
 		}
 	}
 
@@ -153,6 +156,7 @@ bool MiniGame::onContactBegin(PhysicsContact &contact)
 	//this->removeChild(ObjA, true);
 
 	return true;
+<<<<<<< HEAD
 }
 
 void MiniGame::update(float deltaTime)
