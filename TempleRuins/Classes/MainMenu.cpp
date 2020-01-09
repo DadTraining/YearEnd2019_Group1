@@ -5,12 +5,16 @@
 #include "MapGame.h"
 #include "ControlMusic.h"
 #include "SimpleAudioEngine.h"
+#include "cocos2d.h"
 USING_NS_CC;
 
 using namespace CocosDenshion;
 
 ui::CheckBox* music_ui;
 ui::CheckBox* sound_ui;
+cocos2d::ui::Button* play;
+cocos2d::ui::Button* setting;
+
 Size visibleSize;
 cocos2d::Sprite* mSettingLayer;
 Scene* MainMenu::createScene()
@@ -55,33 +59,28 @@ bool MainMenu::init()
 void MainMenu::addButton()
 {
 	//auto play = ResourceManager::GetInstance()->GetButtonById(0);
-	auto play = ui::Button::create("play_normal.png", "play_pressed.png");
-	play->setPosition(Vec2(220, 300));
-	play->setScale(0.33);
+	play = ui::Button::create("play_normal.png", "play_pressed.png");
+	play->setPosition(Vec2(230, 300));
+	play->setScale(0.35);
 
-	play->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		auto turn = ControlMusic::GetInstance()->isSound();
-	if (turn == true)
-	{
-		auto audio = SimpleAudioEngine::getInstance();
-		//log("asd");
-		audio->playEffect("./Sounds/sfx_clickbutton.mp3", false);
-		log("2");
-	}
-
-		if (type == ui::Widget::TouchEventType::ENDED) {
-			auto scene = MapGame::create();
-			Director::getInstance()->replaceScene(scene);
+	
+	play->addClickEventListener([&](Ref* event)
+	{ 
+		
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("./Sounds/sfx_clickbutton.mp3", false);
 		}
+		Director::getInstance()->replaceScene(MapGame::create());
 	});
 	addChild(play);
 	//auto setting = ResourceManager::GetInstance()->GetButtonById(1);
-	auto setting = ui::Button::create("./button/ST.png", "./button/setting_pressed.png");
+    setting = ui::Button::create("./button/ST.png", "./button/setting_pressed.png");
 	setting->setPosition(Vec2(740,40));
 	setting->setScale(0.5);
 	setting->addClickEventListener([&](Ref* event)
-	{
+	{  play->setVisible(false);
+	   setting->setVisible(false);
 		auto turn = ControlMusic::GetInstance()->isSound();
 		if (turn == true)
 		{
@@ -114,6 +113,8 @@ void MainMenu::createSetting()
 
 	returnButton->addClickEventListener([&](Ref* event)
 	{
+		play->setVisible(true);
+		setting->setVisible(true);
 		auto turn = ControlMusic::GetInstance()->isSound();
 	if (turn == true)
 	{
@@ -136,12 +137,12 @@ void MainMenu::createSetting()
 	music_ui->setSelected(ControlMusic::GetInstance()->isMusic());
 	music_ui->addClickEventListener([&](Ref* event)
 	{
-		//music_ui->isSelected();
+		music_ui->isSelected();
 
 		if (!music_ui->isSelected())
 		{
 			ControlMusic::GetInstance()->setMusic(true);
-			//SimpleAudioEngine::getInstance()->playBackgroundMusic("./Sounds/ingame.mp3", true);
+			SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/menu.mp3", true);
 		}
 		else
 		{

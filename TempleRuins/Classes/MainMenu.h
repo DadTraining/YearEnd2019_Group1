@@ -4,7 +4,7 @@
 #define __MAINMENU_SCENE_H__
 
 #include "cocos2d.h"
-
+USING_NS_CC;
 class MainMenu : public cocos2d::Scene
 {
 public:

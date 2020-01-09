@@ -33,18 +33,14 @@ bool LoadingLogo::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
-	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
-	background->removeFromParent();
-	float scale = MAX(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
-	background->setScale(scale);
-	//background->setScale(0.2);
-	addChild(background);
-	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
-
-auto logo = Sprite::create("play_pressed.png");
+	auto logo = Sprite::create("play_pressed.png");
 	logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height /1.65);
 	logo->setScale(0.33);
 	addChild(logo);
+
+	auto fadeInLogo = FadeIn::create(1.5f);
+	auto fadeOutLogo = FadeOut::create(1.5f);
+	logo->runAction(RepeatForever::create(Sequence::create(fadeInLogo, fadeOutLogo, nullptr)));
 
 
 
@@ -57,12 +53,14 @@ auto logo = Sprite::create("play_pressed.png");
 
 	auto loadingBarGB = Sprite::create("./Load/bloodbar_bg.png");
 	loadingBarGB->setPosition(Vec2(430, 150));
+	loadingBarGB->setFlippedX(true);
 	loadingBarGB->setScale(1.3);
-	addChild(loadingBarGB);
+	addChild(loadingBarGB,1);
 
 
 	static auto loadingbar = ui::LoadingBar::create("./Load/bloodbar.png");
-	loadingbar->setPosition(Vec2(385, 150));
+	//loadingbar->setPosition(Vec2(385, 150));
+	loadingbar->setPosition(loadingBarGB->getPosition());
 	loadingbar->setScale(1.28);
 
 
@@ -71,7 +69,7 @@ auto logo = Sprite::create("play_pressed.png");
 	
 	loadingbar->setDirection(ui::LoadingBar::Direction::LEFT);
 
-	addChild(loadingbar);
+	addChild(loadingbar,0);
 
 	auto updateLoadingBar = CallFunc::create([]() {
 		if (loadingbar->getPercent() < 100)
@@ -80,12 +78,12 @@ auto logo = Sprite::create("play_pressed.png");
 		}
 	});
 
-	auto sequenceRunUpdateLoadingBar = Sequence::createWithTwoActions(updateLoadingBar, DelayTime::create(0.01f));
+	auto sequenceRunUpdateLoadingBar = Sequence::createWithTwoActions(updateLoadingBar, DelayTime::create(0.08f));
 	auto repeat = Repeat::create(sequenceRunUpdateLoadingBar, 100);
 	loadingbar->runAction(repeat);
 
 
-	this->schedule(schedule_selector(LoadingLogo::changeLoading), 1.0f);
+	this->schedule(schedule_selector(LoadingLogo::changeLoading), 8.0f);
 	
 	//update
 
