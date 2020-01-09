@@ -3,6 +3,12 @@
 #include "cocos2d.h"
 
 cocos2d::Sprite* mPauseLayer;
+cocos2d::Sprite* mHeader;
+cocos2d::ui::Button *mBump;
+cocos2d::ui::Button *mJump;
+cocos2d::ui::Button *btnPause;
+#define SCALE_BUTTON 0.3
+
 
 
 Scene *GamePlay::createGame()
@@ -41,6 +47,9 @@ bool GamePlay::init()
 
 	// add button
 	InitialButton();
+
+	//create pause layer
+	createPauseLayer();
 
 	// update
 	scheduleUpdate();
@@ -212,9 +221,9 @@ void GamePlay::InitialButton()
 	//Button Pause
 	btnPause = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
 	btnPause->setAnchorPoint(Vec2(1, 1));
-	btnPause->setPosition(Director::getInstance()->getVisibleSize() - Size(10, 10));
-	//btnPause->addTouchEventListener(CC_CALLBACK_2(GamePlay::Pause, this));
-	addChild(btnPause);
+	btnPause->setPosition(Director::getInstance()->getVisibleSize() - Size(3, 8));
+	btnPause->addTouchEventListener(CC_CALLBACK_2(GamePlay::Pause, this));
+	addChild(btnPause,2);
 }
 
 void GamePlay::InitialPhysics()
@@ -250,13 +259,21 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		// charactor vs spider
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
 			((MainCharactor *)(main_charactor))->Stun();
+			if (this->main_charactor->GetBlood() <= 0)
+			{
+				log("die");
+			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - BLOOD_REDUCTION);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
 			((MainCharactor *)(main_charactor))->Stun();
+			if (this->main_charactor->GetBlood() <= 0)
+			{
+				log("die");
+			}
 		}
 
 		// main charactor vs diamond
@@ -297,64 +314,85 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 void GamePlay::CreateBloodBar()
 {
+	auto posY = Director::getInstance()->getVisibleSize().height;
+
+	mHeader = Sprite::create("header.png");
+	mHeader->setFlippedX(true);
+	mHeader->setAnchorPoint(Vec2(1,1));
+	mHeader->setPosition(Director::getInstance()->getVisibleSize());
+	mHeader->setVisible(true);
+	addChild(mHeader,2);
+
 	Layer *layer_1 = Layer::create();
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Vec2(150, this->main_charactor->getVisibleSize().height - 30));
+	bloodBar_1->setPosition(Director::getInstance()->getVisibleSize() - Size(230,30));
 
 	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 	bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-	this->addChild(bloodBar_1);
-	this->addChild(bloodBar_2);
+	this->addChild(bloodBar_1,3);
+	this->addChild(bloodBar_2,3);
 }
 
 void GamePlay::CreateNumDiamon()
 {
 	// sprite diamon
 	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(5);
-	NumDiamon->setScale(0.4);
-	NumDiamon->setPosition(bloodBar_2->getPosition() + Vec2(200, 0));
+	NumDiamon->setScale(0.35);
+	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
 	this->addChild(NumDiamon, 2);
 
 	// label number
 	CCString *num = CCString::createWithFormat("%i/50", numDiamond);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
-	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
+	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50,0));
 	this->addChild(LabelNumDiamon, 2);
 }
 
 void GamePlay::createPauseLayer()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	
 	//create pause layer
-	mPauseLayer = Sprite::create("alpha.png");
-	mPauseLayer->setContentSize(visibleSize);
+	mPauseLayer = Sprite::create("pause.png");
 	mPauseLayer->setPosition(visibleSize / 2);
+	mPauseLayer->setContentSize(visibleSize);
 	mPauseLayer->setVisible(false);
-	addChild(mPauseLayer);
+	addChild(mPauseLayer,2);
 
-	auto btnHome = ui::Button::create("home_normal.png", "home_pressed.png");
-	btnHome->setPosition(Vec2(visibleSize.width/2 - btnHome->getContentSize().width/2, visibleSize.height/2));
-	btnHome->addClickEventListener([](Ref* event) {		
+	//Button Home
+	auto btnHome = ui::Button::create("Button/home_normal.png", "Button/home_pressed.png");
+	btnHome->setScale(SCALE_BUTTON);
+	btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
+	btnHome->addClickEventListener([](Ref* event) {
 		Director::getInstance()->resume();
-		Director::getInstance()->replaceScene(MainMenu::createScene());
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 	});
 	mPauseLayer->addChild(btnHome);
 
-	auto btnResume = ui::Button::create("resume_normal.png", "resume_pressed.png");
-	btnResume->setPosition(Vec2(visibleSize.width / 2 + btnResume->getContentSize().width / 2, visibleSize.height / 2));
+	//Button Restart
+	auto btnRestart = ui::Button::create("Button/restart_normal.png", "Button/restart_pressed.png");
+	btnRestart->setScale(SCALE_BUTTON);
+	btnRestart->setPosition(btnHome->getPosition() + Size(0, 70));
+	mPauseLayer->addChild(btnRestart);
+
+	//Button Resume
+	auto btnResume = ui::Button::create("Button/resume_normal.png", "Button/resume_pressed.png");
+	btnResume->setScale(SCALE_BUTTON);
+	btnResume->setPosition(btnRestart->getPosition() + Size(0, 70));
 	btnResume->addClickEventListener([](Ref* event) {
 		Director::getInstance()->resume();
+		btnPause->setVisible(true);
+		mBump->setVisible(true);
+		mJump->setVisible(true);
 		mPauseLayer->setVisible(false);
 	});
 	mPauseLayer->addChild(btnResume);
 }
-
-
 
 void GamePlay::push_rock()
 {
@@ -446,10 +484,16 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::ENDED:
+		auto funcPause = CallFunc::create([]() {
+			Director::getInstance()->pause();
+		});
+		btnPause->setVisible(false);
+		mBump->setVisible(false);
+		mJump->setVisible(false);
 		mPauseLayer->setOpacity(0);
 		mPauseLayer->setVisible(true);
 		auto fadeIn = FadeIn::create(0.3f);
-		mPauseLayer->runAction(fadeIn);
+		mPauseLayer->runAction(Sequence::create(fadeIn, funcPause, nullptr));
 		break;
 	}
 }

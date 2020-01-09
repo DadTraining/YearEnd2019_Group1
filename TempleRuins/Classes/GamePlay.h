@@ -44,9 +44,7 @@ private:
 
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-	cocos2d::ui::Button *mBump;
-	cocos2d::ui::Button *mJump;
-	cocos2d::ui::Button *btnPause;
+	
 
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
