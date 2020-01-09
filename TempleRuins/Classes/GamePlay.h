@@ -41,12 +41,31 @@ private:
 	Vec2 _thang_1;
 	Vec2 _thang_2;
 
-	///////////
+	/////////// test ground not physic
 	Vec2 _ground_Pos;
+	Vec2 _ground_Pos_1;
+	Vec2 _ground_Pos_2;
 	void checkGround();
+	bool _collistionGround = false;
+	float distance_1(float p_1, float p_2);
+
+	//////////////////////////////// test tiep
+	Vec2 _ground_Pos_12;
+	Vec2 _ground_Pos_13;
+	Vec2 _ground_Pos_14;
+	Vec2 _ground_Pos_15;
+	Vec2 _ground_Pos_16;
+	Vec2 _ground_Pos_17;
+	Vec2 _ground_Pos_18;
+	Vec2 _ground_Pos_19;
+	Vec2 _ground_Pos_20;
+	Vec2 _ground_Pos_21;
+	Vec2 _ground_Pos_22;
+	Vec2 _ground_Pos_23;
+	Vec2 _ground_Pos_24;
+
 
 	Objject* main_charactor;
-
 	ui::LoadingBar *bloodBar_2;
 
 	//

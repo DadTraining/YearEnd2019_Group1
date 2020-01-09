@@ -4,12 +4,38 @@
 
 void GamePlay::checkGround()
 {
+	Vec2 _mapPos = _tileMap->getPosition();
+	_collistionGround = false;
 	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-	float dis = distance(_main_pos.y, _ground_Pos.y);
-	//log("%f", dis);
-	if (dis <= 5) {
-		log("cham dat");
+	float dis = distance_1(_main_pos.y, _ground_Pos.y);
+	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
+	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
+
+	log("%f", _main_pos.x);
+	log("%f", _ground_Pos_1.x - (0 - _mapPos.x));
+	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
+		}
 	}
+	else if (dis_1 <= 10 && (_main_pos.x > (_ground_Pos_1.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
+		}
+	}
+	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_2.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
+		}
+	}
+}
+
+float GamePlay::distance_1(float p_1, float p_2)
+{
+	return p_1 - p_2;
 }
 
 Scene *GamePlay::createGame()
@@ -114,13 +140,6 @@ void GamePlay::InitialObject()
 			spider->setCatogory(true);
 			spiders.push_back(spider);
 		}
-		/*else if (type == 3)
-		{
-			Spider* spider = new Spider(this);
-			spider->GetSprite()->setPosition(Vec2(posX, posY));
-			spider->setCatogory(false);
-			spiders.push_back(spider);
-		}*/
 		else if (type == 4) {
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX, posY));
@@ -145,6 +164,52 @@ void GamePlay::InitialObject()
 		else if (type == 9) {
 			_ground_Pos = Vec2(posX, posY);
 		}
+		else if (type == 10) {
+			_ground_Pos_1 = Vec2(posX, posY);
+		}
+		else if (type == 11) {
+			_ground_Pos_2 = Vec2(posX, posY);
+		}
+		else if (type == 12) {
+			_ground_Pos_12 = Vec2(posX, posY);
+		}
+		else if (type == 13) {
+			_ground_Pos_13 = Vec2(posX, posY);
+		}
+		else if (type == 14) {
+			_ground_Pos_14 = Vec2(posX, posY);
+		}
+		else if (type == 15) {
+			_ground_Pos_15 = Vec2(posX, posY);
+		}
+		else if (type == 16) {
+			_ground_Pos_16 = Vec2(posX, posY);
+		}
+		else if (type == 17) {
+			_ground_Pos_17 = Vec2(posX, posY);
+		}
+		else if (type == 18) {
+			_ground_Pos_18 = Vec2(posX, posY);
+		}
+		else if (type == 19) {
+			_ground_Pos_19 = Vec2(posX, posY);
+		}
+		else if (type == 20) {
+			_ground_Pos_20 = Vec2(posX, posY);
+		}
+		else if (type == 21) {
+			_ground_Pos_21 = Vec2(posX, posY);
+		}
+		else if (type == 22) {
+			_ground_Pos_22 = Vec2(posX, posY);
+		}
+		else if (type == 23) {
+			_ground_Pos_23 = Vec2(posX, posY);
+		}
+		else if (type == 24) {
+			_ground_Pos_24 = Vec2(posX, posY);
+		}
+
 	}
 }
 
@@ -611,7 +676,8 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 
 	if (mcMoveDistance != Vec2(0, 0))
-	{
+	{//////////////// if() test collision ground
+		if(!(_collistionGround && mcMoveDistance == Vec2(0, -SPEED_CHARACTOR_RUN)))
 		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
 	}
 
