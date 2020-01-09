@@ -38,4 +38,7 @@
 #define TAG_FIGHT 60
 #define TAG_COLLISION 90
 
+// define button
+#define SCALE_BUTTON 0.3
+
 #endif // !_DEFINES_H_

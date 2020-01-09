@@ -6,6 +6,7 @@
 #include "Diamond.h"
 #include "Rock.h"
 #include "Glass.h"
+#include "MainMenu.h"
 #include "cocos2d.h"
 
 #define BLOOD_REDUCTION 5
@@ -70,8 +71,7 @@ private:
 
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-	cocos2d::ui::Button *mBump;
-	cocos2d::ui::Button *mJump;
+	
 
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
@@ -101,9 +101,11 @@ public:
 	bool OnContactBegin(PhysicsContact &contact);
 	void CreateBloodBar();
 	void CreateNumDiamon();
+	void createPauseLayer();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void climb();
+	void Pause(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 
 	// push rock
 	void push_rock();
