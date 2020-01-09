@@ -5,14 +5,15 @@
 void GamePlay::checkGround()
 {
 	Vec2 _mapPos = _tileMap->getPosition();
-	_collistionGround = false;
 	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+	_collistionGround = false;
+
+
+	
 	float dis = distance_1(_main_pos.y, _ground_Pos.y);
 	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
 	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
 
-	log("%f", _main_pos.x);
-	log("%f", _ground_Pos_1.x - (0 - _mapPos.x));
 	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
 		_collistionGround = true;
 		if (_main_pos.y < _ground_Pos.y) {
@@ -31,11 +32,114 @@ void GamePlay::checkGround()
 			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
 		}
 	}
+
+	/////////// test tiep
+	if ((_main_pos.y < (_ground_Pos_12.y - (0 - _mapPos.y))) &&
+		(_main_pos.x >= (_ground_Pos_12.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_13.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_12.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_14.y - (0 - _mapPos.y))) && (_main_pos.x >= (_ground_Pos_14.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_14.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_25.y - (0 - _mapPos.y)) && (_main_pos.y > _ground_Pos_26.y - (0 - _mapPos.y)))
+		&& (_main_pos.x >= (_ground_Pos_25.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_13.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_25.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_25.y - (0 - _mapPos.y)) && (_main_pos.y > _ground_Pos_26.y - (0 - _mapPos.y)))
+		&& (_main_pos.x >= (_ground_Pos_14.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_16.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_25.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_16.y - (0 - _mapPos.y)))
+		&& (_main_pos.x >= (_ground_Pos_16.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_17.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_16.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_19.y - (0 - _mapPos.y)))
+		&& (_main_pos.x >= (_ground_Pos_19.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_18.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_19.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_20.y - (0 - _mapPos.y)) && (_main_pos.y > (_ground_Pos_27.y - (0 - _mapPos.y))))
+		&& (_main_pos.x >= (_ground_Pos_20.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_22.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_20.y - (0 - _mapPos.y)));
+	}
+	else if ((_main_pos.y < (_ground_Pos_21.y - (0 - _mapPos.y)) && (_main_pos.y >(_ground_Pos_28.y - (0 - _mapPos.y))))
+		&& (_main_pos.x >= (_ground_Pos_21.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_20.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_21.y - (0 - _mapPos.y)));
+	}
 }
 
 float GamePlay::distance_1(float p_1, float p_2)
 {
 	return p_1 - p_2;
+}
+
+void GamePlay::checkGround_1()
+{
+	Vec2 _mapPos = _tileMap->getPosition();
+	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+
+
+	for (int i = 0; i < vec3.size(); i++) {
+		if((_main_pos.y <= (vec3.at(i).y - (0 - _mapPos.y) + 5)) &&
+		   (_main_pos.y >= (vec3.at(i).y - (0 - _mapPos.y) - 15)) &&
+		   (_main_pos.x >= (vec3.at(i).x - (0 - _mapPos.x))) &&
+		   (_main_pos.x <= (vec3.at(i).z - (0 - _mapPos.x)))){
+			main_charactor->GetSprite()->setPosition(_main_pos.x, vec3.at(i).y - (0 - _mapPos.y));
+		}
+	}
+
+	//int index = -1;
+	//// ngang
+	//for (int i = 0; i < _ground_Pos_X1_R.size(); i++) {
+	//	if ((_main_pos.y <= (_ground_Pos_X1_R.at(i).y - (0 - _mapPos.y) + 5)) &&
+	//		(_main_pos.y >= (_ground_Pos_X1_R.at(i).y - (0 - _mapPos.y) - 15)) &&
+	//		(_main_pos.x <= (_ground_Pos_X1_R.at(i).x - (0 - _mapPos.x)))) {
+	//		index = i;
+	//	}	
+	//}
+
+
+	//for (int i = 0; i < _ground_Pos_X1_L.size(); i++) {
+	//	if (index != -1) {
+	//		if (_ground_Pos_X1_L.at(i).y == _ground_Pos_X1_R.at(index).y &&
+	//		   (_main_pos.x >= _ground_Pos_X1_L.at(i).x - (0 - _mapPos.x))) {
+	//		   main_charactor->GetSprite()->setPosition(_main_pos.x, _ground_Pos_X1_L.at(i).y - (0 - _mapPos.y));  
+	//		}
+	//	}
+	//}
+
+
+	// doc
+	/*for (int i = 0; i < _ground_Pos_X2.size(); i++) {
+		if ((_main_pos.x <= (_ground_Pos_X2.at(i).x - (0 - _mapPos.x) + 7))
+			&& (_main_pos.x >= (_ground_Pos_X2.at(i).x - (0 - _mapPos.x) - 7)) &&
+			(_main_pos.y <= _ground_Pos_X2.at(i).y - (0 - _mapPos.y) + 5)
+			&& (_main_pos.y >= _ground_Pos_X2.at(i).y - (0 - _mapPos.y) - 5)) {
+			main_charactor->GetSprite()->setPosition(_ground_Pos_X2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+		}
+	}*/
+}
+
+void GamePlay::addVec()
+{
+	for (int i = 0; i < _ground_Pos_X1_R.size(); i++) {
+		for (int j = 0; j < _ground_Pos_X1_L.size(); j++) {
+			if (_ground_Pos_X1_R.at(i).y == _ground_Pos_X1_L.at(j).y) {
+				/*float x = _ground_Pos_X1_L.at(j).x;
+				float y = _ground_Pos_X1_L.at(j).y;
+				float z = _ground_Pos_X1_R.at(i).x;
+				float t = _ground_Pos_X1_R.at(i).y;*/
+				vec3.push_back(Vec3(_ground_Pos_X1_L.at(j).x, _ground_Pos_X1_R.at(i).y, _ground_Pos_X1_R.at(i).x));
+			} // sai chi so i, j  ngu nhu bo
+		}
+	}
 }
 
 cocos2d::Sprite* mPauseLayer;
@@ -67,13 +171,16 @@ bool GamePlay::init()
 	CreateMap();
 
 	// initial physics for map
-	InitialPhysics();
+	//InitialPhysics();
 
 	// initial state
 	InitialState();
 
 	// initial object
 	InitialObject();
+
+	// add vex
+	addVec();
 
 	// add dispatcher
 	AddDispatcher();
@@ -131,9 +238,9 @@ void GamePlay::InitialObject()
 		auto object = objects.at(i);
 
 		auto properties = object.asValueMap();
-		int posX = properties.at("x").asInt();
+		float posX = properties.at("x").asFloat();
 		log("%f",posX);
-		int posY = properties.at("y").asInt();
+		float posY = properties.at("y").asFloat();
 		log("%f", posY);
 		int type = object.asValueMap().at("type").asInt();
 
@@ -223,7 +330,27 @@ void GamePlay::InitialObject()
 		else if (type == 24) {
 			_ground_Pos_24 = Vec2(posX, posY);
 		}
-
+		else if (type == 25) {
+			_ground_Pos_25 = Vec2(posX, posY);
+		}
+		else if (type == 26) {
+			_ground_Pos_26 = Vec2(posX, posY);
+		}
+		else if (type == 27) {
+			_ground_Pos_27 = Vec2(posX, posY);
+		}
+		else if (type == 28) {
+			_ground_Pos_28 = Vec2(posX, posY);
+		}
+		else if (type == 30) {
+			_ground_Pos_X1_R.push_back(Vec2(posX, posY));
+		}
+		else if (type == 31) {
+			_ground_Pos_X2.push_back(Vec2(posX, posY));
+		}
+		else if (type == 32) {
+			_ground_Pos_X1_L.push_back(Vec2(posX, posY));
+		}
 	}
 }
 
@@ -648,7 +775,8 @@ void GamePlay::update(float deltaTime)
 	climb();
 
 	////////////// ground
-	checkGround();
+	//checkGround();
+	checkGround_1();
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)

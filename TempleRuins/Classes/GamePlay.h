@@ -64,6 +64,18 @@ private:
 	Vec2 _ground_Pos_22;
 	Vec2 _ground_Pos_23;
 	Vec2 _ground_Pos_24;
+	Vec2 _ground_Pos_25;
+	Vec2 _ground_Pos_26;
+	Vec2 _ground_Pos_27;
+	Vec2 _ground_Pos_28;
+
+	//////////////// last test
+	vector<Vec2> _ground_Pos_X1_R;
+	vector<Vec2> _ground_Pos_X1_L;
+	vector<Vec2> _ground_Pos_X2;
+	void checkGround_1();
+	vector<Vec3> vec3;   // xL, y, xR
+	void addVec();
 
 
 	Objject* main_charactor;
