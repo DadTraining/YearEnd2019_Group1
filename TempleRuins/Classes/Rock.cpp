@@ -3,7 +3,7 @@
 void Rock::Init()
 {
 	// sprite
-	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(2));
+	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(0));
 	this->SetSprite(rock);
 	//rock->setScale(SCALE_ROCK);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));

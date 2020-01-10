@@ -2,36 +2,7 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
-void GamePlay::checkGround()
-{
-	Vec2 _mapPos = _tileMap->getPosition();
-	_collistionGround = false;
-	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-	float dis = distance_1(_main_pos.y, _ground_Pos.y);
-	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
-	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
 
-	log("%f", _main_pos.x);
-	log("%f", _ground_Pos_1.x - (0 - _mapPos.x));
-	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
-		}
-	}
-	else if (dis_1 <= 10 && (_main_pos.x > (_ground_Pos_1.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
-		}
-	}
-	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_2.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
-		}
-	}
-}
 
 float GamePlay::distance_1(float p_1, float p_2)
 {
@@ -43,6 +14,7 @@ cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
+//auto audio1 = SimpleAudioEngine::getInstance();
 
 
 Scene *GamePlay::createGame()
@@ -64,6 +36,10 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
+	//auto audio = SimpleAudioEngine::getInstance();
+	//audio->playBackgroundMusic("Sounds/angkor_wat.mp3", true);
+
+	log("create map*************************************************");
 	CreateMap();
 
 	// initial physics for map
@@ -132,17 +108,13 @@ void GamePlay::InitialObject()
 
 		auto properties = object.asValueMap();
 		int posX = properties.at("x").asInt();
-		log("%f",posX);
 		int posY = properties.at("y").asInt();
-		log("%f", posY);
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1)
 		{
 			this->main_charactor = new MainCharactor(this);
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
-			log("%f----------%f",posX,posY);
-			log("%f_______%f", this->main_charactor->GetSprite()->getPosition().x, this->main_charactor->GetSprite()->getPosition().y);
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
 			CreateNumDiamon();
@@ -300,6 +272,13 @@ void GamePlay::InitialButton()
 	mJump->setOpacity(50);
 	addChild(mJump);
 
+	////Button Down
+	//mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
+	//mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
+	//mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
+	//mJump->setOpacity(50);
+	//addChild(mJump);
+
 	//Button Pause
 	btnPause = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
 	btnPause->setAnchorPoint(Vec2(1, 1));
@@ -333,6 +312,8 @@ void GamePlay::InitialPhysics()
 
 bool GamePlay::OnContactBegin(PhysicsContact &contact)
 {
+	//auto audio = SimpleAudioEngine::getInstance();
+
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
 
@@ -342,44 +323,49 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
+				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
 			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
+				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
 			}
 		}
+
 
 		// main charactor vs diamond
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_DIAMOND)
 		{
+			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
 			numDiamond++;
 			nodeB->removeFromParentAndCleanup(true);
-			//nodeB->setPosition(Vec2(-200, -200));
 		}
 		else if (nodeA->getTag() == TAG_DIAMOND && nodeB->getTag() == TAG_CHARACTOR)
 		{
+			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
 			numDiamond++;
 			nodeA->removeFromParentAndCleanup(true);
-			//nodeA->setPosition(Vec2(-200, -200));
 		}
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			//nodeB->removeFromParentAndCleanup(true);
 			nodeB->setPosition(Vec2(-100, -100));
+			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			//nodeA->removeFromParentAndCleanup(true);
 			nodeA->setPosition(Vec2(-100, -100));
+			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
 		}
 
 		// fight
@@ -423,7 +409,7 @@ void GamePlay::CreateBloodBar()
 void GamePlay::CreateNumDiamon()
 {
 	// sprite diamon
-	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(5);
+	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(3);
 	NumDiamon->setScale(0.35);
 	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
 	this->addChild(NumDiamon, 2);
@@ -438,7 +424,7 @@ void GamePlay::CreateNumDiamon()
 void GamePlay::createPauseLayer()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	
+
 	//create pause layer
 	mPauseLayer = Sprite::create("pause.png");
 	mPauseLayer->setPosition(visibleSize / 2);
@@ -451,6 +437,9 @@ void GamePlay::createPauseLayer()
 	btnHome->setScale(SCALE_BUTTON);
 	btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
 	btnHome->addClickEventListener([](Ref* event) {
+		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		SimpleAudioEngine::getInstance()->resumeAllEffects();
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
 		Director::getInstance()->resume();
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 	});
@@ -460,6 +449,9 @@ void GamePlay::createPauseLayer()
 	auto btnRestart = ui::Button::create("Button/restart_normal.png", "Button/restart_pressed.png");
 	btnRestart->setScale(SCALE_BUTTON);
 	btnRestart->setPosition(btnHome->getPosition() + Size(0, 70));
+	btnRestart->addClickEventListener([](Ref* event) {
+		//audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+	});
 	mPauseLayer->addChild(btnRestart);
 
 	//Button Resume
@@ -467,6 +459,9 @@ void GamePlay::createPauseLayer()
 	btnResume->setScale(SCALE_BUTTON);
 	btnResume->setPosition(btnRestart->getPosition() + Size(0, 70));
 	btnResume->addClickEventListener([](Ref* event) {
+		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		SimpleAudioEngine::getInstance()->resumeAllEffects();
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
 		Director::getInstance()->resume();
 		btnPause->setVisible(true);
 		mBump->setVisible(true);
@@ -553,8 +548,12 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
+	{
+		//auto audio = SimpleAudioEngine::getInstance();
+		//audio->playEffect("Sounds/sfx_character_icehammer.mp3", false, 1.0f, 1.0f, 1.0f);
 		fight = true;
-		break;
+		break; 
+	}
 	case ui::Widget::TouchEventType::ENDED:
 		fight = false;
 		break;
@@ -566,14 +565,14 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
-		log("began");
-		//jump = true;
+	{
+		/*auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("Sounds/sfx_character_hammer.mp3", false, 1.0f, 1.0f, 1.0f);*/
 		fall = false;
 		moveUp = true;
 		break;
+	}
 	case ui::Widget::TouchEventType::ENDED:
-		log("ended");
-		//jump = false;
 		fall = true;
 		moveUp = false;
 		break;
@@ -602,13 +601,46 @@ void GamePlay::climb()
 	}
 }
 
+void GamePlay::checkGround()
+{
+	Vec2 _mapPos = _tileMap->getPosition();
+	_collistionGround = false;
+	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+	float dis = distance_1(_main_pos.y, _ground_Pos.y);
+	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
+	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
+
+	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
+		}
+	}
+	else if (dis_1 <= 10 && (_main_pos.x >(_ground_Pos_1.x - (0 - _mapPos.x)))) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
+		}
+	}
+	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
+		_collistionGround = true;
+		if (_main_pos.y < _ground_Pos_2.y) {
+			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
+		}
+	}
+}
+
 void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::ENDED:
+		//auto audio = SimpleAudioEngine::getInstance();
+		//audio->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
 		auto funcPause = CallFunc::create([]() {
 			Director::getInstance()->pause();
+			/*SimpleAudioEngine::getInstance()->pauseAllEffects();
+			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();*/
 		});
 		btnPause->setVisible(false);
 		mBump->setVisible(false);

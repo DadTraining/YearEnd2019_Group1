@@ -8,6 +8,9 @@
 #include "Glass.h"
 #include "MainMenu.h"
 #include "cocos2d.h"
+//#include "SimpleAudioEngine.h"
+//using namespace CocosDenshion;
+
 
 #define BLOOD_REDUCTION 5
 
@@ -71,7 +74,6 @@ private:
 
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-	
 
 
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;

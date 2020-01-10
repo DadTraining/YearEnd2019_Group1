@@ -42,7 +42,7 @@ private:
 	static ResourceManager* instance;
 public:
 	static ResourceManager* GetInstance();
-	void Init(const std::string path);
+	void Init(const string path);
 	void Load(string fileName);
 	Sprite* GetSpriteById(int id);
 	Sprite* GetItemById(int id);
