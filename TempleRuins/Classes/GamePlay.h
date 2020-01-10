@@ -42,50 +42,33 @@ private:
 	Vec2 _thang_1;
 	Vec2 _thang_2;
 
-	/////////// test ground not physic
-	Vec2 _ground_Pos;
-	Vec2 _ground_Pos_1;
-	Vec2 _ground_Pos_2;
-	void checkGround();
-	bool _collistionGround = false;
-	float distance_1(float p_1, float p_2);
-
-	//////////////////////////////// test tiep
-	Vec2 _ground_Pos_12;
-	Vec2 _ground_Pos_13;
-	Vec2 _ground_Pos_14;
-	Vec2 _ground_Pos_15;
-	Vec2 _ground_Pos_16;
-	Vec2 _ground_Pos_17;
-	Vec2 _ground_Pos_18;
-	Vec2 _ground_Pos_19;
-	Vec2 _ground_Pos_20;
-	Vec2 _ground_Pos_21;
-	Vec2 _ground_Pos_22;
-	Vec2 _ground_Pos_23;
-	Vec2 _ground_Pos_24;
-	Vec2 _ground_Pos_25;
-	Vec2 _ground_Pos_26;
-	Vec2 _ground_Pos_27;
-	Vec2 _ground_Pos_28;
-
-	//////////////// last test
+	// collision down
 	vector<Vec2> _ground_Pos_X1_R;
 	vector<Vec2> _ground_Pos_X1_L;
-	vector<Vec2> _ground_Pos_X2;
+	vector<Vec2> _ground_Pos_X2; ///////////////////////////
 	void checkGround_1();
 	vector<Vec3> vec3;   // xL, y, xR
 	void addVec();
+	float distance_1(float p_1, float p_2);
 
+	// collision up
+	vector<Vec2> _ground_Pos_R;
+	vector<Vec2> _ground_Pos_L;
+	vector<Vec3> _Vec3_Up;   // xL, y, xR
 
+	// collision side
+	vector<Vec2> _ground_Pos_U;
+	vector<Vec2> _ground_Pos_D;
+	vector<Vec3> _Vec3_Side;   // yU, x, yD
+
+	// main charactor
 	Objject* main_charactor;
 	ui::LoadingBar *bloodBar_2;
 
-	//
+
+	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
 	
-
-
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
 	cocos2d::Point mCurrentTouchPoint;
@@ -95,8 +78,11 @@ private:
 	cocos2d::Sprite* mMoveRightController;
 	cocos2d::Sprite* mMoveRightControllerPressed;
 
-
+	// object map
 	cocos2d::TMXObjectGroup* mObjectGroup;
+	cocos2d::TMXObjectGroup* mObjects_collision_up;
+	cocos2d::TMXObjectGroup* Objects_collision_side;
+
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;

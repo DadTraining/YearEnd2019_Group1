@@ -2,79 +2,6 @@
 #include "GamePlay.h"
 #include "cocos2d.h"
 
-void GamePlay::checkGround()
-{
-	Vec2 _mapPos = _tileMap->getPosition();
-	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-	_collistionGround = false;
-
-
-	
-	float dis = distance_1(_main_pos.y, _ground_Pos.y);
-	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
-	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
-
-	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
-		}
-	}
-	else if (dis_1 <= 10 && (_main_pos.x > (_ground_Pos_1.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
-		}
-	}
-	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_2.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
-		}
-	}
-
-	/////////// test tiep
-	if ((_main_pos.y < (_ground_Pos_12.y - (0 - _mapPos.y))) &&
-		(_main_pos.x >= (_ground_Pos_12.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_13.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_12.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_14.y - (0 - _mapPos.y))) && (_main_pos.x >= (_ground_Pos_14.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_14.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_25.y - (0 - _mapPos.y)) && (_main_pos.y > _ground_Pos_26.y - (0 - _mapPos.y)))
-		&& (_main_pos.x >= (_ground_Pos_25.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_13.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_25.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_25.y - (0 - _mapPos.y)) && (_main_pos.y > _ground_Pos_26.y - (0 - _mapPos.y)))
-		&& (_main_pos.x >= (_ground_Pos_14.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_16.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_25.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_16.y - (0 - _mapPos.y)))
-		&& (_main_pos.x >= (_ground_Pos_16.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_17.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_16.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_19.y - (0 - _mapPos.y)))
-		&& (_main_pos.x >= (_ground_Pos_19.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_18.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_19.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_20.y - (0 - _mapPos.y)) && (_main_pos.y > (_ground_Pos_27.y - (0 - _mapPos.y))))
-		&& (_main_pos.x >= (_ground_Pos_20.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_22.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_20.y - (0 - _mapPos.y)));
-	}
-	else if ((_main_pos.y < (_ground_Pos_21.y - (0 - _mapPos.y)) && (_main_pos.y >(_ground_Pos_28.y - (0 - _mapPos.y))))
-		&& (_main_pos.x >= (_ground_Pos_21.x - (0 - _mapPos.x)) && _main_pos.x <= (_ground_Pos_20.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_21.y - (0 - _mapPos.y)));
-	}
-}
-
 float GamePlay::distance_1(float p_1, float p_2)
 {
 	return p_1 - p_2;
@@ -85,9 +12,9 @@ void GamePlay::checkGround_1()
 	Vec2 _mapPos = _tileMap->getPosition();
 	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
 
-
+	// down
 	for (int i = 0; i < vec3.size(); i++) {
-		if((_main_pos.y <= (vec3.at(i).y - (0 - _mapPos.y) + 5)) &&
+		if((_main_pos.y <= (vec3.at(i).y - (0 - _mapPos.y) + 3)) &&
 		   (_main_pos.y >= (vec3.at(i).y - (0 - _mapPos.y) - 15)) &&
 		   (_main_pos.x >= (vec3.at(i).x - (0 - _mapPos.x))) &&
 		   (_main_pos.x <= (vec3.at(i).z - (0 - _mapPos.x)))){
@@ -95,49 +22,58 @@ void GamePlay::checkGround_1()
 		}
 	}
 
-	//int index = -1;
-	//// ngang
-	//for (int i = 0; i < _ground_Pos_X1_R.size(); i++) {
-	//	if ((_main_pos.y <= (_ground_Pos_X1_R.at(i).y - (0 - _mapPos.y) + 5)) &&
-	//		(_main_pos.y >= (_ground_Pos_X1_R.at(i).y - (0 - _mapPos.y) - 15)) &&
-	//		(_main_pos.x <= (_ground_Pos_X1_R.at(i).x - (0 - _mapPos.x)))) {
-	//		index = i;
-	//	}	
-	//}
-
-
-	//for (int i = 0; i < _ground_Pos_X1_L.size(); i++) {
-	//	if (index != -1) {
-	//		if (_ground_Pos_X1_L.at(i).y == _ground_Pos_X1_R.at(index).y &&
-	//		   (_main_pos.x >= _ground_Pos_X1_L.at(i).x - (0 - _mapPos.x))) {
-	//		   main_charactor->GetSprite()->setPosition(_main_pos.x, _ground_Pos_X1_L.at(i).y - (0 - _mapPos.y));  
-	//		}
-	//	}
-	//}
-
-
-	// doc
-	/*for (int i = 0; i < _ground_Pos_X2.size(); i++) {
-		if ((_main_pos.x <= (_ground_Pos_X2.at(i).x - (0 - _mapPos.x) + 7))
-			&& (_main_pos.x >= (_ground_Pos_X2.at(i).x - (0 - _mapPos.x) - 7)) &&
-			(_main_pos.y <= _ground_Pos_X2.at(i).y - (0 - _mapPos.y) + 5)
-			&& (_main_pos.y >= _ground_Pos_X2.at(i).y - (0 - _mapPos.y) - 5)) {
-			main_charactor->GetSprite()->setPosition(_ground_Pos_X2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+	// up
+	for (int i = 0; i < _Vec3_Up.size(); i++) {
+		if ((_main_pos.y <= (_Vec3_Up.at(i).y - (0 - _mapPos.y) + 15)) &&
+			(_main_pos.y >= (_Vec3_Up.at(i).y - (0 - _mapPos.y) + 5)) &&
+			(_main_pos.x >= (_Vec3_Up.at(i).x - (0 - _mapPos.x))) &&
+			(_main_pos.x <= (_Vec3_Up.at(i).z - (0 - _mapPos.x)))) {
+			main_charactor->GetSprite()->setPosition(_main_pos.x, _Vec3_Up.at(i).y - (0 - _mapPos.y));
 		}
-	}*/
+	}
+
+	// side
+	for (int i = 0; i < _Vec3_Side.size(); i++) {
+		if ((_main_pos.x <= (_Vec3_Side.at(i).y - (0 - _mapPos.x) + 10)) &&
+			(_main_pos.x >= (_Vec3_Side.at(i).y - (0 - _mapPos.x) - 10)) &&
+			(_main_pos.y >= (_Vec3_Side.at(i).z - (0 - _mapPos.y))) &&
+			(_main_pos.y <= (_Vec3_Side.at(i).x - (0 - _mapPos.y)))) {
+			if (_main_pos.x > _Vec3_Side.at(i).y - (0 - _mapPos.x)) {
+				main_charactor->GetSprite()->setPosition(_Vec3_Side.at(i).y - (0 - _mapPos.x) + 3, _main_pos.y);
+			}
+			else if (_main_pos.x < _Vec3_Side.at(i).y - (0 - _mapPos.x)) {
+				main_charactor->GetSprite()->setPosition(_Vec3_Side.at(i).y - (0 - _mapPos.x) - 3, _main_pos.y);
+			}
+		}
+	}
 }
 
 void GamePlay::addVec()
 {
+	// down
 	for (int i = 0; i < _ground_Pos_X1_R.size(); i++) {
 		for (int j = 0; j < _ground_Pos_X1_L.size(); j++) {
 			if (_ground_Pos_X1_R.at(i).y == _ground_Pos_X1_L.at(j).y) {
-				/*float x = _ground_Pos_X1_L.at(j).x;
-				float y = _ground_Pos_X1_L.at(j).y;
-				float z = _ground_Pos_X1_R.at(i).x;
-				float t = _ground_Pos_X1_R.at(i).y;*/
 				vec3.push_back(Vec3(_ground_Pos_X1_L.at(j).x, _ground_Pos_X1_R.at(i).y, _ground_Pos_X1_R.at(i).x));
 			} // sai chi so i, j  ngu nhu bo
+		}
+	}
+
+	// up
+	for (int i = 0; i < _ground_Pos_R.size(); i++) {
+		for (int j = 0; j < _ground_Pos_L.size(); j++) {
+			if (_ground_Pos_R.at(i).y == _ground_Pos_L.at(j).y) {
+				_Vec3_Up.push_back(Vec3(_ground_Pos_L.at(j).x, _ground_Pos_R.at(i).y, _ground_Pos_R.at(i).x));
+			}
+		}
+	}
+
+	// side
+	for (int i = 0; i < _ground_Pos_U.size(); i++) {
+		for (int j = 0; j < _ground_Pos_D.size(); j++) {
+			if (_ground_Pos_U.at(i).x == _ground_Pos_D.at(j).x) {
+				_Vec3_Side.push_back(Vec3(_ground_Pos_U.at(i).y, _ground_Pos_D.at(j).x, _ground_Pos_D.at(j).y));
+			}
 		}
 	}
 }
@@ -209,6 +145,8 @@ void GamePlay::CreateMap()
 	_phy->setVisible(false);
 	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
+	mObjects_collision_up = _tileMap->getObjectGroup("Objects_collision_up");
+	Objects_collision_side = _tileMap->getObjectGroup("Objects_collision_side");
 
 	this->addChild(_tileMap);
 }
@@ -282,66 +220,6 @@ void GamePlay::InitialObject()
 		else if (type == 8) {
 			_thang_2 = Vec2(posX, posY);
 		}
-		else if (type == 9) {
-			_ground_Pos = Vec2(posX, posY);
-		}
-		else if (type == 10) {
-			_ground_Pos_1 = Vec2(posX, posY);
-		}
-		else if (type == 11) {
-			_ground_Pos_2 = Vec2(posX, posY);
-		}
-		else if (type == 12) {
-			_ground_Pos_12 = Vec2(posX, posY);
-		}
-		else if (type == 13) {
-			_ground_Pos_13 = Vec2(posX, posY);
-		}
-		else if (type == 14) {
-			_ground_Pos_14 = Vec2(posX, posY);
-		}
-		else if (type == 15) {
-			_ground_Pos_15 = Vec2(posX, posY);
-		}
-		else if (type == 16) {
-			_ground_Pos_16 = Vec2(posX, posY);
-		}
-		else if (type == 17) {
-			_ground_Pos_17 = Vec2(posX, posY);
-		}
-		else if (type == 18) {
-			_ground_Pos_18 = Vec2(posX, posY);
-		}
-		else if (type == 19) {
-			_ground_Pos_19 = Vec2(posX, posY);
-		}
-		else if (type == 20) {
-			_ground_Pos_20 = Vec2(posX, posY);
-		}
-		else if (type == 21) {
-			_ground_Pos_21 = Vec2(posX, posY);
-		}
-		else if (type == 22) {
-			_ground_Pos_22 = Vec2(posX, posY);
-		}
-		else if (type == 23) {
-			_ground_Pos_23 = Vec2(posX, posY);
-		}
-		else if (type == 24) {
-			_ground_Pos_24 = Vec2(posX, posY);
-		}
-		else if (type == 25) {
-			_ground_Pos_25 = Vec2(posX, posY);
-		}
-		else if (type == 26) {
-			_ground_Pos_26 = Vec2(posX, posY);
-		}
-		else if (type == 27) {
-			_ground_Pos_27 = Vec2(posX, posY);
-		}
-		else if (type == 28) {
-			_ground_Pos_28 = Vec2(posX, posY);
-		}
 		else if (type == 30) {
 			_ground_Pos_X1_R.push_back(Vec2(posX, posY));
 		}
@@ -350,6 +228,42 @@ void GamePlay::InitialObject()
 		}
 		else if (type == 32) {
 			_ground_Pos_X1_L.push_back(Vec2(posX, posY));
+		}
+	}
+
+	// get object collision up
+	auto objects_up = mObjects_collision_up->getObjects();
+	for (int i = 0; i < objects_up.size(); i++) {
+		auto object = objects_up.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			_ground_Pos_L.push_back(Vec2(posX, posY));
+		}
+		else if (type == 2) {
+			_ground_Pos_R.push_back(Vec2(posX, posY));
+		}
+	}
+
+	// get object collision side
+	auto objects_side = Objects_collision_side->getObjects();
+	for (int i = 0; i < objects_side.size(); i++) {
+		auto object = objects_side.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			_ground_Pos_U.push_back(Vec2(posX, posY));
+		}
+		else if (type == 2) {
+			_ground_Pos_D.push_back(Vec2(posX, posY));
 		}
 	}
 }
@@ -774,8 +688,7 @@ void GamePlay::update(float deltaTime)
 	// leo thang
 	climb();
 
-	////////////// ground
-	//checkGround();
+	// collision vs ground
 	checkGround_1();
 }
 
@@ -860,7 +773,6 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			}
 		}
 	}
-
 	else if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
 		_tileMap->getPosition().y < 0) {
 		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
@@ -881,11 +793,8 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
 		}
 	}
-
-
 	if (mcMoveDistance != Vec2(0, 0))
-	{//////////////// if() test collision ground
-		if(!(_collistionGround && mcMoveDistance == Vec2(0, -SPEED_CHARACTOR_RUN)))
+	{
 		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
 	}
 
