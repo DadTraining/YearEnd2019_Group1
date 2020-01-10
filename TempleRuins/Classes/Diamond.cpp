@@ -23,7 +23,7 @@ Sprite* Diamond::Clone(cocos2d::Sprite* sprite)
 void Diamond::Init()
 {
 	//create sprite
-	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(5)));
+	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(3)));
 	this->GetSprite()->setScale(SCALE_DIAMOND);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 	this->layer->addChild(this->GetSprite());

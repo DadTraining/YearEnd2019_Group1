@@ -8,8 +8,8 @@
 #include "Glass.h"
 #include "MainMenu.h"
 #include "cocos2d.h"
-#include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+//#include "SimpleAudioEngine.h"
+//using namespace CocosDenshion;
 
 
 #define BLOOD_REDUCTION 5

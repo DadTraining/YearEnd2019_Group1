@@ -14,7 +14,7 @@ ResourceManager * ResourceManager::GetInstance()
 	return instance;
 }
 
-void ResourceManager::Init(const std::string path)
+void ResourceManager::Init(const string path)
 {
 	this->m_dataFolderPath = path;
 	Load(m_dataFolderPath);
@@ -41,7 +41,9 @@ void ResourceManager::Load(std::string fileName)
 
 				// create sprite
 				auto sprite = Sprite::create(path);
+				log("path sprite1: %s", path.c_str());
 				sprite->retain();
+				log("path sprite1 after retain: %s", path.c_str());
 
 				// insert map
 				m_sprites.insert(pair<int, Sprite*>(id, sprite));
@@ -81,7 +83,9 @@ void ResourceManager::Load(std::string fileName)
 
 				// create sprite
 				auto button = ui::Button::create(path, "");
+				log("path button: %s", path.c_str());
 				button->retain();
+				log("path button after retain: %s", path.c_str());
 
 				// insert map
 				m_button.insert(pair<int, ui::Button*>(id, button));
@@ -95,17 +99,13 @@ void ResourceManager::Load(std::string fileName)
 			while (number > 0) {
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
-
 				i++;                  // path
 				std::string path = Get_Path(arr_source[i]);
-
 				// create sprite
 				auto item = Sprite::create(path);
 				item->retain();
-
 				// insert map
 				m_item.insert(pair<int, Sprite*>(id, item));
-
 				number--;
 			}
 		}

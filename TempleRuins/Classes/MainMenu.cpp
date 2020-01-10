@@ -7,8 +7,8 @@
 #include "GamePlay.h"
 
 USING_NS_CC;
-#include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+//#include "SimpleAudioEngine.h"
+//using namespace CocosDenshion;
 
 Scene* MainMenu::createScene()
 {
@@ -22,39 +22,42 @@ bool MainMenu::init()
     // 1. super init first
     if ( !Scene::init() )
     {
+		log("if init false*******************************************");
         return false;
     }
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto background = Sprite::create("background1.png");
+	log("");
 	background->removeFromParent();
+	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 1.1);
 	addChild(background);
-	background->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height/1.1 );
+	log("addChild background****************************8");
 
 
-	auto label = Label::createWithTTF("Temple Ruin","./fonts/Marker Felt.ttf",45);
+	auto label = Label::createWithTTF("Temple Ruin","fonts/MarkerFelt.ttf",45);
+	log("create label Game's Name**************************");
 	label->setColor(Color3B::ORANGE);
-	label->removeFromParent();
+	//label->removeFromParent();
 	label->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height /1.2);
-	
 	label->enableShadow();
 	label->enableOutline(Color4B::WHITE, 1);
-
 	addChild(label);
-	auto audio = SimpleAudioEngine::getInstance();
-
-	audio->playBackgroundMusic("./Sounds/19.mp3", true);
+	
+	/*auto audio = SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("./Sounds/19.mp3", true);*/
 
 	
- auto play = ResourceManager::GetInstance()->GetButtonById(0);
+	auto play = ResourceManager::GetInstance()->GetButtonById(0);
+	log("create button PLAY by resourcer manager**************************");
     play->setPosition(Vec2(visibleSize.width / 2, visibleSize.height /1.5));
     play->setScale(0.3);
 
     play->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
-		auto audio = SimpleAudioEngine::getInstance();
-	    audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+	/*	auto audio = SimpleAudioEngine::getInstance();
+	    audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);*/
 
             if (type == ui::Widget::TouchEventType::ENDED) {
                 auto scene = GamePlay::createGame();
@@ -66,14 +69,15 @@ bool MainMenu::init()
 
 
     auto setting = ResourceManager::GetInstance()->GetButtonById(1);
+	log("create button SETTING by resourcer manager**************************");
     setting->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height /2.3));
     setting->setScale(0.5);
     
   
     setting->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
-		auto audio = SimpleAudioEngine::getInstance();
-	audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		/*auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("./Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);*/
 
             if (type == ui::Widget::TouchEventType::ENDED) {
                 auto scene = SettingScene::create();
@@ -83,6 +87,7 @@ bool MainMenu::init()
 	addChild(setting);
 
 	auto shop = ResourceManager::GetInstance()->GetButtonById(2);
+	log("create button SHOP by resourcer manager**************************");
 	shop->setPosition(Vec2(visibleSize.width /1.7, visibleSize.height / 2.3));
 	shop->setScale(0.5);
 
@@ -90,7 +95,7 @@ bool MainMenu::init()
     return true;
 }
 
-void MainMenu::update(FLOAT deltaTime)
+void MainMenu::update(float deltaTime)
 {
 }
 
