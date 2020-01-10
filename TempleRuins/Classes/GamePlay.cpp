@@ -3,6 +3,9 @@
 #include "cocos2d.h"
 
 
+#include "ControlMusic.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 float GamePlay::distance_1(float p_1, float p_2)
 {
@@ -441,7 +444,7 @@ void GamePlay::createPauseLayer()
 		SimpleAudioEngine::getInstance()->resumeAllEffects();
 		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
 		Director::getInstance()->resume();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MapGame::createScene()));
 	});
 	mPauseLayer->addChild(btnHome);
 

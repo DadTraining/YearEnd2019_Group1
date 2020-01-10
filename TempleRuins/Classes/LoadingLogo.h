@@ -2,14 +2,13 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "CountTimer.h"
 
 #define TIME_LOAD 3
 
 class LoadingLogo : public cocos2d::Scene
 {
 private:
-	CountTimer* count;
+	//CountTimer* count;
 
 public:
 	static cocos2d::Scene* createScene();

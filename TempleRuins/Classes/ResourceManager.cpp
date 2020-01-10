@@ -51,6 +51,8 @@ void ResourceManager::Load(std::string fileName)
 				number--;
 			}
 		}
+		
+		
 		else if (arr_name[0] == "#LOAD") {
 			// number 
 			int number = atoi(arr_name[1].c_str());
@@ -273,6 +275,10 @@ void ResourceManager::Load(std::string fileName)
 	}
 }
 
+Sprite * ResourceManager::GetBackgroundById(int id)
+{
+	return m_background.at(id);
+}
 Sprite * ResourceManager::GetSpriteById(int id)
 {
 	return m_sprites.at(id);
@@ -286,11 +292,6 @@ Sprite * ResourceManager::GetItemById(int id)
 ui::Button * ResourceManager::GetButtonById(int id)
 {
 	return m_button.at(id);
-}
-
-Sprite * ResourceManager::GetLoadById(int id)
-{
-	return m_load.at(id);
 }
 
 Vector<SpriteFrame*> ResourceManager::GetSpiderUp()

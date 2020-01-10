@@ -7,6 +7,7 @@
 #include "Rock.h"
 #include "Glass.h"
 #include "MainMenu.h"
+#include "MapGame.h"
 #include "cocos2d.h"
 //#include "SimpleAudioEngine.h"
 //using namespace CocosDenshion;

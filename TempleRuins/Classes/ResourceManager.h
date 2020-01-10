@@ -36,6 +36,7 @@ private:
 	map<int, ui::Button*> m_button;
 	map<int, Vector<SpriteFrame*>> m_spider_action;
 	map<int, Vector<SpriteFrame*>> m_charactor_action;
+	map<int, Sprite*> m_background;
 	map<int, Vector<SpriteFrame*>> m_diamond_action;
 
 	ResourceManager();
@@ -45,9 +46,10 @@ public:
 	void Init(const string path);
 	void Load(string fileName);
 	Sprite* GetSpriteById(int id);
+	Sprite * GetBackgroundById(int id);
+	Sprite* GetLoadById(int id);
 	Sprite* GetItemById(int id);
 	ui::Button* GetButtonById(int id);
-	Sprite* GetLoadById(int id);
 	Vector<SpriteFrame*> GetSpiderUp();
 	Vector<SpriteFrame*> GetSpiderDown();
 	Vector<SpriteFrame*> GetSpiderSide();

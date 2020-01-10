@@ -10,7 +10,7 @@ PATH: Diamond/1_03.png
 #LOAD 1
 ID: 0
 PATH: Load/circle_3.png
-#BUTTON 6
+#BUTTON 3
 ID: 0
 PATH: Button/about.png
 ID: 1
