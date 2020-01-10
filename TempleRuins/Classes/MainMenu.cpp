@@ -34,7 +34,7 @@ bool MainMenu::init()
 	//scheduleUpdate();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto background = ResourceManager::GetInstance()->GetBackgroundById(0);
+	auto background = Sprite::create("background1.png");
 	background->removeFromParent();
 	float scale = MAX(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
 	background->setScale(scale);
@@ -46,9 +46,9 @@ bool MainMenu::init()
 	if (turn == true)
 	{
 		auto audio = SimpleAudioEngine::getInstance();
-		log("asd");
+		//log("asd");
 		audio->playBackgroundMusic("Sounds/menu.mp3", true);
-		log("2");
+		//log("2");
 	}
 	createSetting();
 	MainMenu::addButton();
@@ -87,7 +87,7 @@ void MainMenu::addButton()
 			auto audio = SimpleAudioEngine::getInstance();
 			//log("asd");
 			audio->playEffect("./Sounds/sfx_clickbutton.mp3", false);
-			log("2");
+			//log("2");
 		}
 		activeSetting();
 	});
@@ -121,7 +121,7 @@ void MainMenu::createSetting()
 		auto audio = SimpleAudioEngine::getInstance();
 		//log("asd");
 		audio->playEffect("./Sounds/sfx_clickbutton.mp3", false);
-		log("2");
+		//log("2");
 	}
 	mSettingLayer->setVisible(false);
 	});

@@ -82,6 +82,6 @@ bool MapGame::init()
     return true;
 }
 
-void MapGame::update(FLOAT deltaTime)
+void MapGame::update(float deltaTime)
 {
 }

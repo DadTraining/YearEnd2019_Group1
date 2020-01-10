@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\USER\Desktop\cocos2dx\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\platform\android\libcocos2dx\src\main\shaders"/></dataSet><dataSet config="debug"><source path="C:\Users\USER\Desktop\cocos2dx\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\platform\android\libcocos2dx\src\debug\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="E:\project_gameloft\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\platform\android\libcocos2dx\src\main\shaders"/></dataSet><dataSet config="debug"><source path="E:\project_gameloft\YearEnd2019_Group1\TempleRuins\cocos2d\cocos\platform\android\libcocos2dx\src\debug\shaders"/></dataSet></merger>
