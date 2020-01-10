@@ -69,13 +69,13 @@ void MainMenu::addButton()
 		
 		if (ControlMusic::GetInstance()->isSound())
 		{
-			SimpleAudioEngine::getInstance()->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
 		Director::getInstance()->replaceScene(MapGame::create());
 	});
 	addChild(play);
 	//auto setting = ResourceManager::GetInstance()->GetButtonById(1);
-    setting = ui::Button::create("./button/ST.png", "./button/setting_pressed.png");
+    setting = ui::Button::create("./button/ST.png", "button/setting_pressed.png");
 	setting->setPosition(Vec2(740,40));
 	setting->setScale(0.5);
 	setting->addClickEventListener([&](Ref* event)
@@ -86,7 +86,7 @@ void MainMenu::addButton()
 		{
 			auto audio = SimpleAudioEngine::getInstance();
 			//log("asd");
-			audio->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+			audio->playEffect("Sounds/sfx_clickbutton.mp3", false);
 			//log("2");
 		}
 		activeSetting();
@@ -99,14 +99,14 @@ void MainMenu::createSetting()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	mSettingLayer = Sprite::create("./setting/table.png");
+	mSettingLayer = Sprite::create("setting/table.png");
 	auto size = mSettingLayer->getContentSize();
 	mSettingLayer->setContentSize(Size(400,400));
 	mSettingLayer->setVisible(false);
 	mSettingLayer->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	addChild(mSettingLayer,2);
 	
-	auto returnButton = ui::Button::create("./setting/close_2.png", "");
+	auto returnButton = ui::Button::create("setting/close_2.png", "");
 	mSettingLayer->addChild(returnButton,3);
 	returnButton->setPosition(Vec2(360,367));
 	returnButton->setScale(0.65f);
@@ -120,13 +120,13 @@ void MainMenu::createSetting()
 	{
 		auto audio = SimpleAudioEngine::getInstance();
 		//log("asd");
-		audio->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+		audio->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		//log("2");
 	}
 	mSettingLayer->setVisible(false);
 	});
 
-	auto musiclb = Label::create("MUSIC", "./fonts/Arial",22);
+	auto musiclb = Label::create("MUSIC", "fonts/Arial",22);
 	musiclb->setPosition(120,250);
 	musiclb->setColor(Color3B::BLACK);
 	mSettingLayer->addChild(musiclb, 4);
@@ -154,13 +154,13 @@ void MainMenu::createSetting()
 	music_ui->setEnabled(true);
 	mSettingLayer->addChild(music_ui, 4);
 
-	auto soundlb = Label::create("SOUND","./fonts/Arial", 22);
+	auto soundlb = Label::create("SOUND","fonts/Arial", 22);
 	soundlb->setPosition(120, 170);
 	soundlb->setColor(Color3B::BLACK);
 	//soundlb->retain();
 	mSettingLayer->addChild(soundlb, 4);
 
-	 sound_ui = ui::CheckBox::create("./setting/95.png","./setting/96.png");
+	 sound_ui = ui::CheckBox::create("setting/95.png","setting/96.png");
 	sound_ui->retain();
 	sound_ui->setScale(0.58f);
 	sound_ui->setSelected(ControlMusic::GetInstance()->isSound());

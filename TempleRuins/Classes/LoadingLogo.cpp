@@ -51,14 +51,14 @@ bool LoadingLogo::init()
 
 
 
-	auto loadingBarGB = Sprite::create("./Load/bloodbar_bg.png");
+	auto loadingBarGB = Sprite::create("Load/bloodbar_bg.png");
 	loadingBarGB->setPosition(Vec2(430, 150));
 	loadingBarGB->setFlippedX(true);
 	loadingBarGB->setScale(1.3);
 	addChild(loadingBarGB,1);
 
 
-	static auto loadingbar = ui::LoadingBar::create("./Load/bloodbar.png");
+	static auto loadingbar = ui::LoadingBar::create("Load/bloodbar.png");
 	//loadingbar->setPosition(Vec2(385, 150));
 	loadingbar->setPosition(loadingBarGB->getPosition());
 	loadingbar->setScale(1.28);

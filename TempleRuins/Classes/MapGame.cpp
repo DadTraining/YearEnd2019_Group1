@@ -38,7 +38,7 @@ bool MapGame::init()
 	addChild(background);
 	background->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 
-    auto close = ui::Button::create("./button/Resume.png");
+    auto close = ui::Button::create("button/Resume.png");
 	close->setPosition(Vec2(50, 370));
 	close->setScale(0.8);
 	addChild(close);
@@ -46,7 +46,7 @@ bool MapGame::init()
 	{
 		if (ControlMusic::GetInstance()->isSound())
 		{
-			SimpleAudioEngine::getInstance()->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
 		Director::getInstance()->replaceScene(MainMenu::create());
 	});
@@ -59,7 +59,7 @@ bool MapGame::init()
         {
 		if (ControlMusic::GetInstance()->isSound())
 		{
-			SimpleAudioEngine::getInstance()->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
 		Director::getInstance()->replaceScene(GamePlay::createGame());
         });
@@ -72,7 +72,7 @@ bool MapGame::init()
 	gameplay2->addClickEventListener([&](Ref* event)
 	{if (ControlMusic::GetInstance()->isSound())
 	{
-		SimpleAudioEngine::getInstance()->playEffect("./Sounds/sfx_clickbutton.mp3", false);
+		SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 	}
 	Director::getInstance()->replaceScene(GamePlay::createGame());
 	});
