@@ -1,12 +1,10 @@
 #pragma once
 #include "Objject.h"
+#include "FightHammer.h"
+#include "ui/CocosGUI.h"
 
-#define SCALE_SPRITE 0.3
-#define SPEED_FRAME 0.2f
-#define SPEED_RUN 3
-#define SPEED_ROTATE 0.01f
-
-enum Actions {
+enum Actions
+{
 	C_PUSH,
 	C_FIGHT,
 	C_WAIT,
@@ -22,25 +20,36 @@ private:
 
 	bool push;
 	bool fight;
+	bool fight_1 = false;
 	bool wait;
 	bool run;
 	bool stun;
+	bool jump;
+	bool jump_1;
 
 	bool moveLeft;
 	bool moveRight;
+	
+	///////
+	bool k = true;
 
-	Actions action;
-	Scene* scene;
-	Animate* animate_push;
-	Animate* animate_fight;
-	Animate* animate_wait;
-	Animate* animate_run;
-	Animate* animate_stun;
+	Layer *layer;
+
+	Action *action_stun;
+	Action *action_push;
+	Action *action_fight;
+	Action *action_wait;
+	Action *action_run;
+	cocos2d::PhysicsBody* physicbody;
+
+	FightHammer* f;
 public:
-	void SetAction(Actions action);
-
-	void setState(bool push, bool fight, bool wait, bool run, bool stun, bool moveLeft, bool moveRight);
+	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push);
 	void Init();
+	void InitialState();
+	void CreateSprite();
+	void InitialAction();
+
 	void Update(float deltaTime);
 	void Push();
 	void Fight();
@@ -49,10 +58,18 @@ public:
 	void Stun();
 	void MoveLeft();
 	void MoveRight();
+	void Jump();
+
+	void MoveUp();
+	void MoveDown();
+	Size getSize();
+
+
 	void RotateLeft();
 	void RotateRight();
-	MainCharactor(Scene* scene);
-	Sprite* Clone(Sprite* sprite);
+	MainCharactor(Layer *layer);
+	Sprite *Clone(Sprite *sprite);
 	~MainCharactor();
-};
 
+	void UpdateVelocity(Point velocity);
+};

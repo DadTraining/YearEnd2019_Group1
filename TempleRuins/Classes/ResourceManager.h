@@ -4,11 +4,13 @@
 #include <map>
 #include <string.h>
 
+using namespace std;
+USING_NS_CC;
+
 enum Action_Spider {
 	S_UP,
 	S_DOWN,
-	S_LEFT,
-	S_RIGHT
+	S_SIDE
 };
 
 enum Action_Charactor {
@@ -23,8 +25,7 @@ enum Action_Charactor {
 	CH_STUN
 };
 
-using namespace std;
-USING_NS_CC;
+
 class ResourceManager
 {
 private:
@@ -36,11 +37,13 @@ private:
 	map<int, Vector<SpriteFrame*>> m_spider_action;
 	map<int, Vector<SpriteFrame*>> m_charactor_action;
 	map<int, Sprite*> m_background;
+	map<int, Vector<SpriteFrame*>> m_diamond_action;
+
 	ResourceManager();
 	static ResourceManager* instance;
 public:
 	static ResourceManager* GetInstance();
-	void Init(const std::string path);
+	void Init(const string path);
 	void Load(string fileName);
 	Sprite* GetSpriteById(int id);
 	Sprite * GetBackgroundById(int id);
@@ -49,8 +52,8 @@ public:
 	ui::Button* GetButtonById(int id);
 	Vector<SpriteFrame*> GetSpiderUp();
 	Vector<SpriteFrame*> GetSpiderDown();
-	Vector<SpriteFrame*> GetSpiderLeft();
-	Vector<SpriteFrame*> GetSpiderRight();
+	Vector<SpriteFrame*> GetSpiderSide();
+	
 	Vector<SpriteFrame*> GetCharactorUp();
 	Vector<SpriteFrame*> GetCharactorDown();
 	Vector<SpriteFrame*> GetCharactorLeft();
@@ -60,10 +63,11 @@ public:
 	Vector<SpriteFrame*> GetCharactorWait();
 	Vector<SpriteFrame*> GetCharactorRun();
 	Vector<SpriteFrame*> GetCharactorStun();
+	Vector<SpriteFrame*> GetFrameDiamond();
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);
-	string Get_Path(string s);
+	std::string Get_Path(string s);
 	~ResourceManager();
 };
 

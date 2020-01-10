@@ -14,15 +14,15 @@ ResourceManager * ResourceManager::GetInstance()
 	return instance;
 }
 
-void ResourceManager::Init(const std::string path)
+void ResourceManager::Init(const string path)
 {
 	this->m_dataFolderPath = path;
 	Load(m_dataFolderPath);
 }
 
-void ResourceManager::Load(string fileName)
+void ResourceManager::Load(std::string fileName)
 {
-	string s = FileUtils::getInstance()->getStringFromFile(fileName);
+	std::string s = FileUtils::getInstance()->getStringFromFile(fileName);
 	vector<std::string> arr_source = Split(s, "\r\n");
 
 	for (size_t i = 0; i < arr_source.size(); i++) {
@@ -37,11 +37,13 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto sprite = Sprite::create(path);
+				log("path sprite1: %s", path.c_str());
 				sprite->retain();
+				log("path sprite1 after retain: %s", path.c_str());
 
 				// insert map
 				m_sprites.insert(pair<int, Sprite*>(id, sprite));
@@ -59,7 +61,7 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto sprite = Sprite::create(path);
@@ -79,11 +81,13 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				std::string path = Get_Path(arr_source[i]);
 
 				// create sprite
 				auto button = ui::Button::create(path, "");
+				log("path button: %s", path.c_str());
 				button->retain();
+				log("path button after retain: %s", path.c_str());
 
 				// insert map
 				m_button.insert(pair<int, ui::Button*>(id, button));
@@ -97,17 +101,13 @@ void ResourceManager::Load(string fileName)
 			while (number > 0) {
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
-
 				i++;                  // path
-				string path = Get_Path(arr_source[i]);
-
+				std::string path = Get_Path(arr_source[i]);
 				// create sprite
 				auto item = Sprite::create(path);
 				item->retain();
-
 				// insert map
 				m_item.insert(pair<int, Sprite*>(id, item));
-
 				number--;
 			}
 		}
@@ -119,10 +119,10 @@ void ResourceManager::Load(string fileName)
 				int id = Get_ID(arr_source[i]);
 
 				i++;                  // path plist
-				string path_1 = Get_Path(arr_source[i]);
+				std::string path_1 = Get_Path(arr_source[i]);
 
 				i++;			      // path png
-				string path_2 = Get_Path(arr_source[i]);
+				std::string path_2 = Get_Path(arr_source[i]);
 
 				// load plist
 				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
@@ -189,58 +189,84 @@ void ResourceManager::Load(string fileName)
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
 
-				i++;                  // path
-				string path_1 = Get_Path(arr_source[i]);
+				i++;                  // path 1
+				std::string path_1 = Get_Path(arr_source[i]);
 
+				i++;                  // path 2
+				std::string path_2 = Get_Path(arr_source[i]);
 
-				// down
-				Vector<SpriteFrame*> spriteFrames_down;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_down.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 0, 60, 45)));
+				// load plist
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
+
+				// insert map
+				if (id == 0) {
+					Vector<SpriteFrame*> spiderFrames_down;
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_01.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_02.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_03.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_04.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_05.png"));
+					spiderFrames_down.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_06.png"));
+
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_DOWN, spiderFrames_down));
 				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_DOWN, spriteFrames_down));
+				else if (id == 1) {
+					Vector<SpriteFrame*> spiderFrames_up;
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_13.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_14.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_15.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_16.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_17.png"));
+					spiderFrames_up.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_18.png"));
 
-				// left
-				Vector<SpriteFrame*> spriteFrames_left;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_left.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 1, 60, 45)));
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_UP, spiderFrames_up));
 				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_LEFT, spriteFrames_left));
+				else if (id == 2) {
+					Vector<SpriteFrame*> spiderFrames_side;
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_07.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_08.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_09.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_10.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_11.png"));
+					spiderFrames_side.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("spider_12.png"));
 
-				// right
-				Vector<SpriteFrame*> spriteFrames_right;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_right.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 2, 60, 45)));
+					m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_SIDE, spiderFrames_side));
 				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_RIGHT, spriteFrames_right));
-
-				// up
-				Vector<SpriteFrame*> spriteFrames_up;
-				for (int i = 0; i < 4; i++) {
-					spriteFrames_up.pushBack(SpriteFrame::create("Spider/55.png", Rect(60 * i, 45 * 3, 60, 45)));
-				}
-				m_spider_action.insert(pair<int, Vector<SpriteFrame*>>(Action_Spider::S_UP, spriteFrames_up));
 
 				number--;
 			}
 		}
-
-		else if (arr_name[0] == "#BACKGROUND") {
+		else if (arr_name[0] == "#ACTION_DIAMOND") {
 			// number 
 			int number = atoi(arr_name[1].c_str());
 			while (number > 0) {
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
 
-				i++;                  // path
-				string path = Get_Path(arr_source[i]);
+				i++;                  // path 1
+				string path_1 = Get_Path(arr_source[i]);
 
-				// create sprite
-				auto background = Sprite::create(path);
-				background->retain();
+				i++;                  // path 2
+				string path_2 = Get_Path(arr_source[i]);
 
-				// insert map
-				m_background.insert(pair<int, Sprite*>(id, background));
+				// load plist
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
+
+				Vector<SpriteFrame*> frame_diamond;
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_03.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_04.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_05.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_06.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_07.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_08.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_09.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_10.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_11.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_12.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_13.png"));
+				frame_diamond.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1_14.png"));
+
+				m_diamond_action.insert(pair<int, Vector<SpriteFrame*>>(0, frame_diamond));
 
 				number--;
 			}
@@ -256,11 +282,6 @@ Sprite * ResourceManager::GetBackgroundById(int id)
 Sprite * ResourceManager::GetSpriteById(int id)
 {
 	return m_sprites.at(id);
-}
-
-Sprite* ResourceManager::GetLoadById(int id)
-{
-	return m_load.at(id);
 }
 
 Sprite * ResourceManager::GetItemById(int id)
@@ -283,14 +304,9 @@ Vector<SpriteFrame*> ResourceManager::GetSpiderDown()
 	return m_spider_action.at(Action_Spider::S_DOWN);
 }
 
-Vector<SpriteFrame*> ResourceManager::GetSpiderLeft()
+Vector<SpriteFrame*> ResourceManager::GetSpiderSide()
 {
-	return m_spider_action.at(Action_Spider::S_LEFT);
-}
-
-Vector<SpriteFrame*> ResourceManager::GetSpiderRight()
-{
-	return m_spider_action.at(Action_Spider::S_RIGHT);
+	return m_spider_action.at(Action_Spider::S_SIDE);
 }
 
 std::vector<std::string> ResourceManager::Split(std::string str1, std::string str2)
@@ -309,7 +325,7 @@ std::vector<std::string> ResourceManager::Split(std::string str1, std::string st
 	return arr;
 }
 
-int ResourceManager::Get_ID(string s)
+int ResourceManager::Get_ID(std::string s)
 {
 	int id;
 	std::vector<std::string> arr_id = Split(s, " ");
@@ -318,9 +334,9 @@ int ResourceManager::Get_ID(string s)
 	return id;
 }
 
-string ResourceManager::Get_Path(string s)
+std::string ResourceManager::Get_Path(std::string s)
 {
-	string path = "";
+	std::string path = "";
 	std::vector<std::string> arr_path = Split(s, " ");
 	path = arr_path[1];
 
@@ -355,4 +371,9 @@ Vector<SpriteFrame*> ResourceManager::GetCharactorRun()
 Vector<SpriteFrame*> ResourceManager::GetCharactorStun()
 {
 	return m_charactor_action.at(Action_Charactor::CH_STUN);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetFrameDiamond()
+{
+	return m_diamond_action.at(0);
 }

@@ -7,6 +7,8 @@
 #include "SimpleAudioEngine.h"
 #include "cocos2d.h"
 USING_NS_CC;
+//#include "SimpleAudioEngine.h"
+//using namespace CocosDenshion;
 
 using namespace CocosDenshion;
 
@@ -71,6 +73,8 @@ void MainMenu::addButton()
 		{
 			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
+		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+		SimpleAudioEngine::getInstance()->pauseAllEffects();
 		Director::getInstance()->replaceScene(MapGame::create());
 	});
 	addChild(play);
@@ -198,3 +202,4 @@ void MainMenu::activeSetting() {
 void MainMenu::update(float deltaTime)
 {
 }
+
