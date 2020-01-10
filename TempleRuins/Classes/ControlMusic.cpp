@@ -1,12 +1,9 @@
 #include "ControlMusic.h"
-#include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
 
-USING_NS_CC;
 ControlMusic* ControlMusic::s_instance = NULL;
+
 ControlMusic::ControlMusic()
 {
-	volume = 100;
 	music = true;
 	sound = true;
 }
@@ -43,17 +40,3 @@ void ControlMusic::setSound(bool sound)
 {
 	this->sound = sound;
 }
-
-int ControlMusic::getVolume()
-{
-	return volume;
-}
-
-void ControlMusic::setVolume(int volume)
-{
-	this->volume = volume;
-}
-
-
-
-

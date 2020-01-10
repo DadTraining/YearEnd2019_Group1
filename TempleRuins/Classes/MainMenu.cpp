@@ -1,24 +1,13 @@
-﻿
-
-#include "MainMenu.h"
-#include <ResourceManager.h>
-#include "MapGame.h"
+﻿#include "MainMenu.h"
 #include "ControlMusic.h"
-#include "SimpleAudioEngine.h"
-#include "cocos2d.h"
-USING_NS_CC;
-//#include "SimpleAudioEngine.h"
-//using namespace CocosDenshion;
 
-using namespace CocosDenshion;
 
 ui::CheckBox* music_ui;
 ui::CheckBox* sound_ui;
-cocos2d::ui::Button* play;
-cocos2d::ui::Button* setting;
-
-Size visibleSize;
+cocos2d::ui::Button* btnPlay;
+cocos2d::ui::Button* btnSetting;
 cocos2d::Sprite* mSettingLayer;
+
 Scene* MainMenu::createScene()
 {
 	return MainMenu::create();
@@ -26,123 +15,96 @@ Scene* MainMenu::createScene()
 
 bool MainMenu::init()
 {
-    //////////////////////////////
-    // 1. super init first
-
 	srand((unsigned)time(0));
+
 	if (!Scene::init()) {
 		return false;
 	}
-	//scheduleUpdate();
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto background = Sprite::create("background1.png");
-	background->removeFromParent();
-	float scale = MAX(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
-	background->setScale(scale);
-	//background->setScale(0.2);
-	addChild(background);
-	background->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2 );
 
-	auto turn = ControlMusic::GetInstance()->isMusic();
-	if (turn == true)
-	{
-		auto audio = SimpleAudioEngine::getInstance();
-		//log("asd");
-		audio->playBackgroundMusic("Sounds/menu.mp3", true);
-		//log("2");
-	}
+	//create Background
+	createBackground();
+
+	//create Background Music
+	createBackgroundMusic();
+
+	//create Settings Layer when click button setting
 	createSetting();
-	MainMenu::addButton();
 
+	//create button play and button settings
+	addButton();
+	
     return true;
 }
 
 void MainMenu::addButton()
 {
-	//auto play = ResourceManager::GetInstance()->GetButtonById(0);
-	play = ui::Button::create("play_normal.png", "play_pressed.png");
-	play->setPosition(Vec2(230, 300));
-	play->setScale(0.35);
-
-	
-	play->addClickEventListener([&](Ref* event)
-	{ 
-		
+	//Button Play
+	btnPlay = ui::Button::create("play_normal.png", "play_pressed.png");
+	btnPlay->setPosition(Vec2(270, 300));
+	btnPlay->setScale(0.4);
+	btnPlay->addClickEventListener([&](Ref* event){ 
 		if (ControlMusic::GetInstance()->isSound())
 		{
 			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
-		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-		SimpleAudioEngine::getInstance()->pauseAllEffects();
-		Director::getInstance()->replaceScene(MapGame::create());
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5f,MapGame::create()));
 	});
-	addChild(play);
-	//auto setting = ResourceManager::GetInstance()->GetButtonById(1);
-    setting = ui::Button::create("./button/ST.png", "button/setting_pressed.png");
-	setting->setPosition(Vec2(740,40));
-	setting->setScale(0.5);
-	setting->addClickEventListener([&](Ref* event)
-	{  play->setVisible(false);
-	   setting->setVisible(false);
-		auto turn = ControlMusic::GetInstance()->isSound();
-		if (turn == true)
+	addChild(btnPlay);
+
+	//Button Settings
+	btnSetting = ui::Button::create("Button/setting.png", "Button/setting_pressed.png");
+	btnSetting->setPosition(Vec2(740,40));
+	btnSetting->setScale(0.5);
+	btnSetting->addClickEventListener([&](Ref* event){  
+	   btnPlay->setVisible(false);
+	   btnSetting->setVisible(false);
+		if (ControlMusic::GetInstance()->isSound())
 		{
-			auto audio = SimpleAudioEngine::getInstance();
-			//log("asd");
-			audio->playEffect("Sounds/sfx_clickbutton.mp3", false);
-			//log("2");
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
 		activeSetting();
 	});
-	addChild(setting);
+	addChild(btnSetting);
 
 }
 
 void MainMenu::createSetting()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	//Settings background table
 	mSettingLayer = Sprite::create("setting/table.png");
-	auto size = mSettingLayer->getContentSize();
 	mSettingLayer->setContentSize(Size(400,400));
 	mSettingLayer->setVisible(false);
-	mSettingLayer->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+	mSettingLayer->setPosition(Director::getInstance()->getVisibleSize() /2);
 	addChild(mSettingLayer,2);
 	
+	//Button return Main Menu
 	auto returnButton = ui::Button::create("setting/close_2.png", "");
-	mSettingLayer->addChild(returnButton,3);
 	returnButton->setPosition(Vec2(360,367));
 	returnButton->setScale(0.65f);
-
+	mSettingLayer->addChild(returnButton, 3);
 	returnButton->addClickEventListener([&](Ref* event)
 	{
-		play->setVisible(true);
-		setting->setVisible(true);
-		auto turn = ControlMusic::GetInstance()->isSound();
-	if (turn == true)
-	{
-		auto audio = SimpleAudioEngine::getInstance();
-		//log("asd");
-		audio->playEffect("Sounds/sfx_clickbutton.mp3", false);
-		//log("2");
-	}
-	mSettingLayer->setVisible(false);
+		btnPlay->setVisible(true);
+		btnSetting->setVisible(true);
+		if (ControlMusic::GetInstance()->isSound())
+		{
+		SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
+		}
+		mSettingLayer->setVisible(false);
 	});
 
-	auto musiclb = Label::create("MUSIC", "fonts/Arial",22);
+	//Lable Name "Music"
+	auto musiclb = Label::create("MUSIC", "fonts/MarkerFelt.ttf",22);
 	musiclb->setPosition(120,250);
 	musiclb->setColor(Color3B::BLACK);
 	mSettingLayer->addChild(musiclb, 4);
 
-	 music_ui = ui::CheckBox::create("setting/95.png", "setting/96.png");
+	//Check box turn on/off background music
+	music_ui = ui::CheckBox::create("setting/95.png", "setting/96.png");
 	music_ui->setScale(0.588f);
-	//music_ui->retain();
 	music_ui->setSelected(ControlMusic::GetInstance()->isMusic());
-	music_ui->addClickEventListener([&](Ref* event)
-	{
+	music_ui->addClickEventListener([&](Ref* event){
 		music_ui->isSelected();
-
 		if (!music_ui->isSelected())
 		{
 			ControlMusic::GetInstance()->setMusic(true);
@@ -158,35 +120,32 @@ void MainMenu::createSetting()
 	music_ui->setEnabled(true);
 	mSettingLayer->addChild(music_ui, 4);
 
-	auto soundlb = Label::create("SOUND","fonts/Arial", 22);
+	//Lable Name "Sound"
+	auto soundlb = Label::create("SOUND","fonts/MarkerFelt.ttf", 22);
 	soundlb->setPosition(120, 170);
 	soundlb->setColor(Color3B::BLACK);
-	//soundlb->retain();
 	mSettingLayer->addChild(soundlb, 4);
-
-	 sound_ui = ui::CheckBox::create("setting/95.png","setting/96.png");
+	
+	//Check box turn on/off effect music
+	sound_ui = ui::CheckBox::create("setting/95.png","setting/96.png");
 	sound_ui->retain();
 	sound_ui->setScale(0.58f);
 	sound_ui->setSelected(ControlMusic::GetInstance()->isSound());
 	sound_ui->addClickEventListener([&](Ref* event)
-	{		//sound_ui->isSelected();
-	if (!sound_ui->isSelected())
 	{
-	ControlMusic::GetInstance()->setSound(true);
+		if (!sound_ui->isSelected())
+		{
+		ControlMusic::GetInstance()->setSound(true);
+		}
+		else
+		{
+		ControlMusic::GetInstance()->setSound(false);
+		SimpleAudioEngine::getInstance()->stopAllEffects();
 	}
-	else
-	{
-	ControlMusic::GetInstance()->setSound(false);
-	SimpleAudioEngine::getInstance()->stopAllEffects();
-
-	}
-	
 	});
 	sound_ui->setPosition(soundlb->getPosition() + Vec2(140, 0));
 	sound_ui->setEnabled(true);
 	mSettingLayer->addChild(sound_ui,4);
-
-
 }
 
 void MainMenu::activeSetting() {
@@ -198,8 +157,24 @@ void MainMenu::activeSetting() {
 	}
 }
 
-
 void MainMenu::update(float deltaTime)
 {
+}
+
+void MainMenu::createBackground()
+{
+	auto background = Sprite::create("background1.png");
+	background->removeFromParent();
+	background->setContentSize(Director::getInstance()->getVisibleSize());
+	background->setPosition(Director::getInstance()->getVisibleSize() / 2);
+	addChild(background);
+}
+
+void MainMenu::createBackgroundMusic()
+{
+	if (ControlMusic::GetInstance()->isMusic() == true)
+	{
+		SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/menu.mp3", true);
+	}
 }
 
