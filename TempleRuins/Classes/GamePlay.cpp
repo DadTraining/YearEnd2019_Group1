@@ -1,24 +1,16 @@
-
 #include "GamePlay.h"
-#include "cocos2d.h"
-
-
 #include "ControlMusic.h"
-#include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
-
-float GamePlay::distance_1(float p_1, float p_2)
-{
-	return p_1 - p_2;
-}
 
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
-//auto audio1 = SimpleAudioEngine::getInstance();
 
+float GamePlay::distance_1(float p_1, float p_2)
+{
+	return p_1 - p_2;
+}
 
 Scene *GamePlay::createGame()
 {
@@ -39,10 +31,13 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
-	//auto audio = SimpleAudioEngine::getInstance();
-	//audio->playBackgroundMusic("Sounds/angkor_wat.mp3", true);
+	//Create background music
+	if (ControlMusic::GetInstance()->isMusic())
+	{
+		SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/angkor_wat.mp3", true);
+	}
 
-	log("create map*************************************************");
+	//Create Map
 	CreateMap();
 
 	// initial physics for map
@@ -114,7 +109,7 @@ void GamePlay::InitialObject()
 		int posY = properties.at("y").asInt();
 		int type = object.asValueMap().at("type").asInt();
 
-		if (type == 1)
+		if (type == 1)//Create Charactor
 		{
 			this->main_charactor = new MainCharactor(this);
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
@@ -122,24 +117,24 @@ void GamePlay::InitialObject()
 			CreateBloodBar();
 			CreateNumDiamon();
 		}
-		else if (type == 2)
+		else if (type == 2)//Create Spider
 		{
 			Spider *spider = new Spider(this);
 			spider->GetSprite()->setPosition(Vec2(posX, posY));
 			spider->setCatogory(true);
 			spiders.push_back(spider);
 		}
-		else if (type == 4) {
+		else if (type == 4) {//Create Glass
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX, posY));
 			glasss.push_back(glass);
 		}
-		else if (type == 5) {
+		else if (type == 5) {//Create Diamond
 			Objject* diamon = new Diamond(this);
 			diamon->GetSprite()->setPosition(Vec2(posX, posY));
 			diamons.push_back(diamon);
 		}
-		else if (type == 6) {
+		else if (type == 6) {//Create Rock
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
@@ -198,7 +193,6 @@ void GamePlay::InitialObject()
 		else if (type == 24) {
 			_ground_Pos_24 = Vec2(posX, posY);
 		}
-
 	}
 }
 
@@ -327,22 +321,35 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
 			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
+			}
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
-				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
+				}
 			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
-			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
+			}
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
-				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
+				}
 			}
 		}
 
@@ -350,13 +357,19 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		// main charactor vs diamond
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_DIAMOND)
 		{
-			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+			}
 			numDiamond++;
 			nodeB->removeFromParentAndCleanup(true);
 		}
 		else if (nodeA->getTag() == TAG_DIAMOND && nodeB->getTag() == TAG_CHARACTOR)
 		{
-			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+			}
 			numDiamond++;
 			nodeA->removeFromParentAndCleanup(true);
 		}
@@ -364,11 +377,17 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
 			nodeB->setPosition(Vec2(-100, -100));
-			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
 			nodeA->setPosition(Vec2(-100, -100));
-			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+			}
 		}
 
 		// fight
@@ -406,7 +425,7 @@ void GamePlay::CreateBloodBar()
 	bloodBar_2->setPosition(bloodBar_1->getPosition());
 
 	this->addChild(bloodBar_1,3);
-	this->addChild(bloodBar_2,3);
+	this->addChild(bloodBar_2,2);
 }
 
 void GamePlay::CreateNumDiamon()
@@ -435,16 +454,19 @@ void GamePlay::createPauseLayer()
 	mPauseLayer->setVisible(false);
 	addChild(mPauseLayer,2);
 
-	//Button Home
+	//Button Go to Map
 	auto btnHome = ui::Button::create("Button/home_normal.png", "Button/home_pressed.png");
 	btnHome->setScale(SCALE_BUTTON);
 	btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
 	btnHome->addClickEventListener([](Ref* event) {
-		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
+		}
 		SimpleAudioEngine::getInstance()->resumeAllEffects();
-		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 		Director::getInstance()->resume();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MapGame::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 	});
 	mPauseLayer->addChild(btnHome);
 
@@ -453,7 +475,10 @@ void GamePlay::createPauseLayer()
 	btnRestart->setScale(SCALE_BUTTON);
 	btnRestart->setPosition(btnHome->getPosition() + Size(0, 70));
 	btnRestart->addClickEventListener([](Ref* event) {
-		//audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
+		}
 	});
 	mPauseLayer->addChild(btnRestart);
 
@@ -462,9 +487,12 @@ void GamePlay::createPauseLayer()
 	btnResume->setScale(SCALE_BUTTON);
 	btnResume->setPosition(btnRestart->getPosition() + Size(0, 70));
 	btnResume->addClickEventListener([](Ref* event) {
-		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
+		}
 		SimpleAudioEngine::getInstance()->resumeAllEffects();
-		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 		Director::getInstance()->resume();
 		btnPause->setVisible(true);
 		mBump->setVisible(true);
@@ -552,8 +580,10 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	{
 	case ui::Widget::TouchEventType::BEGAN:
 	{
-		//auto audio = SimpleAudioEngine::getInstance();
-		//audio->playEffect("Sounds/sfx_character_icehammer.mp3", false, 1.0f, 1.0f, 1.0f);
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_icehammer.mp3", false);
+		}
 		fight = true;
 		break; 
 	}
@@ -569,8 +599,10 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	{
 	case ui::Widget::TouchEventType::BEGAN:
 	{
-		/*auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("Sounds/sfx_character_hammer.mp3", false, 1.0f, 1.0f, 1.0f);*/
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_hammer.mp3", false);
+		}
 		fall = false;
 		moveUp = true;
 		break;
@@ -638,12 +670,14 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::ENDED:
-		//auto audio = SimpleAudioEngine::getInstance();
-		//audio->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
 		auto funcPause = CallFunc::create([]() {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
+			}
 			Director::getInstance()->pause();
-			/*SimpleAudioEngine::getInstance()->pauseAllEffects();
-			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();*/
+			//SimpleAudioEngine::getInstance()->pauseAllEffects();
+			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 		});
 		btnPause->setVisible(false);
 		mBump->setVisible(false);

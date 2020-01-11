@@ -172,7 +172,7 @@ void MainMenu::createBackground()
 
 void MainMenu::createBackgroundMusic()
 {
-	if (ControlMusic::GetInstance()->isMusic() == true)
+	if (ControlMusic::GetInstance()->isMusic())
 	{
 		SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/menu.mp3", true);
 	}

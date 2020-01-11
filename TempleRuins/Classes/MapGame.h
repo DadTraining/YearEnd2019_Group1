@@ -5,6 +5,7 @@
 #include "SimpleAudioEngine.h"
 #include "MapGame.h"
 #include "GamePlay.h"
+#include "GamePlay2.h"
 #include "MainMenu.h"
 
 USING_NS_CC;

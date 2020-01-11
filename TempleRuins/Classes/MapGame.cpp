@@ -73,7 +73,7 @@ void MapGame::createButton()
 		SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_clickbutton.mp3", false);
 		}
 		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, GamePlay::createGame()));
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, GamePlay2::createGame()));
 	});
 	addChild(btnMap2);
 }
