@@ -9,13 +9,9 @@
 #include "MainMenu.h"
 #include "MapGame.h"
 #include "cocos2d.h"
-//#include "SimpleAudioEngine.h"
-//using namespace CocosDenshion;
+#include "SimpleAudioEngine.h"
 
-
-#define BLOOD_REDUCTION 5
-
-//using namespace cocos2d;
+using namespace CocosDenshion;
 USING_NS_CC;
 
 class GamePlay : public Layer
