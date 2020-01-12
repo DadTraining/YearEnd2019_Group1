@@ -5,7 +5,7 @@
 void Glass::Init()
 {
 	// sprite
-	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(4)));
+	this->SetSprite(Clone(ResourceManager::GetInstance()->GetSpriteById(2)));
 	this->GetSprite()->retain();
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 	this->GetSprite()->setScale(SCALE_GLASS);

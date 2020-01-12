@@ -18,11 +18,11 @@
 #define TAG_CHARACTOR 20
 
 // define diamond
-#define SCALE_DIAMOND 0.5
+#define SCALE_DIAMOND 0.55
 #define TAG_DIAMOND 30
 
 // define rock
-#define SCALE_ROCK 0.15
+#define SCALE_ROCK 0.12
 #define SPEED_ROCK 50
 #define TAG_ROCK 50
 

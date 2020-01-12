@@ -7,7 +7,11 @@
 #include "Rock.h"
 #include "Glass.h"
 #include "MainMenu.h"
+#include "MapGame.h"
 #include "cocos2d.h"
+//#include "SimpleAudioEngine.h"
+//using namespace CocosDenshion;
+
 
 #define BLOOD_REDUCTION 5
 
@@ -30,36 +34,40 @@ private:
 	bool moveDown;
 	bool fall;
 
+	// button
 	cocos2d::ui::Button *mFireController;
 	cocos2d::ui::Button *mJumpController;
 
+	// map
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 	CCTMXLayer *_thang;
 
-	Vec2 _thang_1;
-	Vec2 _thang_2;
+	// thang
+	vector<Vec2> _thang_Pos;
 
-	// collision down
-	vector<Vec2> _ground_Pos_X1_R;
-	vector<Vec2> _ground_Pos_X1_L;
-	vector<Vec2> _ground_Pos_X2; ///////////////////////////
-	void checkGround_1();
-	vector<Vec3> vec3;   // xL, y, xR
-	void addVec();
+	
 	float distance_1(float p_1, float p_2);
 
-	// collision up
-	vector<Vec2> _ground_Pos_R;
-	vector<Vec2> _ground_Pos_L;
-	vector<Vec3> _Vec3_Up;   // xL, y, xR
+	// collision 2
+	void checkGround_2();
+	cocos2d::TMXObjectGroup* mObjects_line_down;
+	cocos2d::TMXObjectGroup* mObjects_line_up;
+	vector<Vec2> _Line_Down_Pos;
+	vector<Vec2> _Line_Down_Pos_2;
+	vector<Vec2> _Line_Down_Pos_3;
+	vector<Vec2> _Line_Down_Pos_4;
+	vector<Vec2> _Line_Down_Pos_5;
+	vector<Vec2> _Line_Down_Pos_6;
+	vector<Vec2> _Line_Up_Pos_1;
+	vector<Vec2> _Line_Up_Pos_2;
+	vector<Vec2> _Line_Up_Pos_3;
+	vector<Vec2> _Line_Up_Pos_4;
+	vector<Vec2> _Line_Up_Pos_5;
+	vector<Vec2> _Line_Up_Pos_6;
 
-	// collision side
-	vector<Vec2> _ground_Pos_U;
-	vector<Vec2> _ground_Pos_D;
-	vector<Vec3> _Vec3_Side;   // yU, x, yD
 
 	// main charactor
 	Objject* main_charactor;
@@ -68,7 +76,7 @@ private:
 
 	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-	
+
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 
 	cocos2d::Point mCurrentTouchPoint;
@@ -80,8 +88,6 @@ private:
 
 	// object map
 	cocos2d::TMXObjectGroup* mObjectGroup;
-	cocos2d::TMXObjectGroup* mObjects_collision_up;
-	cocos2d::TMXObjectGroup* Objects_collision_side;
 
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;

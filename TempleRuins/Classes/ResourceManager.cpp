@@ -14,7 +14,7 @@ ResourceManager * ResourceManager::GetInstance()
 	return instance;
 }
 
-void ResourceManager::Init(const std::string path)
+void ResourceManager::Init(const string path)
 {
 	this->m_dataFolderPath = path;
 	Load(m_dataFolderPath);
@@ -41,7 +41,9 @@ void ResourceManager::Load(std::string fileName)
 
 				// create sprite
 				auto sprite = Sprite::create(path);
+				log("path sprite1: %s", path.c_str());
 				sprite->retain();
+				log("path sprite1 after retain: %s", path.c_str());
 
 				// insert map
 				m_sprites.insert(pair<int, Sprite*>(id, sprite));
@@ -49,6 +51,8 @@ void ResourceManager::Load(std::string fileName)
 				number--;
 			}
 		}
+		
+		
 		else if (arr_name[0] == "#LOAD") {
 			// number 
 			int number = atoi(arr_name[1].c_str());
@@ -81,7 +85,9 @@ void ResourceManager::Load(std::string fileName)
 
 				// create sprite
 				auto button = ui::Button::create(path, "");
+				log("path button: %s", path.c_str());
 				button->retain();
+				log("path button after retain: %s", path.c_str());
 
 				// insert map
 				m_button.insert(pair<int, ui::Button*>(id, button));
@@ -95,17 +101,13 @@ void ResourceManager::Load(std::string fileName)
 			while (number > 0) {
 				i++;                  // id
 				int id = Get_ID(arr_source[i]);
-
 				i++;                  // path
 				std::string path = Get_Path(arr_source[i]);
-
 				// create sprite
 				auto item = Sprite::create(path);
 				item->retain();
-
 				// insert map
 				m_item.insert(pair<int, Sprite*>(id, item));
-
 				number--;
 			}
 		}
@@ -273,6 +275,10 @@ void ResourceManager::Load(std::string fileName)
 	}
 }
 
+Sprite * ResourceManager::GetBackgroundById(int id)
+{
+	return m_background.at(id);
+}
 Sprite * ResourceManager::GetSpriteById(int id)
 {
 	return m_sprites.at(id);
@@ -286,11 +292,6 @@ Sprite * ResourceManager::GetItemById(int id)
 ui::Button * ResourceManager::GetButtonById(int id)
 {
 	return m_button.at(id);
-}
-
-Sprite * ResourceManager::GetLoadById(int id)
-{
-	return m_load.at(id);
 }
 
 Vector<SpriteFrame*> ResourceManager::GetSpiderUp()

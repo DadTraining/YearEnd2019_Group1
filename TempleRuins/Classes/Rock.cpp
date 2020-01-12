@@ -3,17 +3,16 @@
 void Rock::Init()
 {
 	// sprite
-	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(2));
+	auto rock = Clone(ResourceManager::GetInstance()->GetSpriteById(0));
 	this->SetSprite(rock);
 	//rock->setScale(SCALE_ROCK);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 
 	// physics
 	auto physicsBody = PhysicsBody::createBox(rock->getContentSize());
-	//auto physicsBody = PhysicsBody::createCircle
 	physicsBody->setDynamic(true);
 	physicsBody->setRotationEnable(false);
-	physicsBody->setMass(100);
+	//physicsBody->setMass(1000);
 	rock->setPhysicsBody(physicsBody);
 	
 	// colission

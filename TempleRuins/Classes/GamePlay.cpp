@@ -1,88 +1,305 @@
-
+#include "ControlMusic.h"
+#include "SimpleAudioEngine.h"
 #include "GamePlay.h"
 #include "cocos2d.h"
+using namespace CocosDenshion;
 
 float GamePlay::distance_1(float p_1, float p_2)
 {
 	return p_1 - p_2;
 }
 
-void GamePlay::checkGround_1()
+void GamePlay::checkGround_2()
 {
 	Vec2 _mapPos = _tileMap->getPosition();
-	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
 
 	// down
-	for (int i = 0; i < vec3.size(); i++) {
-		if((_main_pos.y <= (vec3.at(i).y - (0 - _mapPos.y) + 3)) &&
-		   (_main_pos.y >= (vec3.at(i).y - (0 - _mapPos.y) - 15)) &&
-		   (_main_pos.x >= (vec3.at(i).x - (0 - _mapPos.x))) &&
-		   (_main_pos.x <= (vec3.at(i).z - (0 - _mapPos.x)))){
-			main_charactor->GetSprite()->setPosition(_main_pos.x, vec3.at(i).y - (0 - _mapPos.y));
+	for (int i = 0; i < _Line_Down_Pos.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos.at(i).y == _Line_Down_Pos.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
+			}
+		}
+		
+		// doc
+		if (_Line_Down_Pos.at(i).x == _Line_Down_Pos.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+
+		// rock
+		for (int j = 0; j < rocks.size(); j++) {
+			float x = rocks.at(j)->GetSprite()->getPosition().x;
+			float y = rocks.at(j)->GetSprite()->getPosition().y;
+			if (y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) &&
+			   (y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 20) &&
+			   (x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
+			   (x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
+				rocks.at(j)->GetSprite()->setPosition(x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
+				rocks.at(j)->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Down_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_2.at(i).y == _Line_Down_Pos_2.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_2.at(i).x == _Line_Down_Pos_2.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Down_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+
+		// ngang
+		if (_Line_Down_Pos_3.at(i).y == _Line_Down_Pos_3.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 10) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_3.at(i).x == _Line_Down_Pos_3.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y > _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y < _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Down_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+
+		// ngang
+		if (_Line_Down_Pos_4.at(i).y == _Line_Down_Pos_4.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 10) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_4.at(i).x == _Line_Down_Pos_4.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Down_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+
+		// ngang
+		if (_Line_Down_Pos_5.at(i).y == _Line_Down_Pos_5.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_5.at(i).x == _Line_Down_Pos_5.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x))  &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			/*else if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}*/
+		}
+
+
+	}
+
+	for (int i = 0; i < _Line_Down_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+
+		// ngang
+		if (_Line_Down_Pos_6.at(i).y == _Line_Down_Pos_6.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_6.at(i).x == _Line_Down_Pos_6.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			/*else if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}*/
 		}
 	}
 
 	// up
-	for (int i = 0; i < _Vec3_Up.size(); i++) {
-		if ((_main_pos.y <= (_Vec3_Up.at(i).y - (0 - _mapPos.y) + 15)) &&
-			(_main_pos.y >= (_Vec3_Up.at(i).y - (0 - _mapPos.y) + 5)) &&
-			(_main_pos.x >= (_Vec3_Up.at(i).x - (0 - _mapPos.x))) &&
-			(_main_pos.x <= (_Vec3_Up.at(i).z - (0 - _mapPos.x)))) {
-			main_charactor->GetSprite()->setPosition(_main_pos.x, _Vec3_Up.at(i).y - (0 - _mapPos.y));
+	for (int i = 0; i < _Line_Up_Pos_1.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_1.at(i).y == _Line_Up_Pos_1.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_1.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y));
+			}
 		}
 	}
 
-	// side
-	for (int i = 0; i < _Vec3_Side.size(); i++) {
-		if ((_main_pos.x <= (_Vec3_Side.at(i).y - (0 - _mapPos.x) + 10)) &&
-			(_main_pos.x >= (_Vec3_Side.at(i).y - (0 - _mapPos.x) - 10)) &&
-			(_main_pos.y >= (_Vec3_Side.at(i).z - (0 - _mapPos.y))) &&
-			(_main_pos.y <= (_Vec3_Side.at(i).x - (0 - _mapPos.y)))) {
-			if (_main_pos.x > _Vec3_Side.at(i).y - (0 - _mapPos.x)) {
-				main_charactor->GetSprite()->setPosition(_Vec3_Side.at(i).y - (0 - _mapPos.x) + 3, _main_pos.y);
+	for (int i = 0; i < _Line_Up_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_2.at(i).y == _Line_Up_Pos_2.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y));
 			}
-			else if (_main_pos.x < _Vec3_Side.at(i).y - (0 - _mapPos.x)) {
-				main_charactor->GetSprite()->setPosition(_Vec3_Side.at(i).y - (0 - _mapPos.x) - 3, _main_pos.y);
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_3.at(i).y == _Line_Up_Pos_3.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_4.at(i).y == _Line_Up_Pos_4.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_5.at(i).y == _Line_Up_Pos_5.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_6.at(i).y == _Line_Up_Pos_6.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y));
 			}
 		}
 	}
 }
 
-void GamePlay::addVec()
-{
-	// down
-	for (int i = 0; i < _ground_Pos_X1_R.size(); i++) {
-		for (int j = 0; j < _ground_Pos_X1_L.size(); j++) {
-			if (_ground_Pos_X1_R.at(i).y == _ground_Pos_X1_L.at(j).y) {
-				vec3.push_back(Vec3(_ground_Pos_X1_L.at(j).x, _ground_Pos_X1_R.at(i).y, _ground_Pos_X1_R.at(i).x));
-			} // sai chi so i, j  ngu nhu bo
-		}
-	}
-
-	// up
-	for (int i = 0; i < _ground_Pos_R.size(); i++) {
-		for (int j = 0; j < _ground_Pos_L.size(); j++) {
-			if (_ground_Pos_R.at(i).y == _ground_Pos_L.at(j).y) {
-				_Vec3_Up.push_back(Vec3(_ground_Pos_L.at(j).x, _ground_Pos_R.at(i).y, _ground_Pos_R.at(i).x));
-			}
-		}
-	}
-
-	// side
-	for (int i = 0; i < _ground_Pos_U.size(); i++) {
-		for (int j = 0; j < _ground_Pos_D.size(); j++) {
-			if (_ground_Pos_U.at(i).x == _ground_Pos_D.at(j).x) {
-				_Vec3_Side.push_back(Vec3(_ground_Pos_U.at(i).y, _ground_Pos_D.at(j).x, _ground_Pos_D.at(j).y));
-			}
-		}
-	}
-}
 
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
+//auto audio1 = SimpleAudioEngine::getInstance();
 
 
 Scene *GamePlay::createGame()
@@ -104,6 +321,10 @@ Scene *GamePlay::createGame()
 
 bool GamePlay::init()
 {
+	//auto audio = SimpleAudioEngine::getInstance();
+	//audio->playBackgroundMusic("Sounds/angkor_wat.mp3", true);
+
+	log("create map*************************************************");
 	CreateMap();
 
 	// initial physics for map
@@ -114,9 +335,6 @@ bool GamePlay::init()
 
 	// initial object
 	InitialObject();
-
-	// add vex
-	addVec();
 
 	// add dispatcher
 	AddDispatcher();
@@ -145,8 +363,9 @@ void GamePlay::CreateMap()
 	_phy->setVisible(false);
 	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
-	mObjects_collision_up = _tileMap->getObjectGroup("Objects_collision_up");
-	Objects_collision_side = _tileMap->getObjectGroup("Objects_collision_side");
+	
+	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
+	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
 
 	this->addChild(_tileMap);
 }
@@ -177,17 +396,13 @@ void GamePlay::InitialObject()
 
 		auto properties = object.asValueMap();
 		float posX = properties.at("x").asFloat();
-		log("%f",posX);
 		float posY = properties.at("y").asFloat();
-		log("%f", posY);
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1)
 		{
 			this->main_charactor = new MainCharactor(this);
 			this->main_charactor->GetSprite()->setPosition(Vec2(posX, posY));
-			log("%f----------%f",posX,posY);
-			log("%f_______%f", this->main_charactor->GetSprite()->getPosition().x, this->main_charactor->GetSprite()->getPosition().y);
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
 			CreateNumDiamon();
@@ -215,26 +430,16 @@ void GamePlay::InitialObject()
 			rocks.push_back(rock);
 		}
 		else if (type == 7) {
-			_thang_1 = Vec2(posX, posY);
-		}
-		else if (type == 8) {
-			_thang_2 = Vec2(posX, posY);
-		}
-		else if (type == 30) {
-			_ground_Pos_X1_R.push_back(Vec2(posX, posY));
-		}
-		else if (type == 31) {
-			_ground_Pos_X2.push_back(Vec2(posX, posY));
-		}
-		else if (type == 32) {
-			_ground_Pos_X1_L.push_back(Vec2(posX, posY));
+			//_thang_1 = Vec2(posX, posY);
+			_thang_Pos.push_back(Vec2(posX, posY));
 		}
 	}
 
-	// get object collision up
-	auto objects_up = mObjects_collision_up->getObjects();
-	for (int i = 0; i < objects_up.size(); i++) {
-		auto object = objects_up.at(i);
+
+	// get object line down
+	auto objects_line_down = mObjects_line_down->getObjects();
+	for (int i = 0; i < objects_line_down.size(); i++) {
+		auto object = objects_line_down.at(i);
 		auto properties = object.asValueMap();
 
 		float posX = properties.at("x").asFloat();
@@ -242,17 +447,29 @@ void GamePlay::InitialObject()
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1) {
-			_ground_Pos_L.push_back(Vec2(posX, posY));
+			_Line_Down_Pos.push_back(Vec2(posX, posY));
 		}
 		else if (type == 2) {
-			_ground_Pos_R.push_back(Vec2(posX, posY));
+			_Line_Down_Pos_2.push_back(Vec2(posX, posY));
+		}
+		else if (type == 3) {
+			_Line_Down_Pos_3.push_back(Vec2(posX, posY));
+		}
+		else if (type == 4) {
+			_Line_Down_Pos_4.push_back(Vec2(posX, posY));
+		}
+		else if (type == 5) {
+			_Line_Down_Pos_5.push_back(Vec2(posX, posY));
+		}
+		else if (type == 6) {
+			_Line_Down_Pos_6.push_back(Vec2(posX, posY));
 		}
 	}
 
-	// get object collision side
-	auto objects_side = Objects_collision_side->getObjects();
-	for (int i = 0; i < objects_side.size(); i++) {
-		auto object = objects_side.at(i);
+	// get object line up
+	auto objects_line_up = mObjects_line_up->getObjects();
+	for (int i = 0; i < objects_line_up.size(); i++) {
+		auto object = objects_line_up.at(i);
 		auto properties = object.asValueMap();
 
 		float posX = properties.at("x").asFloat();
@@ -260,10 +477,22 @@ void GamePlay::InitialObject()
 		int type = object.asValueMap().at("type").asInt();
 
 		if (type == 1) {
-			_ground_Pos_U.push_back(Vec2(posX, posY));
+			_Line_Up_Pos_1.push_back(Vec2(posX, posY));
 		}
-		else if (type == 2) {
-			_ground_Pos_D.push_back(Vec2(posX, posY));
+		if (type == 2) {
+			_Line_Up_Pos_2.push_back(Vec2(posX, posY));
+		}
+		if (type == 3) {
+			_Line_Up_Pos_3.push_back(Vec2(posX, posY));
+		}
+		if (type == 4) {
+			_Line_Up_Pos_4.push_back(Vec2(posX, posY));
+		}
+		if (type == 5) {
+			_Line_Up_Pos_5.push_back(Vec2(posX, posY));
+		}
+		if (type == 6) {
+			_Line_Up_Pos_6.push_back(Vec2(posX, posY));
 		}
 	}
 }
@@ -341,6 +570,13 @@ void GamePlay::InitialButton()
 	mJump->setOpacity(50);
 	addChild(mJump);
 
+	////Button Down
+	//mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
+	//mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
+	//mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
+	//mJump->setOpacity(50);
+	//addChild(mJump);
+
 	//Button Pause
 	btnPause = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
 	btnPause->setAnchorPoint(Vec2(1, 1));
@@ -374,6 +610,8 @@ void GamePlay::InitialPhysics()
 
 bool GamePlay::OnContactBegin(PhysicsContact &contact)
 {
+	//auto audio = SimpleAudioEngine::getInstance();
+
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
 
@@ -383,44 +621,53 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
+				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
 			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			//audio->playEffect("Sounds/sfx_character_damage.mp3", false, 1.0f, 1.0f, 1.0f);
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
+				//audio->playEffect("Sounds/sfx_character_die.mp3", false, 1.0f, 1.0f, 1.0f);
 			}
 		}
+
 
 		// main charactor vs diamond
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_DIAMOND)
 		{
+			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
 			numDiamond++;
 			nodeB->removeFromParentAndCleanup(true);
-			//nodeB->setPosition(Vec2(-200, -200));
+			//nodeB->setVisible(false);
 		}
 		else if (nodeA->getTag() == TAG_DIAMOND && nodeB->getTag() == TAG_CHARACTOR)
 		{
+			//audio->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false, 1.0f, 1.0f, 1.0f);
 			numDiamond++;
 			nodeA->removeFromParentAndCleanup(true);
-			//nodeA->setPosition(Vec2(-200, -200));
+			//nodeA->setVisible(false);
 		}
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			//nodeB->removeFromParentAndCleanup(true);
 			nodeB->setPosition(Vec2(-100, -100));
+			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
+			//nodeB->setVisible(false);
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			//nodeA->removeFromParentAndCleanup(true);
 			nodeA->setPosition(Vec2(-100, -100));
+			//audio->playEffect("Sounds/sfx_character_into_bush.mp3", false, 1.0f, 1.0f, 1.0f);
+			//nodeA->setVisible(false);
 		}
 
 		// fight
@@ -464,7 +711,7 @@ void GamePlay::CreateBloodBar()
 void GamePlay::CreateNumDiamon()
 {
 	// sprite diamon
-	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(5);
+	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(3);
 	NumDiamon->setScale(0.35);
 	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
 	this->addChild(NumDiamon, 2);
@@ -479,7 +726,7 @@ void GamePlay::CreateNumDiamon()
 void GamePlay::createPauseLayer()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	
+
 	//create pause layer
 	mPauseLayer = Sprite::create("pause.png");
 	mPauseLayer->setPosition(visibleSize / 2);
@@ -492,8 +739,11 @@ void GamePlay::createPauseLayer()
 	btnHome->setScale(SCALE_BUTTON);
 	btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
 	btnHome->addClickEventListener([](Ref* event) {
+		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		SimpleAudioEngine::getInstance()->resumeAllEffects();
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
 		Director::getInstance()->resume();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MapGame::createScene()));
 	});
 	mPauseLayer->addChild(btnHome);
 
@@ -501,6 +751,9 @@ void GamePlay::createPauseLayer()
 	auto btnRestart = ui::Button::create("Button/restart_normal.png", "Button/restart_pressed.png");
 	btnRestart->setScale(SCALE_BUTTON);
 	btnRestart->setPosition(btnHome->getPosition() + Size(0, 70));
+	btnRestart->addClickEventListener([](Ref* event) {
+		//audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+	});
 	mPauseLayer->addChild(btnRestart);
 
 	//Button Resume
@@ -508,6 +761,9 @@ void GamePlay::createPauseLayer()
 	btnResume->setScale(SCALE_BUTTON);
 	btnResume->setPosition(btnRestart->getPosition() + Size(0, 70));
 	btnResume->addClickEventListener([](Ref* event) {
+		/*audio1->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
+		SimpleAudioEngine::getInstance()->resumeAllEffects();
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();*/
 		Director::getInstance()->resume();
 		btnPause->setVisible(true);
 		mBump->setVisible(true);
@@ -529,12 +785,14 @@ void GamePlay::push_rock()
 		Vec2 p_main = main_charactor->GetSprite()->getPosition();
 
 		if (p_rock.x < p_main.x) {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
-				Vec2(SPEED_CHARACTOR_RUN, 0));
+			/*rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
+				Vec2(SPEED_CHARACTOR_RUN, 0));*/
+			rocks.at(index)->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition());
 		}
 		else if (p_rock.x > p_main.x) {
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
-				Vec2(SPEED_CHARACTOR_RUN, 0));
+			/*rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
+				Vec2(SPEED_CHARACTOR_RUN, 0));*/
+			rocks.at(index)->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition());
 		}
 
 		((MainCharactor*)(main_charactor))->Push();
@@ -545,7 +803,7 @@ int GamePlay::check_push()
 {
 	int index = 0;
 	Vec2 p_main = main_charactor->GetSprite()->getPosition();
-	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition();
+	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition(); //+ Vec2(rocks.at(0)->GetSprite()->getContentSize().width / 2, 0)
 	float min_horizontal = distance(p_main.x, p_rock.x);
 
 	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
@@ -594,8 +852,12 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
+	{
+		//auto audio = SimpleAudioEngine::getInstance();
+		//audio->playEffect("Sounds/sfx_character_icehammer.mp3", false, 1.0f, 1.0f, 1.0f);
 		fight = true;
-		break;
+		break; 
+	}
 	case ui::Widget::TouchEventType::ENDED:
 		fight = false;
 		break;
@@ -607,14 +869,14 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::BEGAN:
-		log("began");
-		//jump = true;
+	{
+		/*auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("Sounds/sfx_character_hammer.mp3", false, 1.0f, 1.0f, 1.0f);*/
 		fall = false;
 		moveUp = true;
 		break;
+	}
 	case ui::Widget::TouchEventType::ENDED:
-		log("ended");
-		//jump = false;
 		fall = true;
 		moveUp = false;
 		break;
@@ -625,21 +887,18 @@ void GamePlay::climb()
 {
 	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
 	Vec2 _mapPos = _tileMap->getPosition();
-	Vec2 _winSize = Director::sharedDirector()->getWinSize();
 
-	float _dis_1 = _thang_1.x - (0 - _mapPos.x);
-	float _dis_2 = _thang_2.x - (0 - _mapPos.x);
-	float _dis_1y = _thang_1.y - (0 - _mapPos.y);
-	float _dis_2y = _thang_2.y - (0 - _mapPos.y);
+	for (int i = 0; i < _thang_Pos.size(); i++) {
+		float _dis_x = _thang_Pos.at(i).x - (0 - _mapPos.x);
+		float _dis_y = _thang_Pos.at(i).y - (0 - _mapPos.y);
 
-	if (_mainPos.x >= _dis_1 - 30 && _mainPos.x <= _dis_1 + 30 && _mainPos.y <= _dis_1y) {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-	}
-	else if (_mainPos.x >= _dis_2 - 30 && _mainPos.x <= _dis_2 + 30 && _mainPos.y <= _dis_2y) {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-	}
-	else {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
+		if (_mainPos.x >= _dis_x - 40 && _mainPos.x <= _dis_x + 40 && _mainPos.y <= _dis_y) {
+			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+			break;
+		}
+		else {
+			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
+		}
 	}
 }
 
@@ -648,8 +907,12 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	switch (type)
 	{
 	case ui::Widget::TouchEventType::ENDED:
+		//auto audio = SimpleAudioEngine::getInstance();
+		//audio->playEffect("Sounds/sfx_clickbutton.mp3", false, 1.0f, 1.0f, 1.0f);
 		auto funcPause = CallFunc::create([]() {
 			Director::getInstance()->pause();
+			/*SimpleAudioEngine::getInstance()->pauseAllEffects();
+			SimpleAudioEngine::getInstance()->pauseBackgroundMusic();*/
 		});
 		btnPause->setVisible(false);
 		mBump->setVisible(false);
@@ -689,7 +952,8 @@ void GamePlay::update(float deltaTime)
 	climb();
 
 	// collision vs ground
-	checkGround_1();
+	//checkGround_1();
+	checkGround_2();
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
