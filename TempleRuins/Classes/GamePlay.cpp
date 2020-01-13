@@ -25,7 +25,7 @@ void GamePlay::checkGround_2()
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
 			}
 		}
-		
+
 		// doc
 		if (_Line_Down_Pos.at(i).x == _Line_Down_Pos.at(i + 1).x) {
 			if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
@@ -49,9 +49,9 @@ void GamePlay::checkGround_2()
 			float x = rocks.at(j)->GetSprite()->getPosition().x;
 			float y = rocks.at(j)->GetSprite()->getPosition().y;
 			if (y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) &&
-			   (y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 20) &&
-			   (x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
-			   (x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
+				(y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 20) &&
+				(x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
+				(x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
 				rocks.at(j)->GetSprite()->setPosition(x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
 				rocks.at(j)->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 			}
@@ -169,7 +169,7 @@ void GamePlay::checkGround_2()
 		// doc
 		if (_Line_Down_Pos_5.at(i).x == _Line_Down_Pos_5.at(i + 1).x) {
 			if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x))  &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
 				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
@@ -299,7 +299,6 @@ cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
-//auto audio1 = SimpleAudioEngine::getInstance();
 
 
 Scene *GamePlay::createGame()
@@ -363,7 +362,7 @@ void GamePlay::CreateMap()
 	_phy->setVisible(false);
 	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
-	
+
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
 	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
 
@@ -582,7 +581,7 @@ void GamePlay::InitialButton()
 	btnPause->setAnchorPoint(Vec2(1, 1));
 	btnPause->setPosition(Director::getInstance()->getVisibleSize() - Size(3, 8));
 	btnPause->addTouchEventListener(CC_CALLBACK_2(GamePlay::Pause, this));
-	addChild(btnPause,2);
+	addChild(btnPause, 2);
 }
 
 void GamePlay::InitialPhysics()
@@ -688,24 +687,24 @@ void GamePlay::CreateBloodBar()
 
 	mHeader = Sprite::create("header.png");
 	mHeader->setFlippedX(true);
-	mHeader->setAnchorPoint(Vec2(1,1));
+	mHeader->setAnchorPoint(Vec2(1, 1));
 	mHeader->setPosition(Director::getInstance()->getVisibleSize());
 	mHeader->setVisible(true);
-	addChild(mHeader,2);
+	addChild(mHeader, 2);
 
 	Layer *layer_1 = Layer::create();
 	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
-	bloodBar_1->setPosition(Director::getInstance()->getVisibleSize() - Size(230,30));
+	bloodBar_1->setPosition(Director::getInstance()->getVisibleSize() - Size(230, 30));
 
 	bloodBar_2 = ui::LoadingBar::create("Load/bloodbar.png");
 	bloodBar_2->setDirection(ui::LoadingBar::Direction::LEFT);
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 	bloodBar_2->setPosition(bloodBar_1->getPosition());
 
-	this->addChild(bloodBar_1,3);
-	this->addChild(bloodBar_2,3);
+	this->addChild(bloodBar_1, 3);
+	this->addChild(bloodBar_2, 3);
 }
 
 void GamePlay::CreateNumDiamon()
@@ -719,7 +718,7 @@ void GamePlay::CreateNumDiamon()
 	// label number
 	CCString *num = CCString::createWithFormat("%i/50", numDiamond);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
-	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50,0));
+	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(LabelNumDiamon, 2);
 }
 
@@ -732,7 +731,7 @@ void GamePlay::createPauseLayer()
 	mPauseLayer->setPosition(visibleSize / 2);
 	mPauseLayer->setContentSize(visibleSize);
 	mPauseLayer->setVisible(false);
-	addChild(mPauseLayer,2);
+	addChild(mPauseLayer, 2);
 
 	//Button Home
 	auto btnHome = ui::Button::create("Button/home_normal.png", "Button/home_pressed.png");
@@ -778,62 +777,88 @@ void GamePlay::push_rock()
 	push = false;
 	int index = -1;
 	index = check_push();
-	if (index != -1) {
+	if (index != -1 && index != -2) {
 		push = true;
+		SPEED_CHARACTOR_RUN = 5;
 
-		Vec2 p_rock = rocks.at(index)->GetSprite()->getPosition();
+		Size size_rock = rocks.at(0)->GetSprite()->getContentSize();
+		Vec2 p_rock = rocks.at(index)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
 		Vec2 p_main = main_charactor->GetSprite()->getPosition();
-
-		if (p_rock.x < p_main.x) {
-			/*rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
-				Vec2(SPEED_CHARACTOR_RUN, 0));*/
-			rocks.at(index)->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition());
+		
+		if (p_main.x > p_rock.x) {
+			//log("cham phai");
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
+					Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
-		else if (p_rock.x > p_main.x) {
-			/*rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
-				Vec2(SPEED_CHARACTOR_RUN, 0));*/
-			rocks.at(index)->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition());
+		else if (p_main.x < p_rock.x) {
+			//log("cham trai");
+			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
+						Vec2(SPEED_CHARACTOR_RUN, 0));
 		}
 
 		((MainCharactor*)(main_charactor))->Push();
+	}
+	else if (index == -2) {
+		SPEED_CHARACTOR_RUN = 0;
+	}
+	else {
+		SPEED_CHARACTOR_RUN = 5;
 	}
 }
 
 int GamePlay::check_push()
 {
-	int index = 0;
+	int index = -1;
+	Size size_rock = rocks.at(0)->GetSprite()->getContentSize();
 	Vec2 p_main = main_charactor->GetSprite()->getPosition();
-	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition(); //+ Vec2(rocks.at(0)->GetSprite()->getContentSize().width / 2, 0)
-	float min_horizontal = distance(p_main.x, p_rock.x);
+	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
+	
+	float min_horizontal = 1000000;
 
-	float _dis_horizontal = main_charactor->getSize().width / 2 + rocks.at(0)->getSize().width / 2;
+	float _dis_horizontal = main_charactor->getSize().width / 2 + size_rock.width / 2;
 
-	for (int i = 1; i < rocks.size(); i++) {
-		float dis = distance(p_main.x, rocks.at(i)->GetSprite()->getPosition().x);
-		if (dis < min_horizontal) {
+	for (int i = 0; i < rocks.size(); i++) {
+		auto r = rocks.at(i)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
+		float dis = distance(p_main.x, r.x);
+		if (dis < min_horizontal && (p_main.y >= r.y - 10 && p_main.y <= r.y + 10)) {
 			min_horizontal = dis;
 			index = i;
 		}
 	}
 
-	p_rock = rocks.at(index)->GetSprite()->getPosition();
-
-	if (p_main.y > p_rock.y - 5 && p_main.y < p_rock.y + 5) {
-		if (p_rock.x < p_main.x) {
-			if ((min_horizontal - rocks.at(0)->getSize().width / 2 - 60) <= _dis_horizontal) {
-				return index;
-			}
+	if (index != -1) {
+		p_rock = rocks.at(index)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
+		float dis = distance(p_main.x, p_rock.x);
+		if (dis <= _dis_horizontal && !check_Collision(index)) {
+			// da khong cham nhau
+			//log("cham cham");
+			return index;
 		}
-		else if (p_rock.x > p_main.x) {
-			if ((min_horizontal + rocks.at(0)->getSize().width / 2) <= _dis_horizontal) {
-				return index;
+		else if (dis <= _dis_horizontal && check_Collision(index)) {
+			// da cham nhau
+			//log("return -2");
+			return -2;
+		}
+	}
+
+	return -1;
+}
+
+bool GamePlay::check_Collision(int index)
+{
+	Size size = rocks.at(0)->GetSprite()->getContentSize();
+	auto rock_1 = rocks.at(index)->GetSprite()->getPosition();
+	for (int j = 0; j < rocks.size(); j++) {
+		auto rock_2 = rocks.at(j)->GetSprite()->getPosition();
+		if (j != index && rock_1.y >= rock_2.y - 5 && rock_1.y <= rock_2.y + size.height) {
+			if (rock_1.x >= rock_2.x + size.width - 5 && rock_1.x <= rock_2.x + size.width + 5 ||
+				rock_1.x >= rock_2.x - size.width - 5 && rock_1.x <= rock_2.x - size.width + 5) {
+				return true;
 			}
 		}
 	}
 
-
-
-	return -1;
+	return false;
 }
 
 float GamePlay::distance(float main, float rock)
@@ -856,7 +881,7 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		//auto audio = SimpleAudioEngine::getInstance();
 		//audio->playEffect("Sounds/sfx_character_icehammer.mp3", false, 1.0f, 1.0f, 1.0f);
 		fight = true;
-		break; 
+		break;
 	}
 	case ui::Widget::TouchEventType::ENDED:
 		fight = false;
@@ -952,7 +977,6 @@ void GamePlay::update(float deltaTime)
 	climb();
 
 	// collision vs ground
-	//checkGround_1();
 	checkGround_2();
 }
 
@@ -980,9 +1004,12 @@ void GamePlay::setViewPointCenter(CCPoint position)
 				mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
 			}
 		}
+
+		//main_charactor->GetSprite()->getPhysicsBody()->setVelocity(Vec2(150, 0));
 	}
 	else if (moveLeft)
 	{
+		//main_charactor->GetSprite()->getPhysicsBody()->setVelocity(Vec2(-150, 0));
 		if (main_charactor->GetSprite()->getPosition().x > winSize.width / 2)
 		{
 			mcMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
@@ -1001,22 +1028,22 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	}
 	else if (moveUp || jump)
 	{
-
+		//main_charactor->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 		{
 			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
 		}
 		else
 		{
-				float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
 			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
-				{
-					mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
-				}
-				else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
-				{
-					mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
-				}
+			{
+				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
+			}
+			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
+			{
+				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
+			}
 		}
 	}
 	else if (moveDown)

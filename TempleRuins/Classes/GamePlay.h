@@ -72,6 +72,7 @@ private:
 	// main charactor
 	Objject* main_charactor;
 	ui::LoadingBar *bloodBar_2;
+	int SPEED_CHARACTOR_RUN = 5;
 
 
 	// state key
@@ -114,6 +115,7 @@ public:
 	// push rock
 	void push_rock();
 	int check_push();
+	bool check_Collision(int index);
 	float distance(float main, float rock);
 	
 	// update

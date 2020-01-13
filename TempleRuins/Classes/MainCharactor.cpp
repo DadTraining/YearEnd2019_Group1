@@ -232,7 +232,7 @@ void MainCharactor::MoveRight()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX + SPEED_CHARACTOR_RUN, posY);
+	//this->GetSprite()->setPosition(posX + SPEED_CHARACTOR_RUN, posY);
 }
 
 void MainCharactor::Jump()
@@ -287,14 +287,14 @@ void MainCharactor::MoveUp()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY + SPEED_CHARACTOR_RUN);
+//	this->GetSprite()->setPosition(posX, posY + SPEED_CHARACTOR_RUN);
 }
 
 void MainCharactor::MoveDown()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX, posY - SPEED_CHARACTOR_RUN);
+	//this->GetSprite()->setPosition(posX, posY - SPEED_CHARACTOR_RUN);
 }
 
 Size MainCharactor::getSize()
