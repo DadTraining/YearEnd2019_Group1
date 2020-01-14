@@ -14,6 +14,15 @@ private:
 	Label* scoreLabel;
 	int life;
 	Label* lifeLabel;
+	CCParallaxNode *_backgroundNode;
+	CCSprite *_spacedust1;
+	CCSprite *_spacedust2;
+	CCSprite *_planetsunrise;
+	CCSprite *_galaxy;
+	CCSprite *_spacialanomaly;
+	CCSprite *_spacialanomaly2;
+	Vector<Sprite*> meteors;
+	Vector<Sprite*> diamonds;
 public:
 	void setScore(int score) { this->score = score; };
 
