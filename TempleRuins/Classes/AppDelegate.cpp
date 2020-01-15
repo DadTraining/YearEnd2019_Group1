@@ -111,7 +111,7 @@ bool AppDelegate::applicationDidFinishLaunching()
   
 	//auto scene = LoadingLogo::createScene();
 	//auto scene = GamePlay::createGame();
-	auto scene = GamePlay2::createGame();
+	auto scene = GamePlay::createGame();
     // run
 
     director->runWithScene(scene);
