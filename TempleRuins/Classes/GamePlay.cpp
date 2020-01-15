@@ -536,15 +536,12 @@ void GamePlay::InitialButton()
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
-	mMoveLeftController->setOpacity(0);
-	mMoveLeftController->setScale(1.5);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
 	mMoveLeftControllerPressed->setVisible(false);
-	mMoveLeftControllerPressed->setOpacity(50);
 	addChild(mMoveLeftControllerPressed);
 
 	//move Right
@@ -552,15 +549,12 @@ void GamePlay::InitialButton()
 	mMoveRightController->setFlippedX(true);
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
 	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	mMoveRightController->setOpacity(0);
-	mMoveRightController->setScale(1.5);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
 	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
 	mMoveRightControllerPressed->setFlippedX(true);
 	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
-	mMoveRightControllerPressed->setOpacity(50);
 	mMoveRightControllerPressed->setVisible(false);
 	addChild(mMoveRightControllerPressed);
 
@@ -640,6 +634,7 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				{
 					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
 				}
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
@@ -657,6 +652,7 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				{
 					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
 				}
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 			}
 		}
 

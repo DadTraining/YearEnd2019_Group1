@@ -12,7 +12,7 @@ Scene * GamePlay2::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -37,7 +37,7 @@ bool GamePlay2::init()
 	createMap();
 
 	//create physics for Map
-	//createMapPhysics();
+	createMapPhysics();
 
 	// initial state
 	InitialState();
@@ -95,7 +95,7 @@ void GamePlay2::InitialState()
 	moveUp = false;
 	moveDown = false;
 	jump = false;
-	fall = false;
+	fall = true;
 }
 
 void GamePlay2::createObject() {
@@ -228,7 +228,6 @@ void GamePlay2::InitialButton()
 	mMoveLeftController = Sprite::create("touch_controller_normal.png");
 	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
 	mMoveLeftController->setPosition(Vec2(50, 50));
-	mMoveLeftController->setScale(1.5);
 	addChild(mMoveLeftController);
 
 	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -242,7 +241,6 @@ void GamePlay2::InitialButton()
 	mMoveRightController->setFlippedX(true);
 	mMoveRightController->setAnchorPoint(Vec2(0, 0));
 	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	mMoveRightController->setScale(1.5);
 	addChild(mMoveRightController);
 
 	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
@@ -313,11 +311,14 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
+			this->main_charactor->GetSprite()->stopAllActions();
 			((MainCharactor *)(main_charactor))->Stun();
+			
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
@@ -335,6 +336,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
+			this->main_charactor->GetSprite()->stopAllActions();
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
@@ -352,7 +354,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeB->removeFromParentAndCleanup(true);
@@ -361,7 +363,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeA->removeFromParentAndCleanup(true);
@@ -369,39 +371,44 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			nodeB->setPosition(Vec2(-100, -100));
+			nodeB->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			nodeA->setPosition(Vec2(-100, -100));
+			nodeA->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 
-		//move spider
-		for (int i = 0; i < spiders.size(); i++)
-		{
-			auto moveSpider = MoveBy::create(2.0f,spiders[i]->GetSprite()->getPosition() - Vec2(0,500));
-			auto delay = DelayTime::create(2.0f);
-			auto seq = Sequence::create(delay,moveSpider,delay,nullptr);
-			spiders[i]->GetSprite()->runAction(seq);
-			spiders[i]->GetSprite()->runAction(seq->reverse());
+		//spider vs rock
+		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_ROCK) {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_broken_stone.mp3.mp3", false);
+			}
+			nodeA->removeFromParentAndCleanup(true);
 		}
-
+		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_SPIDER)
+		{
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_broken_stone.mp3.mp3", false);
+			}
+			nodeB->removeFromParentAndCleanup(true);
+		}
 		// fight
-		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
+		/*if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
 			log("fight1");
 		}
 		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
 			log("fight2");
-		}
+		}*/
 
-		//spider vs rock
 
 	}
 
@@ -611,10 +618,21 @@ void GamePlay2::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		{
 			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_hammer.mp3", false);
 		}
-		fall = false;
-		moveUp = true;
+		
+		if (!moveUp && fall)
+		{
+			fall = false;
+			moveUp = true;
+		}
 		break;
 	}
+	case ui::Widget::TouchEventType::MOVED:
+		if (!moveUp && fall)
+		{
+			fall = false;
+			moveUp = true;
+		}
+		break;
 	case ui::Widget::TouchEventType::ENDED:
 		fall = true;
 		moveUp = false;
@@ -962,7 +980,7 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		}
 		else
 		{
-			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width;
+			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width * 2;
 			if (_tileMap->getPosition().x > -(mapWidth - winSize.width - SPEED_CHARACTOR_RUN))
 			{
 				mapMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
@@ -1000,7 +1018,7 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		}
 		else
 		{
-			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height * 2;
 			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
 			{
 				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
