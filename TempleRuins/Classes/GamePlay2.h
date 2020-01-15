@@ -30,6 +30,7 @@ private:
 	bool jump;
 	bool moveUp;
 	bool moveDown;
+	int SPEED_CHARACTOR_RUN = 5;
 
 	//State Action of Charactor
 	bool fight;

@@ -135,6 +135,7 @@ public:
 	CCPoint tileCoorforposition(CCPoint position);
 
 	CREATE_FUNC(GamePlay);
+
 	GamePlay();
 	~GamePlay();
 };
