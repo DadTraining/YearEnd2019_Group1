@@ -962,7 +962,7 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		}
 		else
 		{
-			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width;
+			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width * 2;
 			if (_tileMap->getPosition().x > -(mapWidth - winSize.width - SPEED_CHARACTOR_RUN))
 			{
 				mapMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
@@ -1000,7 +1000,7 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		}
 		else
 		{
-			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
+			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height * 2;
 			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
 			{
 				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);

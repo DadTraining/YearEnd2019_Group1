@@ -47,7 +47,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(1600, 900);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1600/2, 900/2);
 
 AppDelegate::AppDelegate()
 {
@@ -110,8 +110,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
   
 	//auto scene = LoadingLogo::createScene();
-	//auto scene = GamePlay::createGame();
-	auto scene = GamePlay2::createGame();
+	auto scene = GamePlay::createGame();
+	//auto scene = GamePlay2::createGame();
     // run
 
     director->runWithScene(scene);
