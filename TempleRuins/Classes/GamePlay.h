@@ -1,5 +1,4 @@
 #pragma once
-#include "2d\CCScene.h"
 #include "2d\CCLayer.h"
 #include "MainCharactor.h"
 #include "Spider.h"
@@ -14,7 +13,8 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
-class GamePlay : public Layer
+class GamePlay : 
+	public Layer
 {
 private:
 	int numDiamond;
@@ -67,14 +67,13 @@ private:
 
 
 	Objject* main_charactor;
+	ui::LoadingBar *bloodBar_1;
 	ui::LoadingBar *bloodBar_2;
+
 
 	//
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-
-
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
-
 	cocos2d::Point mCurrentTouchPoint;
 
 	cocos2d::Sprite* mMoveLeftController;
