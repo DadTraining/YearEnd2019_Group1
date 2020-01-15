@@ -37,7 +37,7 @@ bool GamePlay2::init()
 	createMap();
 
 	//create physics for Map
-	createMapPhysics();
+	//createMapPhysics();
 
 	// initial state
 	InitialState();
@@ -57,6 +57,10 @@ bool GamePlay2::init()
 	// update
 	scheduleUpdate();
 
+	/*for (int i = 0; i < _Line_Down_Pos_1.size(); i++) {
+		log("%f     %f", _Line_Down_Pos_1.at(i).x, _Line_Down_Pos_1.at(i).y);
+	}*/
+
 	return true;
 }
 
@@ -70,6 +74,10 @@ void GamePlay2::createMap()
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
+
+	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
+	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
+
 	this->addChild(_tileMap);
 }
 
@@ -129,6 +137,63 @@ void GamePlay2::createObject() {
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX*2, posY*2));
 			rocks.push_back(rock);
+		}
+	}
+
+	// get object line down
+	auto objects_line_down = mObjects_line_down->getObjects();
+	for (int i = 0; i < objects_line_down.size(); i++) {
+		auto object = objects_line_down.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			_Line_Down_Pos_1.push_back(Vec2(posX, posY)*2);
+		}
+		else if (type == 2) {
+			_Line_Down_Pos_2.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 3) {
+			_Line_Down_Pos_3.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 4) {
+			_Line_Down_Pos_4.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 5) {
+			_Line_Down_Pos_5.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 6) {
+			_Line_Down_Pos_6.push_back(Vec2(posX, posY) * 2);
+		}
+	}
+
+	// get object line up
+	auto objects_line_up = mObjects_line_up->getObjects();
+	for (int i = 0; i < objects_line_up.size(); i++) {
+		auto object = objects_line_up.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			_Line_Up_Pos_1.push_back(Vec2(posX, posY) * 2);
+		}
+		if (type == 2) {
+			_Line_Up_Pos_2.push_back(Vec2(posX, posY) * 2);
+		}
+		if (type == 3) {
+			_Line_Up_Pos_3.push_back(Vec2(posX, posY) * 2);
+		}
+		if (type == 4) {
+			_Line_Up_Pos_4.push_back(Vec2(posX, posY) * 2);
+		}
+		if (type == 5) {
+			_Line_Up_Pos_5.push_back(Vec2(posX, posY) * 2);
 		}
 	}
 }
@@ -287,7 +352,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeB->removeFromParentAndCleanup(true);
@@ -296,7 +361,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeA->removeFromParentAndCleanup(true);
@@ -307,14 +372,14 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			nodeB->setPosition(Vec2(-100, -100));
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
 			nodeA->setPosition(Vec2(-100, -100));
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 
@@ -582,28 +647,247 @@ void GamePlay2::climb()
 void GamePlay2::checkGround()
 {
 	Vec2 _mapPos = _tileMap->getPosition();
-	_collistionGround = false;
-	Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-	float dis = distance_1(_main_pos.y, _ground_Pos.y);
-	float dis_1 = distance_1(_main_pos.y, _ground_Pos_1.y - (0 - _mapPos.y));
-	float dis_2 = distance_1(_main_pos.y, _ground_Pos_2.y - (0 - _mapPos.y));
 
-	if (dis <= 5 && (_main_pos.x > _ground_Pos_2.x && _main_pos.x < _ground_Pos_1.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos.y));
+	// down
+	for (int i = 0; i < _Line_Down_Pos_1.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_1.at(i).y == _Line_Down_Pos_1.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_1.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_1.at(i).x == _Line_Down_Pos_1.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_1.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_1.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
 		}
 	}
-	else if (dis_1 <= 10 && (_main_pos.x >(_ground_Pos_1.x - (0 - _mapPos.x)))) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_1.y - (0 - _mapPos.y)) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_1.y - (0 - _mapPos.y)));
+	for (int i = 0; i < _Line_Down_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_2.at(i).y == _Line_Down_Pos_2.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_2.at(i).x == _Line_Down_Pos_2.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
 		}
 	}
-	else if (dis_2 <= 10 && (_main_pos.x > 0 && _main_pos.x < _ground_Pos_2.x)) {
-		_collistionGround = true;
-		if (_main_pos.y < _ground_Pos_2.y) {
-			main_charactor->GetSprite()->setPosition(Vec2(_main_pos.x, _ground_Pos_2.y));
+	for (int i = 0; i < _Line_Down_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_3.at(i).y == _Line_Down_Pos_3.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_3.at(i).x == _Line_Down_Pos_3.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+	for (int i = 0; i < _Line_Down_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_4.at(i).y == _Line_Down_Pos_4.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_4.at(i).x == _Line_Down_Pos_4.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+	for (int i = 0; i < _Line_Down_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_5.at(i).y == _Line_Down_Pos_5.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_5.at(i).x == _Line_Down_Pos_5.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+	for (int i = 0; i < _Line_Down_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
+		if (_Line_Down_Pos_6.at(i).y == _Line_Down_Pos_6.at(i + 1).y) {
+			if ((_main_pos.y <= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Down_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Down_Pos_6.at(i).x == _Line_Down_Pos_6.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y <= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
+				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	// up
+	for (int i = 0; i < _Line_Up_Pos_1.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_1.at(i).y == _Line_Up_Pos_1.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_1.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_2.at(i).y == _Line_Up_Pos_2.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_3.at(i).y == _Line_Up_Pos_3.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_4.at(i).y == _Line_Up_Pos_4.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y));
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_5.at(i).y == _Line_Up_Pos_5.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y));
+			}
 		}
 	}
 }
@@ -764,6 +1048,42 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		}
 		if (moveRight) {
 			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
+		}
+	}
+
+
+	if (mcMoveDistance != Vec2(0, 0))
+	{
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
+	}
+
+	if (mapMoveDistance != Vec2(0, 0))
+	{
+		// update map
+		_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
+
+		// update spider
+		for (int i = 0; i < spiders.size(); i++)
+		{
+			spiders.at(i)->GetSprite()->setPosition(spiders.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+		}
+
+		// update glass
+		for (int i = 0; i < glasss.size(); i++)
+		{
+			glasss.at(i)->GetSprite()->setPosition(glasss.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+		}
+
+		// update diamon
+		for (int i = 0; i < diamons.size(); i++)
+		{
+			diamons.at(i)->GetSprite()->setPosition(diamons.at(i)->GetSprite()->getPosition() + mapMoveDistance);
+		}
+
+		// update rock
+		for (int i = 0; i < rocks.size(); i++)
+		{
+			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
 	}
 }

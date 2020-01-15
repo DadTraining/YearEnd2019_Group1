@@ -110,8 +110,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
   
 	//auto scene = LoadingLogo::createScene();
-	auto scene = GamePlay::createGame();
-
+	//auto scene = GamePlay::createGame();
+	auto scene = GamePlay2::createGame();
     // run
 
     director->runWithScene(scene);

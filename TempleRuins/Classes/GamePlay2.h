@@ -23,7 +23,24 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
+	int SPEED_CHARACTOR_RUN = 5;
 	
+	// collistion
+	void checkGround();
+	cocos2d::TMXObjectGroup* mObjects_line_down;
+	vector<Vec2> _Line_Down_Pos_1;
+	vector<Vec2> _Line_Down_Pos_2;
+	vector<Vec2> _Line_Down_Pos_3;
+	vector<Vec2> _Line_Down_Pos_4;
+	vector<Vec2> _Line_Down_Pos_5;
+	vector<Vec2> _Line_Down_Pos_6;
+	cocos2d::TMXObjectGroup* mObjects_line_up;
+	vector<Vec2> _Line_Up_Pos_1;
+	vector<Vec2> _Line_Up_Pos_2;
+	vector<Vec2> _Line_Up_Pos_3;
+	vector<Vec2> _Line_Up_Pos_4;
+	vector<Vec2> _Line_Up_Pos_5;
+
 	//State Move of Charactor
 	bool moveLeft;
 	bool moveRight;
@@ -71,7 +88,6 @@ private:
 	Vec2 _ground_Pos;
 	Vec2 _ground_Pos_1;
 	Vec2 _ground_Pos_2;
-	void checkGround();
 	bool _collistionGround = false;
 	float distance_1(float p_1, float p_2);
 
