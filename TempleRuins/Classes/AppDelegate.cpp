@@ -25,6 +25,7 @@
 #include "AppDelegate.h"
 #include "ResourceManager.h"
 #include "GamePlay.h"
+#include "GamePlay2.h"
 #include "LoadingLogo.h"
 #include "MainMenu.h"
 
@@ -46,7 +47,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(1600/2, 900/2);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1600, 900);
 
 AppDelegate::AppDelegate()
 {
@@ -107,6 +108,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
+  
 	//auto scene = LoadingLogo::createScene();
 	auto scene = GamePlay::createGame();
 

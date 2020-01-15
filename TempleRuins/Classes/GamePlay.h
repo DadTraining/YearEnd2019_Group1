@@ -1,5 +1,4 @@
 #pragma once
-#include "2d\CCScene.h"
 #include "2d\CCLayer.h"
 #include "MainCharactor.h"
 #include "Spider.h"
@@ -9,16 +8,13 @@
 #include "MainMenu.h"
 #include "MapGame.h"
 #include "cocos2d.h"
-//#include "SimpleAudioEngine.h"
-//using namespace CocosDenshion;
+#include "SimpleAudioEngine.h"
 
-
-#define BLOOD_REDUCTION 5
-
-//using namespace cocos2d;
+using namespace CocosDenshion;
 USING_NS_CC;
 
-class GamePlay : public Layer
+class GamePlay : 
+	public Layer
 {
 private:
 	int numDiamond;
@@ -71,15 +67,14 @@ private:
 
 	// main charactor
 	Objject* main_charactor;
+	ui::LoadingBar *bloodBar_1;
 	ui::LoadingBar *bloodBar_2;
 	int SPEED_CHARACTOR_RUN = 5;
 
 
 	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
-
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
-
 	cocos2d::Point mCurrentTouchPoint;
 
 	cocos2d::Sprite* mMoveLeftController;
