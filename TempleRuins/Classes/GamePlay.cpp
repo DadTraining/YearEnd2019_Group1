@@ -291,6 +291,22 @@ void GamePlay::checkGround_2()
 			}
 		}
 	}
+
+	// main vs rock
+	auto size = main_charactor->GetSprite()->getContentSize();
+	auto sizeRock = rocks.at(0)->GetSprite()->getContentSize();
+	for (int i = 0; i < rocks.size(); i++) {
+		auto mainPos = main_charactor->GetSprite()->getPosition() - Vec2(size.width / 2, 0);
+		auto rockPos = rocks.at(i)->GetSprite()->getPosition();
+		if ((mainPos.x) >= (rockPos.x - (0 - _mapPos.x)) && (mainPos.x) <= (rockPos.x - (0 - _mapPos.x) + sizeRock.width)) {
+			log("hehe");
+			if (mainPos.y >= rockPos.y - (0 - _mapPos.y) + sizeRock.height - 10 && mainPos.y <= rockPos.y - (0 - _mapPos.y) + sizeRock.height + 5) {
+				main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, rockPos.y + sizeRock.height);
+				log("haha");
+				//break;
+			}
+		}
+	}
 }
 
 
@@ -820,7 +836,7 @@ int GamePlay::check_push()
 	for (int i = 0; i < rocks.size(); i++) {
 		auto r = rocks.at(i)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
 		float dis = distance(p_main.x, r.x);
-		if (dis < min_horizontal && (p_main.y >= r.y - 10 && p_main.y <= r.y + 10)) {
+		if (dis < min_horizontal && (p_main.y >= r.y - 10 && p_main.y <= r.y + size_rock.height - 10)) {
 			min_horizontal = dis;
 			index = i;
 		}
