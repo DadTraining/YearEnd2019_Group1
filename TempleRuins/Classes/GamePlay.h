@@ -30,48 +30,49 @@ private:
 	bool moveDown;
 	bool fall;
 
+	// button
 	cocos2d::ui::Button *mFireController;
 	cocos2d::ui::Button *mJumpController;
 
+	// map
 	CCTMXTiledMap *_tileMap;
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 	CCTMXLayer *_thang;
 
-	Vec2 _thang_1;
-	Vec2 _thang_2;
+	// thang
+	vector<Vec2> _thang_Pos;
 
-	/////////// test ground not physic
-	Vec2 _ground_Pos;
-	Vec2 _ground_Pos_1;
-	Vec2 _ground_Pos_2;
-	void checkGround();
-	bool _collistionGround = false;
+	
 	float distance_1(float p_1, float p_2);
 
-	//////////////////////////////// test tiep
-	Vec2 _ground_Pos_12;
-	Vec2 _ground_Pos_13;
-	Vec2 _ground_Pos_14;
-	Vec2 _ground_Pos_15;
-	Vec2 _ground_Pos_16;
-	Vec2 _ground_Pos_17;
-	Vec2 _ground_Pos_18;
-	Vec2 _ground_Pos_19;
-	Vec2 _ground_Pos_20;
-	Vec2 _ground_Pos_21;
-	Vec2 _ground_Pos_22;
-	Vec2 _ground_Pos_23;
-	Vec2 _ground_Pos_24;
+	// collision 2
+	void checkGround_2();
+	cocos2d::TMXObjectGroup* mObjects_line_down;
+	cocos2d::TMXObjectGroup* mObjects_line_up;
+	vector<Vec2> _Line_Down_Pos;
+	vector<Vec2> _Line_Down_Pos_2;
+	vector<Vec2> _Line_Down_Pos_3;
+	vector<Vec2> _Line_Down_Pos_4;
+	vector<Vec2> _Line_Down_Pos_5;
+	vector<Vec2> _Line_Down_Pos_6;
+	vector<Vec2> _Line_Up_Pos_1;
+	vector<Vec2> _Line_Up_Pos_2;
+	vector<Vec2> _Line_Up_Pos_3;
+	vector<Vec2> _Line_Up_Pos_4;
+	vector<Vec2> _Line_Up_Pos_5;
+	vector<Vec2> _Line_Up_Pos_6;
 
 
+	// main charactor
 	Objject* main_charactor;
 	ui::LoadingBar *bloodBar_1;
 	ui::LoadingBar *bloodBar_2;
+	int SPEED_CHARACTOR_RUN = 5;
 
 
-	//
+	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 	cocos2d::Point mCurrentTouchPoint;
@@ -81,8 +82,9 @@ private:
 	cocos2d::Sprite* mMoveRightController;
 	cocos2d::Sprite* mMoveRightControllerPressed;
 
-
+	// object map
 	cocos2d::TMXObjectGroup* mObjectGroup;
+
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
@@ -108,6 +110,7 @@ public:
 	// push rock
 	void push_rock();
 	int check_push();
+	bool check_Collision(int index);
 	float distance(float main, float rock);
 	
 	// update
