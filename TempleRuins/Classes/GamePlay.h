@@ -1,5 +1,6 @@
 #pragma once
 #include "2d\CCLayer.h"
+#include "SneakyJoystickSkinnedBase.h"
 #include "MainCharactor.h"
 #include "Spider.h"
 #include "Diamond.h"
@@ -135,6 +136,13 @@ public:
 	CCPoint tileCoorforposition(CCPoint position);
 
 	CREATE_FUNC(GamePlay);
+
+	//Joystick
+	void CreateJoystick(Layer * layer);
+	void UpdateJoystick(float dt);
+	SneakyJoystick *leftJoystick;
+	SneakyJoystickSkinnedBase* joystickBase;
+	float activeRunRange;
 
 	GamePlay();
 	~GamePlay();

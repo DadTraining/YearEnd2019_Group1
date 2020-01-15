@@ -123,6 +123,13 @@ void GamePlay2::createObject() {
 			spider->setCatogory(true);
 			spiders.push_back(spider);
 		}
+		else if (type == 3)
+		{
+			Spider *spider1 = new Spider(this);
+			spider1->GetSprite()->setPosition(Vec2(posX * 2, posY * 2));
+			spider1->setCatogory(false);
+			spiders.push_back(spider1);
+		}
 		else if (type == 4) {//Create Glass
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX*2, posY*2));
@@ -316,7 +323,9 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
+
 			this->main_charactor->GetSprite()->stopAllActions();
+
 			((MainCharactor *)(main_charactor))->Stun();
 			
 			if (this->main_charactor->GetBlood() <= 0)

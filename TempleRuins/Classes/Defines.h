@@ -3,7 +3,7 @@
 
 // define spider
 #define SPEED_FRAME_SPIDER 0.1f
-#define SCALE_SPIDER 0.10
+#define SCALE_SPIDER 0.12
 #define SPEED_ROTATE_SPIDER 0.01f
 #define BLOOD_SPIDER 3
 #define TAG_SPIDER 10
@@ -40,5 +40,7 @@
 
 // define button
 #define SCALE_BUTTON 0.3
+
+#define MARGIN_JOYSTICK 50
 
 #endif // !_DEFINES_H_

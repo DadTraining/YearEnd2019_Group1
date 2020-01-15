@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="958">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="963">
  <properties>
   <property name="Collectable" value="True"/>
  </properties>
@@ -334,7 +334,7 @@
   <object id="218" name="_GroundPos" type="23" x="2567.67" y="444.667" width="64" height="64"/>
   <object id="219" name="_GroundPos" type="24" x="2695.55" y="316.375" width="64" height="64"/>
  </objectgroup>
- <objectgroup id="26" name="Objects" visible="0">
+ <objectgroup id="26" name="Objects">
   <object id="848" name="SpiderPos" type="2" x="1152.5" y="1118.17" width="64" height="64"/>
   <object id="849" name="SpiderPos" type="2" x="1279.84" y="1117.5" width="64" height="64"/>
   <object id="850" name="GrassPos" type="4" x="382" y="1146.33" width="64" height="64"/>
@@ -370,13 +370,12 @@
   <object id="898" name="GrassPos" type="4" x="1984.67" y="887" width="64" height="64"/>
   <object id="899" name="GrassPos" type="4" x="1984.34" y="957" width="64" height="64"/>
   <object id="900" name="GrassPos" type="4" x="2048" y="955.667" width="64" height="64"/>
-  <object id="901" name="SpiderPos" type="3" x="1731" y="1026.67" width="64" height="64"/>
+  <object id="901" name="SpiderPos" type="3" x="560" y="1268.67" width="64" height="64"/>
   <object id="902" name="GrassPos" type="4" x="1662.67" y="830" width="64" height="64"/>
   <object id="903" name="GrassPos" type="4" x="2239.67" y="897" width="64" height="64"/>
   <object id="904" name="GrassPos" type="4" x="2753.67" y="770.667" width="64" height="64"/>
   <object id="905" name="GrassPos" type="4" x="2690.67" y="769" width="64" height="64"/>
   <object id="906" name="GrassPos" type="4" x="2625.67" y="769" width="64" height="64"/>
-  <object id="907" name="GrassPos" type="4" x="2690.67" y="704" width="64" height="64"/>
   <object id="908" name="GrassPos" type="4" x="2626.67" y="703" width="64" height="64"/>
   <object id="909" name="GrassPos" type="4" x="2562.67" y="704" width="64" height="64"/>
   <object id="910" name="GrassPos" type="4" x="2499.67" y="705.5" width="64" height="64"/>
@@ -420,5 +419,10 @@
   <object id="948" name="GrassPos" type="4" x="1853.67" y="448" width="64" height="64"/>
   <object id="955" name="MCPos" type="1" x="171.5" y="1255" width="31" height="26"/>
   <object id="956" x="1536.5" y="704" width="64" height="64"/>
+  <object id="958" name="SpiderPos" type="3" x="2879" y="704" width="64" height="64"/>
+  <object id="959" name="SpiderPos" type="2" x="2816" y="131" width="64" height="64"/>
+  <object id="960" name="GrassPos" type="4" x="2494" y="192" width="64" height="64"/>
+  <object id="961" name="GrassPos" type="4" x="2560" y="192" width="64" height="64"/>
+  <object id="962" name="RockPos" type="6" x="768" y="1084.5" width="64" height="64"/>
  </objectgroup>
 </map>
