@@ -338,7 +338,7 @@ bool GamePlay::init()
 	CreateMap();
 
 	// initial physics for map
-	//InitialPhysics();
+	InitialPhysics();
 
 	// initial state
 	InitialState();
