@@ -23,7 +23,6 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
-	int SPEED_CHARACTOR_RUN = 5;
 	
 	// collistion
 	void checkGround();

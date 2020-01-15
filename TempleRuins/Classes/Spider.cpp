@@ -83,6 +83,7 @@ void Spider::InitialSPider()
 	this->SetSprite(Sprite::create("spider_01.png"));
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
+	this->GetSprite()->retain();
 	this->layer->addChild(this->GetSprite());
 	this->GetSprite()->setTag(TAG_SPIDER);
 
@@ -100,7 +101,7 @@ void Spider::InitialAction()
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), SPEED_FRAME_SPIDER);
 	auto animate = Animate::create(animation);
 
-	auto move = MoveBy::create(1.0f,Vec2(10,10));
+	auto move = MoveBy::create(1.0f,Vec2(0,this->GetSprite()->getPosition().y-380));
 	auto delay = DelayTime::create(0.5f);
 	auto seq = Sequence::create(move,delay,move->reverse(),nullptr);
 	auto mySpawn = Spawn::createWithTwoActions(seq, animate);
