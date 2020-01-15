@@ -3,7 +3,7 @@
 
 // define spider
 #define SPEED_FRAME_SPIDER 0.1f
-#define SCALE_SPIDER 0.15
+#define SCALE_SPIDER 0.10
 #define SPEED_ROTATE_SPIDER 0.01f
 #define BLOOD_SPIDER 3
 #define TAG_SPIDER 10
@@ -22,7 +22,7 @@
 #define TAG_DIAMOND 30
 
 // define rock
-#define SCALE_ROCK 0.12
+#define SCALE_ROCK 0.9
 #define SPEED_ROCK 50
 #define TAG_ROCK 50
 

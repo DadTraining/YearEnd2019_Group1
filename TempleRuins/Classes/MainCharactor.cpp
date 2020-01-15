@@ -83,7 +83,7 @@ void MainCharactor::CreateSprite()
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	physicbody->setGravityEnable(true);
+	physicbody->setGravityEnable(false);
 	physicbody->setMass(500);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
@@ -232,7 +232,7 @@ void MainCharactor::MoveRight()
 {
 	float posX = this->GetSprite()->getPosition().x;
 	float posY = this->GetSprite()->getPosition().y;
-	this->GetSprite()->setPosition(posX + SPEED_CHARACTOR_RUN, posY);
+	//this->GetSprite()->setPosition(posX + SPEED_CHARACTOR_RUN, posY);
 }
 
 void MainCharactor::Jump()

@@ -7,11 +7,6 @@ cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
 
-float GamePlay::distance_1(float p_1, float p_2)
-{
-	return p_1 - p_2;
-}
-
 Scene *GamePlay::createGame()
 {
 	// 'scene' is an autorelease object
@@ -19,6 +14,7 @@ Scene *GamePlay::createGame()
 
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
+
 	// 'layer' is an autorelease object
 	auto layer = GamePlay::create();
 
@@ -66,17 +62,14 @@ bool GamePlay::init()
 
 void GamePlay::CreateMap()
 {
-	auto layer_1 = Layer::create();
 	_tileMap = new CCTMXTiledMap();
 	_tileMap->initWithTMXFile("map.tmx");
-	//_tileMap->setScale(2);
 	_background = _tileMap->layerNamed("Background");
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
 	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
-
 	this->addChild(_tileMap);
 }
 
@@ -259,14 +252,12 @@ void GamePlay::InitialButton()
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
-	mBump->setOpacity(50);
 	addChild(mBump);
 
 	//Button Jump
 	mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
 	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
 	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	mJump->setOpacity(50);
 	addChild(mJump);
 
 	////Button Down
@@ -414,7 +405,7 @@ void GamePlay::CreateBloodBar()
 	addChild(mHeader,2);
 
 	Layer *layer_1 = Layer::create();
-	auto bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
+	bloodBar_1 = ui::LoadingBar::create("Load/bloodbar_bg.png");
 	bloodBar_1->setDirection(ui::LoadingBar::Direction::RIGHT);
 	bloodBar_1->setPercent(100);
 	bloodBar_1->setPosition(Director::getInstance()->getVisibleSize() - Size(230,30));
@@ -561,6 +552,11 @@ int GamePlay::check_push()
 
 
 	return -1;
+}
+
+float GamePlay::distance_1(float p_1, float p_2)
+{
+	return p_1 - p_2;
 }
 
 float GamePlay::distance(float main, float rock)
@@ -822,7 +818,6 @@ void GamePlay::setViewPointCenter(CCPoint position)
 			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
 		}
 	}
-
 
 	if (mcMoveDistance != Vec2(0, 0))
 	{//////////////// if() test collision ground

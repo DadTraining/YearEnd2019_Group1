@@ -35,7 +35,7 @@ void Diamond::Init()
 	this->GetSprite()->runAction(RepeatForever::create(animate));
 
 	//add physic
-	auto physicsBody1 = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	auto physicsBody1 = PhysicsBody::createCircle(this->GetSprite()->getContentSize().width/2);
 	physicsBody1->setDynamic(true);
 	physicsBody1->setRotationEnable(false);
 	this->GetSprite()->setPhysicsBody(physicsBody1);
