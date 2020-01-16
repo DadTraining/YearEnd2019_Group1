@@ -1223,8 +1223,6 @@ bool GamePlay2::onTouchBegan(cocos2d::Touch * touch, cocos2d::Event * event)
 
 void GamePlay2::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event)
 {
-	mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-	mCurrentTouchPoint = touch->getLocation();
 }
 
 void GamePlay2::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)

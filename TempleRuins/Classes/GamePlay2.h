@@ -66,7 +66,6 @@ private:
 	cocos2d::ui::Button *mFireController;
 
 	
-	
 	//Header bar
 	int numDiamond2;
 	Label* LabelNumDiamon;
