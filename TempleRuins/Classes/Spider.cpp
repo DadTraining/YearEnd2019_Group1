@@ -38,7 +38,7 @@ void Spider::InitialSPider()
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
 	this->GetSprite()->retain();
-	this->layer->addChild(this->GetSprite());
+	this->layer->addChild(this->GetSprite(),0);
 	this->GetSprite()->setTag(TAG_SPIDER);
 
 	// physic
