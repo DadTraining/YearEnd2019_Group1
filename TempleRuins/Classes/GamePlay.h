@@ -11,6 +11,7 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "Fire.h"
+#include "Keys.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -78,7 +79,10 @@ private:
 	Objject* fire_normal_3;
 	vector<Vec2> Fire_AI_1;
 	Objject* fire_ai_1;
-	Vec2 AI_View;
+	vector<Vec2> AI_View;
+	vector<Vec2> Keys_Pos;
+	Objject* key;
+	bool isKey = false;
 
 	// fire dragon
 	vector<Vec2> Fire_dragon_1;

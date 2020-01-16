@@ -472,8 +472,13 @@ bool GamePlay::init()
 	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, AI_View);
 
 	fire_ai_1 = new Fire(this, true);
+	((Fire*)(fire_ai_1))->setKey(isKey);
 	((Fire*)(fire_ai_1))->setAI(true);
 	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap, AI_View);
+
+	// create key
+	key = new Keys(this, true);
+	((Keys*)(key))->setPos(Keys_Pos, _tileMap);
 
 	return true;
 }
@@ -640,10 +645,13 @@ void GamePlay::InitialObject()
 			Fire_dragon_1.push_back(Vec2(posX, posY));
 		}
 		else if (type == 5) {
-			AI_View = Vec2(posX, posY);
+			AI_View.push_back(Vec2(posX, posY));
 		}
 		else if (type == 6) {
 			Fire_Normal_3.push_back(Vec2(posX, posY));
+		}
+		else if (type == 7) {
+			Keys_Pos.push_back(Vec2(posX, posY));
 		}
 	}
 }
@@ -811,6 +819,18 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 			}
 			((MainCharactor *)(main_charactor))->Stun();
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+
+		// main charactor vs key
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_KEY) {
+			isKey = true;
+			nodeB->removeFromParentAndCleanup(true);
+			((Fire*)(fire_ai_1))->setKey(isKey);
+		}
+		else if (nodeA->getTag() == TAG_KEY && nodeB->getTag() == TAG_CHARACTOR) {
+			isKey = true;
+			nodeA->removeFromParentAndCleanup(true);
+			((Fire*)(fire_ai_1))->setKey(isKey);
 		}
 
 		// fight

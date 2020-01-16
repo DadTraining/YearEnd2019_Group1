@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="979">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="981">
  <properties>
   <property name="Collectable" value="True"/>
  </properties>
@@ -175,8 +175,10 @@
   <object id="976" name="PosFire" type="6" x="2506.06" y="412.121"/>
   <object id="977" name="PosFire" type="6" x="2815.15" y="418.182"/>
   <object id="978" name="PosFire" type="6" x="2815.15" y="160.606"/>
+  <object id="979" name="key" type="7" x="1881.33" y="153.333"/>
+  <object id="980" name="mrBia" type="5" x="1796.67" y="571.667"/>
  </objectgroup>
- <objectgroup id="24" name="Line_Down">
+ <objectgroup id="24" name="Line_Down" visible="0">
   <object id="677" name="Pos_down" type="1" x="4.5" y="1279"/>
   <object id="678" name="Pos_down" type="1" x="383" y="1279"/>
   <object id="679" name="Pos_down" type="1" x="383" y="1343.33"/>
@@ -304,7 +306,7 @@
   <object id="967" name="Pos_Up" type="3" x="2753.33" y="730.5"/>
   <object id="968" name="Pos_Up" type="3" x="2753.33" y="640"/>
  </objectgroup>
- <objectgroup id="26" name="Objects">
+ <objectgroup id="26" name="Objects" visible="0">
   <object id="848" name="SpiderPos" type="2" x="1152.5" y="1118.17" width="64" height="64"/>
   <object id="849" name="SpiderPos" type="2" x="1279.84" y="1117.5" width="64" height="64"/>
   <object id="850" name="GrassPos" type="4" x="382" y="1146.33" width="64" height="64"/>
@@ -416,7 +418,7 @@
   <object id="970" name="DiamonPos" type="5" x="2047.33" y="892" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="27" name="Object Layer 5" visible="0"/>
- <objectgroup id="29" name="EndGame">
+ <objectgroup id="29" name="EndGame" visible="0">
   <object id="973" name="EndGame" x="1505.33" y="702.667" width="64" height="64"/>
  </objectgroup>
 </map>

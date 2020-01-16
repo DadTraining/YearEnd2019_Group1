@@ -49,4 +49,12 @@
 #define SCALE_FIRE_2 0.04
 #define TAG_FIRE 110
 
+// define key
+#define TAG_KEY 130
+#define SCALE_KEY 1
+
+// define AI
+#define RUN_1 1.5
+#define RUN_2 2
+
 #endif // !_DEFINES_H_
