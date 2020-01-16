@@ -28,6 +28,7 @@
 #include "GamePlay2.h"
 #include "LoadingLogo.h"
 #include "MainMenu.h"
+#include "MiniGameScene.h"
 
 
 // #define USE_AUDIO_ENGINE 1
@@ -110,10 +111,11 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
   
 	//auto scene = LoadingLogo::createScene();
-	auto scene = GamePlay::createGame();
-	//auto scene = GamePlay2::createGame();
-    // run
+	//auto scene = GamePlay::createGame();
+	auto scene = GamePlay2::createGame();
+	//auto scene = MiniGame::createScene();
 
+	// run
     director->runWithScene(scene);
 
     return true;

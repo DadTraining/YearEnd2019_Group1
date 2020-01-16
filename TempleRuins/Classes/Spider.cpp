@@ -8,15 +8,7 @@ void Spider::Init()
 
 	// initial action
 	InitialAction();
-	
-	if (catogory)
-	{
-		goUp();
-	}
-	else
-	{
-		goUp();
-	}
+	goUp();
 }
 
 void Spider::Update(float deltaTime)
@@ -54,9 +46,9 @@ void Spider::InitialAction()
 	// action up
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), SPEED_FRAME_SPIDER);
 	auto animate = Animate::create(animation);
+	auto delay = DelayTime::create(0.5f);
 
 	auto move = MoveBy::create(1.0f,Vec2(0,this->GetSprite()->getPosition().y-380));
-	auto delay = DelayTime::create(0.5f);
 	auto seq = Sequence::create(move,delay,move->reverse(),nullptr);
 	auto mySpawn = Spawn::createWithTwoActions(seq, animate);
 
@@ -66,9 +58,10 @@ void Spider::InitialAction()
 
 
 	// action left
-	auto moveLeft = MoveBy::create(1.0f, Vec2(0, this->GetSprite()->getPosition().x - 380));
-	auto seq1 = Sequence::create(moveLeft, delay, moveLeft->reverse(), nullptr);
+	auto move1 = MoveBy::create(1.0f, Vec2(0, this->GetSprite()->getPosition().x - 380));
+	auto seq1 = Sequence::create(move1, delay, move1->reverse(), nullptr);
 	auto mySpawn1 = Spawn::createWithTwoActions(seq1, animate);
+
 	action_side = RepeatForever::create(mySpawn1);
 	action_side->setTag(actions_spider::GO_LEFT);
 	action_side->retain();

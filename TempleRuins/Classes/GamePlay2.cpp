@@ -45,7 +45,6 @@ bool GamePlay2::init()
 
 	//create Object
 	createObject();
-	log("So luong kim cuong:   %i",numDia);
 
 	// add dispatcher
 	AddDispatcher();
@@ -79,6 +78,7 @@ void GamePlay2::createMap()
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
+	mObjectGroup1 = _tileMap->getObjectGroup("Spiders");
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
 	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
@@ -104,6 +104,23 @@ void GamePlay2::InitialState()
 }
 
 void GamePlay2::createObject() {
+	auto objects1 = mObjectGroup1->getObjects();
+	for (int i = 0; i < objects1.size(); i++)
+	{
+		auto object1 = objects1.at(i);
+		auto properties = object1.asValueMap();
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object1.asValueMap().at("type").asInt();
+		if (type == 2)//Create Spider
+		{
+			Spider *spider = new Spider(this);
+			spider->GetSprite()->setPosition(Vec2(posX * 2, posY * 2));
+			spider->setCatogory(true);
+			spiders.push_back(spider);
+		}
+	}
+	
 	auto objects = mObjectGroup->getObjects();
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -120,20 +137,6 @@ void GamePlay2::createObject() {
 			this->setViewPointCenter(this->main_charactor->GetSprite()->getPosition());
 			CreateBloodBar();
 			CreateNumDiamon();
-		}
-		else if (type == 2)//Create Spider
-		{
-			Spider *spider = new Spider(this);
-			spider->GetSprite()->setPosition(Vec2(posX*2, posY*2));
-			spider->setCatogory(true);
-			spiders.push_back(spider);
-		}
-		else if (type == 3)
-		{
-			Spider *spider1 = new Spider(this);
-			spider1->GetSprite()->setPosition(Vec2(posX * 2, posY * 2));
-			spider1->setCatogory(false);
-			spiders.push_back(spider1);
 		}
 		else if (type == 4) {//Create Glass
 			Objject* glass2 = new Glass2(this);
@@ -282,7 +285,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		// charactor vs spider
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 15);
 			
 			if (ControlMusic::GetInstance()->isSound())
 			{
@@ -305,7 +308,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
-			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 15);
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
@@ -1044,13 +1047,13 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		else
 		{
 			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height * 2;
-			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
+			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
 			{
-				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
+				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
 			{
-				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
+				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 		}
 	}
