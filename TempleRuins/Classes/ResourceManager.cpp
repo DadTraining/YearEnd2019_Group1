@@ -271,6 +271,40 @@ void ResourceManager::Load(std::string fileName)
 				number--;
 			}
 		}
+		else if (arr_name[0] == "#ACTION_FIRE") {
+			// number 
+			int number = atoi(arr_name[1].c_str());
+			while (number > 0) {
+				i++;                  // id
+				int id = Get_ID(arr_source[i]);
+
+				i++;                  // path 1
+				string path_1 = Get_Path(arr_source[i]);
+
+				i++;                  // path 2
+				string path_2 = Get_Path(arr_source[i]);
+
+				// load plist
+				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
+
+				Vector<SpriteFrame*> frame_fire;
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire2.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire3.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire4.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire5.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire6.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire7.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire8.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire9.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire10.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire11.png"));
+
+				m_fire_action.insert(pair<int, Vector<SpriteFrame*>>(0, frame_fire));
+
+				number--;
+			}
+		}
 
 	}
 }
@@ -376,4 +410,9 @@ Vector<SpriteFrame*> ResourceManager::GetCharactorStun()
 Vector<SpriteFrame*> ResourceManager::GetFrameDiamond()
 {
 	return m_diamond_action.at(0);
+}
+
+Vector<SpriteFrame*> ResourceManager::GetActionFire()
+{
+	return m_fire_action.at(0);
 }

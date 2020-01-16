@@ -10,6 +10,7 @@
 #include "MapGame.h"
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
+#include "Fire.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -68,6 +69,14 @@ private:
 	ui::LoadingBar *bloodBar_2;
 	int SPEED_CHARACTOR_RUN = 5;
 
+	// fire
+	cocos2d::TMXObjectGroup* mObjectFire;
+	vector<Vec2> Fire_Normal_1;
+	vector<Vec2> Fire_Normal_2;
+	Objject* fire_normal_1;
+	Objject* fire_normal_2;
+	vector<Vec2> Fire_AI_1;
+	Objject* fire_ai_1;
 
 	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;
