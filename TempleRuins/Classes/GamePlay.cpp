@@ -304,7 +304,6 @@ void GamePlay::checkGround_2()
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
-cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
 
 Scene *GamePlay::createGame()
@@ -312,7 +311,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -354,6 +353,7 @@ bool GamePlay::init()
 	//create pause layer
 	createPauseLayer();
 
+	//Create Joystick
 	CreateJoystick(this);
 
 	// update
@@ -370,7 +370,6 @@ void GamePlay::CreateMap()
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
-	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
@@ -437,10 +436,6 @@ void GamePlay::InitialObject()
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
-		}
-		else if (type == 7) {
-			//_thang_1 = Vec2(posX, posY);
-			_thang_Pos.push_back(Vec2(posX, posY));
 		}
 	}
 
@@ -761,7 +756,6 @@ void GamePlay::createPauseLayer()
 		Director::getInstance()->resume();
 		btnPause->setVisible(true);
 		mBump->setVisible(true);
-		mJump->setVisible(true);
 		mPauseLayer->setVisible(false);
 	});
 	mPauseLayer->addChild(btnResume);
@@ -912,25 +906,6 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	}
 }
 
-void GamePlay::climb()
-{
-	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
-	Vec2 _mapPos = _tileMap->getPosition();
-
-	for (int i = 0; i < _thang_Pos.size(); i++) {
-		float _dis_x = _thang_Pos.at(i).x - (0 - _mapPos.x);
-		float _dis_y = _thang_Pos.at(i).y - (0 - _mapPos.y);
-
-		if (_mainPos.x >= _dis_x - 40 && _mainPos.x <= _dis_x + 40 && _mainPos.y <= _dis_y) {
-			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-			break;
-		}
-		else {
-			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
-		}
-	}
-}
-
 void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
@@ -947,7 +922,6 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		});
 		btnPause->setVisible(false);
 		mBump->setVisible(false);
-		mJump->setVisible(false);
 		mPauseLayer->setOpacity(0);
 		mPauseLayer->setVisible(true);
 		auto fadeIn = FadeIn::create(0.3f);
@@ -975,9 +949,6 @@ void GamePlay::update(float deltaTime)
 
 	// push rock
 	push_rock();
-
-	// leo thang
-	climb();
 
 	// collision vs ground
 	checkGround_2();
@@ -1138,18 +1109,18 @@ void GamePlay::CreateJoystick(Layer * layer)
 
 	joystickBase = new SneakyJoystickSkinnedBase();
 	joystickBase->init();
-	joystickBase->setPosition(joystickBasePosition);
+	joystickBase->setPosition(Vec2(100,100));
 	joystickBase->setBackgroundSprite(thumb);
 	joystickBase->setAnchorPoint(Vec2(0, 0));
 	joystickBase->setThumbSprite(joystick);
-	joystickBase->getThumbSprite()->setScale(0.5f);
-	joystickBase->setScale(2.0f);
+	joystickBase->getThumbSprite()->setScale(0.2f);
+	joystickBase->setScale(1.0f);
 	joystick->setScale(0.5f);
 	SneakyJoystick *aJoystick = new SneakyJoystick();
 	aJoystick->initWithRect(joystickBaseDimensions);
 	aJoystick->autorelease();
 	joystickBase->setJoystick(aJoystick);
-	joystickBase->setPosition(joystickBasePosition);
+	joystickBase->setPosition(Vec2(100,100));
 
 	leftJoystick = joystickBase->getJoystick();
 	activeRunRange = thumb->getBoundingBox().size.height / 2;

@@ -83,7 +83,7 @@ void MainCharactor::CreateSprite()
 	physicbody->setDynamic(true);
 	main->setPhysicsBody(physicbody);
 	physicbody->setRotationEnable(false);
-	physicbody->setGravityEnable(true);
+	physicbody->setGravityEnable(false);
 	physicbody->setMass(500);
 
 	main->getPhysicsBody()->setContactTestBitmask(1);
