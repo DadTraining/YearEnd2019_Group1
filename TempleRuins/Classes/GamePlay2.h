@@ -5,7 +5,7 @@
 #include "MainCharactor.h"
 #include "SneakyJoystickSkinnedBase.h"
 #include "Rock.h"
-#include "Glass.h"
+#include "Glass2.h"
 #include "Diamond.h"
 #include "Spider.h"
 #include "MapGame.h"
@@ -64,7 +64,7 @@ private:
 
 	//Button
 	cocos2d::ui::Button *mFireController;
-	
+
 	
 	//Header bar
 	int numDiamond2;

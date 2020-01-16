@@ -34,7 +34,6 @@ private:
 
 	// button
 	cocos2d::ui::Button *mFireController;
-	cocos2d::ui::Button *mJumpController;
 
 	// map
 	CCTMXTiledMap *_tileMap;
@@ -83,11 +82,6 @@ private:
 	cocos2d::ui::Widget::TouchEventType mCurrentTouchState;
 	cocos2d::Point mCurrentTouchPoint;
 
-	cocos2d::Sprite* mMoveLeftController;
-	cocos2d::Sprite* mMoveLeftControllerPressed;
-	cocos2d::Sprite* mMoveRightController;
-	cocos2d::Sprite* mMoveRightControllerPressed;
-
 	// object map
 	cocos2d::TMXObjectGroup* mObjectGroup;
 
@@ -109,7 +103,6 @@ public:
 	void CreateNumDiamon();
 	void createPauseLayer();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
-	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void Pause(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 
 	// push rock
@@ -130,14 +123,7 @@ public:
 	// key
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
-
-
-	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
-	void EnablePressedControlUpDown(bool isUp, bool pressed);
-	void UpdateController();
-
 	void setViewPointCenter(CCPoint position);
-	CCPoint tileCoorforposition(CCPoint position);
 
 	CREATE_FUNC(GamePlay);
 

@@ -29,6 +29,7 @@
 // define glass
 #define SCALE_GLASS 1
 #define TAG_GLASS 80
+#define TAG_GLASS2 80
 
 // define map
 #define TAG_MAP 70
