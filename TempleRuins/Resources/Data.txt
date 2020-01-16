@@ -58,5 +58,5 @@ PATH: Diamond/Diamond.plist
 PATH: Diamond/Diamond.png
 #ACTION_FIRE 1
 ID: 0
-PATH: Fire/Side.plist
-PATH: Fire/Side.png
+PATH: Fire/fire.plist
+PATH: Fire/fire.png

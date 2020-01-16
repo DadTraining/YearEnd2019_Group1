@@ -288,17 +288,17 @@ void ResourceManager::Load(std::string fileName)
 				SpriteFrameCache::getInstance()->addSpriteFramesWithFile(path_1, path_2);
 
 				Vector<SpriteFrame*> frame_fire;
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("1.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("2.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("3.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("4.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("5.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("6.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("7.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("8.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("9.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("10.jpg"));
-				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("11.jpg"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire2.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire3.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire4.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire5.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire6.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire7.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire8.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire9.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire10.png"));
+				frame_fire.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName("fire11.png"));
 
 				m_fire_action.insert(pair<int, Vector<SpriteFrame*>>(0, frame_fire));
 
