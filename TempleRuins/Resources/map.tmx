@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="30" nextobjectid="976">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="97" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="27" nextobjectid="979">
  <properties>
   <property name="Collectable" value="True"/>
  </properties>
@@ -167,6 +167,14 @@
   <object id="806" name="PosFire" type="3" x="2790.67" y="725.333"/>
   <object id="807" name="PosFire" type="3" x="2793.33" y="814.667"/>
   <object id="808" name="PosFire" type="3" x="2694.67" y="814.667"/>
+  <object id="969" name="DGF" type="4" x="1698" y="1116"/>
+  <object id="972" name="DGF" type="4" x="1635" y="1118"/>
+  <object id="973" name="DGF" type="4" x="1576" y="1120"/>
+  <object id="974" name="mrBia" type="5" x="1677.64" y="434.606"/>
+  <object id="975" name="PosFire" type="6" x="2518.18" y="163.636"/>
+  <object id="976" name="PosFire" type="6" x="2506.06" y="412.121"/>
+  <object id="977" name="PosFire" type="6" x="2815.15" y="418.182"/>
+  <object id="978" name="PosFire" type="6" x="2815.15" y="160.606"/>
  </objectgroup>
  <objectgroup id="24" name="Line_Down">
   <object id="677" name="Pos_down" type="1" x="4.5" y="1279"/>
@@ -219,7 +227,7 @@
   <object id="790" name="Pos_down" type="6" x="1600.17" y="256.667"/>
   <object id="791" name="Pos_down" type="5" x="2175.17" y="256.25"/>
  </objectgroup>
- <objectgroup id="25" name="Line_Up">
+ <objectgroup id="25" name="Line_Up" visible="0">
   <object id="740" name="Pos_Up" type="1" x="8.33333" y="1236.67"/>
   <object id="741" name="Pos_Up" type="1" x="381" y="1236.67"/>
   <object id="742" name="Pos_Up" type="1" x="381" y="1121"/>
@@ -241,7 +249,7 @@
   <object id="758" name="Pos_Up" type="1" x="1664" y="863"/>
   <object id="759" name="Pos_Up" type="1" x="2239" y="863"/>
   <object id="760" name="Pos_Up" type="1" x="2239" y="771.5"/>
-  <object id="761" name="Pos_Up" type="2" x="2305" y="904"/>
+  <object id="761" name="Pos_Up" type="2" x="2305" y="918.67"/>
   <object id="764" name="Pos_Up" type="4" x="1472.67" y="735.333"/>
   <object id="765" name="Pos_Up" type="4" x="1854" y="735.33"/>
   <object id="766" name="Pos_Up" type="5" x="1919.67" y="735.667"/>
@@ -266,7 +274,7 @@
   <object id="785" name="Pos_Up" type="6" x="2112" y="225"/>
   <object id="786" name="Pos_Up" type="6" x="2112" y="289"/>
   <object id="787" name="Pos_Up" type="6" x="2176" y="289"/>
-  <object id="796" name="Pos_Up" type="2" x="2431" y="904"/>
+  <object id="796" name="Pos_Up" type="2" x="2431" y="918.667"/>
   <object id="70" name="MCPos" type="1" x="76.3327" y="1251.67" width="64" height="64"/>
   <object id="75" name="SpiderPos" type="2" x="1153" y="1153.67" width="64" height="64"/>
   <object id="76" name="SpiderPos" type="2" x="1280.34" y="1153" width="64" height="64"/>
@@ -356,9 +364,6 @@
   <object id="933" name="DiamonPos" type="5" x="2111.84" y="318.333" width="64" height="64"/>
   <object id="934" name="DiamonPos" type="5" x="1599.17" y="317.667" width="64" height="64"/>
   <object id="935" name="DiamonPos" type="5" x="1856.5" y="192.333" width="64" height="64"/>
-  <object id="938" name="RockPos" type="6" x="2238.84" y="761.667" width="64" height="64"/>
-  <object id="939" name="RockPos" type="6" x="2238.84" y="702.667" width="64" height="64"/>
-  <object id="940" name="RockPos" type="6" x="2175.17" y="702" width="64" height="64"/>
   <object id="941" name="RockPos" type="6" x="1858.17" y="319" width="64" height="64"/>
   <object id="942" name="RockPos" type="6" x="1599.17" y="254" width="64" height="64"/>
   <object id="943" name="RockPos" type="6" x="2110.17" y="254" width="64" height="64"/>
@@ -401,7 +406,6 @@
   <object id="585" name="DiamonPos" type="5" x="1983.84" y="447" width="64" height="64"/>
   <object id="587" name="DiamonPos" type="5" x="1728.17" y="448.333" width="64" height="64"/>
   <object id="605" name="GrassPos" type="4" x="2112.67" y="636" width="64" height="64"/>
-  <object id="606" name="GrassPos" type="4" x="2110.67" y="699" width="64" height="64"/>
   <object id="607" name="GrassPos" type="4" x="1793.67" y="445" width="64" height="64"/>
   <object id="608" name="GrassPos" type="4" x="1920.67" y="447" width="64" height="64"/>
   <object id="609" name="GrassPos" type="4" x="1853.67" y="448" width="64" height="64"/>

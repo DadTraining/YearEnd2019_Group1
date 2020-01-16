@@ -459,17 +459,21 @@ bool GamePlay::init()
 	scheduleUpdate();
 
 	// create fire
-	fire_normal_1 = new Fire(this);
+	fire_normal_1 = new Fire(this, true);
 	((Fire*)(fire_normal_1))->setAI(false);
-	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap);
+	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, AI_View);
 
-	fire_normal_2 = new Fire(this);
-	((Fire*)(fire_normal_1))->setAI(false);
-	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap);
+	fire_normal_2 = new Fire(this, true);
+	((Fire*)(fire_normal_2))->setAI(false);
+	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap, AI_View);
 
-	fire_ai_1 = new Fire(this);
+	fire_normal_3 = new Fire(this, true);
+	((Fire*)(fire_normal_3))->setAI(false);
+	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, AI_View);
+
+	fire_ai_1 = new Fire(this, true);
 	((Fire*)(fire_ai_1))->setAI(true);
-	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap);
+	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap, AI_View);
 
 	return true;
 }
@@ -631,6 +635,15 @@ void GamePlay::InitialObject()
 		}
 		else if (type == 3) {
 			Fire_Normal_2.push_back(Vec2(posX, posY));
+		}
+		else if (type == 4) {
+			Fire_dragon_1.push_back(Vec2(posX, posY));
+		}
+		else if (type == 5) {
+			AI_View = Vec2(posX, posY);
+		}
+		else if (type == 6) {
+			Fire_Normal_3.push_back(Vec2(posX, posY));
 		}
 	}
 }
