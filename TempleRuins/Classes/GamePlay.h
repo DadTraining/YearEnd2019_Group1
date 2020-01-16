@@ -1,5 +1,6 @@
 #pragma once
 #include "2d\CCLayer.h"
+#include "SneakyJoystickSkinnedBase.h"
 #include "MainCharactor.h"
 #include "Spider.h"
 #include "Diamond.h"
@@ -40,10 +41,6 @@ private:
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
-	CCTMXLayer *_thang;
-
-	// thang
-	vector<Vec2> _thang_Pos;
 
 	
 	float distance_1(float p_1, float p_2);
@@ -113,7 +110,6 @@ public:
 	void createPauseLayer();
 	void Fight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
 	void Jump(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType type);
-	void climb();
 	void Pause(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
 
 	// push rock
@@ -144,6 +140,14 @@ public:
 	CCPoint tileCoorforposition(CCPoint position);
 
 	CREATE_FUNC(GamePlay);
+
+	//Joystick
+	void CreateJoystick(Layer * layer);
+	void UpdateJoystick(float dt);
+	SneakyJoystick *leftJoystick;
+	SneakyJoystickSkinnedBase* joystickBase;
+	float activeRunRange;
+
 	GamePlay();
 	~GamePlay();
 };

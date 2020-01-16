@@ -12,7 +12,7 @@ Scene * GamePlay2::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -37,7 +37,7 @@ bool GamePlay2::init()
 	createMap();
 
 	//create physics for Map
-	//createMapPhysics();
+	createMapPhysics();
 
 	// initial state
 	InitialState();
@@ -53,6 +53,9 @@ bool GamePlay2::init()
 
 	//create pause layer
 	createPauseLayer();
+
+	//Create Joystick
+	CreateJoystick(this);
 
 	// update
 	scheduleUpdate();
@@ -95,7 +98,7 @@ void GamePlay2::InitialState()
 	moveUp = false;
 	moveDown = false;
 	jump = false;
-	fall = false;
+	fall = true;
 }
 
 void GamePlay2::createObject() {
@@ -122,6 +125,13 @@ void GamePlay2::createObject() {
 			spider->GetSprite()->setPosition(Vec2(posX*2, posY*2));
 			spider->setCatogory(true);
 			spiders.push_back(spider);
+		}
+		else if (type == 3)
+		{
+			Spider *spider1 = new Spider(this);
+			spider1->GetSprite()->setPosition(Vec2(posX * 2, posY * 2));
+			spider1->setCatogory(false);
+			spiders.push_back(spider1);
 		}
 		else if (type == 4) {//Create Glass
 			Objject* glass = new Glass(this);
@@ -222,54 +232,11 @@ void GamePlay2::AddDispatcher()
 
 void GamePlay2::InitialButton()
 {
-	Director::getInstance()->getVisibleSize();
-
-	//move Left
-	mMoveLeftController = Sprite::create("touch_controller_normal.png");
-	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftController->setPosition(Vec2(50, 50));
-	mMoveLeftController->setScale(1.5);
-	addChild(mMoveLeftController);
-
-	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
-	mMoveLeftControllerPressed->setVisible(false);
-	addChild(mMoveLeftControllerPressed);
-
-	//move Right
-	mMoveRightController = Sprite::create("touch_controller_normal.png");
-	mMoveRightController->setFlippedX(true);
-	mMoveRightController->setAnchorPoint(Vec2(0, 0));
-	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	mMoveRightController->setScale(1.5);
-	addChild(mMoveRightController);
-
-	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveRightControllerPressed->setFlippedX(true);
-	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
-	mMoveRightControllerPressed->setVisible(false);
-	addChild(mMoveRightControllerPressed);
-
 	//Button Fight
 	mBump2 = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mBump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
 	mBump2->addTouchEventListener(CC_CALLBACK_2(GamePlay2::Fight, this));
 	addChild(mBump2);
-
-	//Button Jump
-	mJump2 = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	mJump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	mJump2->addTouchEventListener(CC_CALLBACK_2(GamePlay2::Jump, this));
-	addChild(mJump2);
-
-	////Button Down
-	//mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	//mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	//mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	//mJump->setOpacity(50);
-	//addChild(mJump);
 
 	//Button Pause
 	btnPause2 = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
@@ -313,11 +280,16 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 25);
+			
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
+
+			this->main_charactor->GetSprite()->stopAllActions();
+
 			((MainCharactor *)(main_charactor))->Stun();
+			
 			if (this->main_charactor->GetBlood() <= 0)
 			{
 				log("die");
@@ -335,6 +307,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
+			this->main_charactor->GetSprite()->stopAllActions();
 			((MainCharactor *)(main_charactor))->Stun();
 			if (this->main_charactor->GetBlood() <= 0)
 			{
@@ -352,7 +325,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeB->removeFromParentAndCleanup(true);
@@ -361,7 +334,7 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		{
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_ui_diamond_impact.mp3", false);
 			}
 			numDiamond2++;
 			nodeA->removeFromParentAndCleanup(true);
@@ -369,39 +342,44 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			nodeB->setPosition(Vec2(-100, -100));
+			nodeB->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			nodeA->setPosition(Vec2(-100, -100));
+			nodeA->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				//SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 
-		//move spider
-		for (int i = 0; i < spiders.size(); i++)
-		{
-			auto moveSpider = MoveBy::create(2.0f,spiders[i]->GetSprite()->getPosition() - Vec2(0,500));
-			auto delay = DelayTime::create(2.0f);
-			auto seq = Sequence::create(delay,moveSpider,delay,nullptr);
-			spiders[i]->GetSprite()->runAction(seq);
-			spiders[i]->GetSprite()->runAction(seq->reverse());
+		//spider vs rock
+		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_ROCK) {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_broken_stone.mp3.mp3", false);
+			}
+			nodeA->removeFromParentAndCleanup(true);
 		}
-
+		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_SPIDER)
+		{
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_broken_stone.mp3.mp3", false);
+			}
+			nodeB->removeFromParentAndCleanup(true);
+		}
 		// fight
-		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
+		/*if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
 			log("fight1");
 		}
 		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
 			log("fight2");
-		}
+		}*/
 
-		//spider vs rock
 
 	}
 
@@ -502,7 +480,6 @@ void GamePlay2::createPauseLayer()
 		Director::getInstance()->resume();
 		btnPause2->setVisible(true);
 		mBump2->setVisible(true);
-		mJump2->setVisible(true);
 		mPauseLayer2->setVisible(false);
 	});
 	mPauseLayer2->addChild(btnResume);
@@ -611,10 +588,21 @@ void GamePlay2::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		{
 			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_hammer.mp3", false);
 		}
-		fall = false;
-		moveUp = true;
+		
+		if (!moveUp && fall)
+		{
+			fall = false;
+			moveUp = true;
+		}
 		break;
 	}
+	case ui::Widget::TouchEventType::MOVED:
+		if (!moveUp && fall)
+		{
+			fall = false;
+			moveUp = true;
+		}
+		break;
 	case ui::Widget::TouchEventType::ENDED:
 		fall = true;
 		moveUp = false;
@@ -988,7 +976,6 @@ void GamePlay2::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType
 		});
 		btnPause2->setVisible(false);
 		mBump2->setVisible(false);
-		mJump2->setVisible(false);
 		mPauseLayer2->setOpacity(0);
 		mPauseLayer2->setVisible(true);
 		auto fadeIn = FadeIn::create(0.3f);
@@ -1025,7 +1012,8 @@ void GamePlay2::update(float deltaTime)
 	////////////// ground
 	checkGround();
 
-
+	//Update Joystick
+	UpdateJoystick(deltaTime);
 }
 
 void GamePlay2::setViewPointCenter(CCPoint position)
@@ -1165,6 +1153,82 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		{
 			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
+	}
+}
+
+void GamePlay2::CreateJoystick(Layer * layer)
+{
+	auto thumb = Sprite::create("thumb.png");
+	auto joystick = Sprite::create("joystick.png");
+	Rect joystickBaseDimensions = Rect(0, 0, 40.f, 40.0f);
+	Point joystickBasePosition;
+	joystickBasePosition = Vec2(MARGIN_JOYSTICK + thumb->getBoundingBox().size.width / 2 + joystick->getBoundingBox().size.width / 2
+		, MARGIN_JOYSTICK + thumb->getBoundingBox().size.height / 2 + joystick->getBoundingBox().size.height / 2);
+
+	joystickBase = new SneakyJoystickSkinnedBase();
+	joystickBase->init();
+	joystickBase->setPosition(Vec2(100, 100));
+	joystickBase->setBackgroundSprite(thumb);
+	joystickBase->setAnchorPoint(Vec2(0, 0));
+	joystickBase->setThumbSprite(joystick);
+	joystickBase->getThumbSprite()->setScale(0.2f);
+	joystickBase->setScale(1.0f);
+	joystick->setScale(0.5f);
+	SneakyJoystick *aJoystick = new SneakyJoystick();
+	aJoystick->initWithRect(joystickBaseDimensions);
+	aJoystick->autorelease();
+	joystickBase->setJoystick(aJoystick);
+	joystickBase->setPosition(Vec2(100, 100));
+
+	leftJoystick = joystickBase->getJoystick();
+	activeRunRange = thumb->getBoundingBox().size.height / 2;
+	layer->addChild(joystickBase);
+}
+
+void GamePlay2::UpdateJoystick(float dt)
+{
+
+	Point pos = leftJoystick->getStickPosition();
+	float radius = std::sqrt(pos.x*pos.x + pos.y*pos.y);
+	if (radius > 0)
+	{
+		float degree = std::atan2f(pos.y, pos.x) * 180 / 3.141593;
+		log("%f", degree);
+		if (degree > 135 && degree < 180 || degree > -180 && degree < -135)//MoveLeft
+		{
+			moveRight = false;
+			moveLeft = true;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > -135 && degree < -45)//Move Down
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = true;
+		}
+		if (degree > -45 && degree < 45)//Move Right
+		{
+			moveRight = true;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > 45 && degree < 135)//Move Up
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = true;
+			moveDown = false;
+		}
+	}
+	else
+	{
+		moveRight = false;
+		moveLeft = false;
+		moveUp = false;
+		moveDown = false;
 	}
 }
 

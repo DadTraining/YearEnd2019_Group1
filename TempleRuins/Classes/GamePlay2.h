@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Objject.h"
 #include "MainCharactor.h"
+#include "SneakyJoystickSkinnedBase.h"
 #include "Rock.h"
 #include "Glass.h"
 #include "Diamond.h"
@@ -23,7 +24,6 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
-	int SPEED_CHARACTOR_RUN = 5;
 	
 	// collistion
 	void checkGround();
@@ -47,6 +47,7 @@ private:
 	bool jump;
 	bool moveUp;
 	bool moveDown;
+	int SPEED_CHARACTOR_RUN = 5;
 
 	//State Action of Charactor
 	bool fight;
@@ -146,5 +147,12 @@ public:
 	//key
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
+
+	//Joystick
+	void CreateJoystick(Layer * layer);
+	void UpdateJoystick(float dt);
+	SneakyJoystick *leftJoystick;
+	SneakyJoystickSkinnedBase* joystickBase;
+	float activeRunRange;
 };
 

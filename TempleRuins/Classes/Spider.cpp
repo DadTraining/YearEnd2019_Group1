@@ -8,63 +8,19 @@ void Spider::Init()
 
 	// initial action
 	InitialAction();
-
-	goLeft();
+	
+	if (catogory)
+	{
+		goUp();
+	}
+	else
+	{
+		goUp();
+	}
 }
 
 void Spider::Update(float deltaTime)
 {
-	if (this->GetBlood() <= 0 && state) {
-		// if blood < 0 => spider die
-		this->GetSprite()->removeFromParentAndCleanup(true);
-		this->state = false;
-	}
-
-	// true doc  false ngang
-	if (state) {
-		if (isCatogory()) {
-			goDown();
-			goUp();
-		}
-		else {
-			goLeft();
-			goRight();
-		}
-	}
-
-	//if (state) {
-	//	static bool check = true;
-	//	static float i = 0;
-	//	i += deltaTime;
-
-	//	if (i >= 4)
-	//	{
-	//		check = !check;
-
-	//		this->GetSprite()->stopAllActions();
-	//		if (check)
-	//		{
-	//			//goDown();
-	//			goLeft();
-	//		}
-	//		else
-	//		{
-	//			//goUp();
-	//			goRight();
-	//		}
-
-	//		i = 0;
-	//	}
-
-	//	if (check)
-	//	{
-	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x - 1, this->GetSprite()->getPosition().y);
-	//	}
-	//	else
-	//	{
-	//		this->GetSprite()->setPosition(this->GetSprite()->getPosition().x + 1, this->GetSprite()->getPosition().y);
-	//	}
-	//}
 }
 
 Size Spider::getSize()
@@ -81,6 +37,7 @@ void Spider::InitialSPider()
 	this->SetSprite(Sprite::create("spider_01.png"));
 	this->GetSprite()->setPosition(this->getVisibleSize() / 2);
 	this->GetSprite()->setScale(SCALE_SPIDER);
+	this->GetSprite()->retain();
 	this->layer->addChild(this->GetSprite());
 	this->GetSprite()->setTag(TAG_SPIDER);
 
@@ -96,19 +53,23 @@ void Spider::InitialAction()
 {
 	// action up
 	auto animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderUp(), SPEED_FRAME_SPIDER);
-	action_up = RepeatForever::create(Animate::create(animation));
+	auto animate = Animate::create(animation);
+
+	auto move = MoveBy::create(1.0f,Vec2(0,this->GetSprite()->getPosition().y-380));
+	auto delay = DelayTime::create(0.5f);
+	auto seq = Sequence::create(move,delay,move->reverse(),nullptr);
+	auto mySpawn = Spawn::createWithTwoActions(seq, animate);
+
+	action_up = RepeatForever::create(mySpawn);
 	action_up->setTag(actions_spider::GO_UP);
 	action_up->retain();
 
-	// action down
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderDown(), SPEED_FRAME_SPIDER);
-	action_down = RepeatForever::create(Animate::create(animation));
-	action_down->setTag(actions_spider::GO_DOWN);
-	action_down->retain();
 
 	// action left
-	animation = Animation::createWithSpriteFrames(ResourceManager::GetInstance()->GetSpiderSide(), SPEED_FRAME_SPIDER);
-	action_side = RepeatForever::create(Animate::create(animation));
+	auto moveLeft = MoveBy::create(1.0f, Vec2(0, this->GetSprite()->getPosition().x - 380));
+	auto seq1 = Sequence::create(moveLeft, delay, moveLeft->reverse(), nullptr);
+	auto mySpawn1 = Spawn::createWithTwoActions(seq1, animate);
+	action_side = RepeatForever::create(mySpawn1);
 	action_side->setTag(actions_spider::GO_LEFT);
 	action_side->retain();
 }
@@ -121,6 +82,7 @@ void Spider::goUp()
 void Spider::goDown()
 {
 	this->GetSprite()->runAction(action_down);
+
 }
 
 void Spider::goSide()

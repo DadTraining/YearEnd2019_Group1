@@ -27,7 +27,7 @@
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 </data>
  </layer>
- <objectgroup id="6" name="Line_Down" visible="0">
+ <objectgroup id="6" name="Line_Down">
   <object id="98" name="Down" type="1" x="31.697" y="352.303"/>
   <object id="99" name="Down" type="1" x="31.7" y="384.727"/>
   <object id="100" name="Down" type="1" x="62" y="384.73"/>
@@ -206,7 +206,7 @@
 0,0,0,0,0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Objects" visible="0">
+ <objectgroup id="4" name="Objects">
   <object id="3" name="MCPos" type="1" x="65" y="543" width="32" height="32"/>
   <object id="4" name="GrassPos" type="4" x="191.788" y="128.545" width="32" height="32"/>
   <object id="5" name="GrassPos" type="4" x="224.318" y="128.682" width="32" height="32"/>

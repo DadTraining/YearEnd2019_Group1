@@ -400,11 +400,9 @@ void GamePlay::checkGround_2()
 	}
 }
 
-
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
-cocos2d::ui::Button *mJump;
 cocos2d::ui::Button *btnPause;
 
 Scene *GamePlay::createGame()
@@ -412,7 +410,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -437,7 +435,7 @@ bool GamePlay::init()
 	CreateMap();
 
 	// initial physics for map
-	//InitialPhysics();
+	InitialPhysics();
 
 	// initial state
 	InitialState();
@@ -453,6 +451,9 @@ bool GamePlay::init()
 
 	//create pause layer
 	createPauseLayer();
+
+	//Create Joystick
+	CreateJoystick(this);
 
 	// update
 	scheduleUpdate();
@@ -481,7 +482,6 @@ void GamePlay::CreateMap()
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
 	_phy->setVisible(false);
-	_thang = _tileMap->layerNamed("Thang");
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
@@ -550,10 +550,6 @@ void GamePlay::InitialObject()
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
-		}
-		else if (type == 7) {
-			//_thang_1 = Vec2(posX, posY);
-			_thang_Pos.push_back(Vec2(posX, posY));
 		}
 	}
 
@@ -664,58 +660,11 @@ void GamePlay::AddDispatcher()
 
 void GamePlay::InitialButton()
 {
-	Director::getInstance()->getVisibleSize();
-
-	//move Left
-	mMoveLeftController = Sprite::create("touch_controller_normal.png");
-	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftController->setPosition(Vec2(50, 50));
-	mMoveLeftController->setOpacity(0);
-	mMoveLeftController->setScale(1.5);
-	addChild(mMoveLeftController);
-
-	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
-	mMoveLeftControllerPressed->setVisible(false);
-	mMoveLeftControllerPressed->setOpacity(50);
-	addChild(mMoveLeftControllerPressed);
-
-	//move Right
-	mMoveRightController = Sprite::create("touch_controller_normal.png");
-	mMoveRightController->setFlippedX(true);
-	mMoveRightController->setAnchorPoint(Vec2(0, 0));
-	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	mMoveRightController->setOpacity(0);
-	mMoveRightController->setScale(1.5);
-	addChild(mMoveRightController);
-
-	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveRightControllerPressed->setFlippedX(true);
-	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
-	mMoveRightControllerPressed->setOpacity(50);
-	mMoveRightControllerPressed->setVisible(false);
-	addChild(mMoveRightControllerPressed);
-
 	//Button Fight
 	mBump = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mBump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
 	mBump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Fight, this));
 	addChild(mBump);
-
-	//Button Jump
-	mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	addChild(mJump);
-
-	////Button Down
-	//mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	//mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	//mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	//mJump->setOpacity(50);
-	//addChild(mJump);
 
 	//Button Pause
 	btnPause = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
@@ -774,6 +723,7 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				{
 					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
 				}
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
@@ -791,6 +741,7 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				{
 					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
 				}
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 			}
 		}
 
@@ -954,7 +905,6 @@ void GamePlay::createPauseLayer()
 		Director::getInstance()->resume();
 		btnPause->setVisible(true);
 		mBump->setVisible(true);
-		mJump->setVisible(true);
 		mPauseLayer->setVisible(false);
 	});
 	mPauseLayer->addChild(btnResume);
@@ -1105,25 +1055,6 @@ void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType t
 	}
 }
 
-void GamePlay::climb()
-{
-	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
-	Vec2 _mapPos = _tileMap->getPosition();
-
-	for (int i = 0; i < _thang_Pos.size(); i++) {
-		float _dis_x = _thang_Pos.at(i).x - (0 - _mapPos.x);
-		float _dis_y = _thang_Pos.at(i).y - (0 - _mapPos.y);
-
-		if (_mainPos.x >= _dis_x - 40 && _mainPos.x <= _dis_x + 40 && _mainPos.y <= _dis_y) {
-			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-			break;
-		}
-		else {
-			main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
-		}
-	}
-}
-
 void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
@@ -1140,7 +1071,6 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		});
 		btnPause->setVisible(false);
 		mBump->setVisible(false);
-		mJump->setVisible(false);
 		mPauseLayer->setOpacity(0);
 		mPauseLayer->setVisible(true);
 		auto fadeIn = FadeIn::create(0.3f);
@@ -1156,9 +1086,6 @@ void GamePlay::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
-	// controller
-	UpdateController();
-
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
@@ -1172,15 +1099,15 @@ void GamePlay::update(float deltaTime)
 	// push rock
 	push_rock();
 
-	// leo thang
-	climb();
-
 	// collision vs ground
 	checkGround_2();
 
 	// update fire AI
 	fire_ai_1->Update(deltaTime);
 	((Fire*)(fire_ai_1))->setPosMain(this->main_charactor->GetSprite()->getPosition());
+
+	//Update Joystick
+	UpdateJoystick(deltaTime);
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
@@ -1324,6 +1251,82 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	}
 }
 
+void GamePlay::CreateJoystick(Layer * layer)
+{
+	auto thumb = Sprite::create("thumb.png");
+	auto joystick = Sprite::create("joystick.png");
+	Rect joystickBaseDimensions = Rect(0, 0, 40.f, 40.0f);
+	Point joystickBasePosition;
+	joystickBasePosition = Vec2(MARGIN_JOYSTICK + thumb->getBoundingBox().size.width / 2 + joystick->getBoundingBox().size.width / 2
+		, MARGIN_JOYSTICK + thumb->getBoundingBox().size.height / 2 + joystick->getBoundingBox().size.height / 2);
+
+	joystickBase = new SneakyJoystickSkinnedBase();
+	joystickBase->init();
+	joystickBase->setPosition(Vec2(100,100));
+	joystickBase->setBackgroundSprite(thumb);
+	joystickBase->setAnchorPoint(Vec2(0, 0));
+	joystickBase->setThumbSprite(joystick);
+	joystickBase->getThumbSprite()->setScale(0.2f);
+	joystickBase->setScale(1.0f);
+	joystick->setScale(0.5f);
+	SneakyJoystick *aJoystick = new SneakyJoystick();
+	aJoystick->initWithRect(joystickBaseDimensions);
+	aJoystick->autorelease();
+	joystickBase->setJoystick(aJoystick);
+	joystickBase->setPosition(Vec2(100,100));
+
+	leftJoystick = joystickBase->getJoystick();
+	activeRunRange = thumb->getBoundingBox().size.height / 2;
+	layer->addChild(joystickBase);
+}
+
+void GamePlay::UpdateJoystick(float dt)
+{
+
+	Point pos = leftJoystick->getStickPosition();
+	float radius = std::sqrt(pos.x*pos.x + pos.y*pos.y);
+	if (radius > 0)
+	{
+		float degree = std::atan2f(pos.y, pos.x) * 180 / 3.141593;
+		log("%f",degree);
+		if (degree > 135 && degree < 180 || degree > -180 && degree < -135)//MoveLeft
+		{
+			moveRight = false;
+			moveLeft = true;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > -135 && degree < -45 )//Move Down
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = true;
+		}
+		if (degree > -45 && degree < 45)//Move Right
+		{
+			moveRight = true;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > 45 && degree < 135)//Move Up
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = true;
+			moveDown = false;
+		}
+	}
+	else
+	{
+		moveRight = false;
+		moveLeft = false;
+		moveUp = false;
+		moveDown = false;
+	}
+}
+
 GamePlay::GamePlay()
 {
 }
@@ -1350,51 +1353,6 @@ void GamePlay::onTouchEnded(Touch * touch, Event * event)
 {
 	mCurrentTouchState = ui::Widget::TouchEventType::ENDED;
 	mCurrentTouchPoint = Point(-1, -1);
-}
-
-void GamePlay::UpdateController()
-{
-	switch (mCurrentTouchState)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-	case ui::Widget::TouchEventType::MOVED:
-
-		if (Rect(mMoveLeftController->getPosition().x, mMoveLeftController->getPosition().y, mMoveLeftController->getContentSize().width, mMoveLeftController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_LEFT_ARROW) //move left
-		{
-			EnablePressedControlLeftRight(true, true);
-			moveLeft = true;
-			moveRight = false;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(true, false);
-		}
-
-		if (Rect(mMoveRightController->getPosition().x, mMoveRightController->getPosition().y, mMoveRightController->getContentSize().width, mMoveRightController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) //move right
-		{
-			EnablePressedControlLeftRight(false, true);
-			moveLeft = false;
-			moveRight = true;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(false, false);
-		}
-		break;
-
-	case ui::Widget::TouchEventType::ENDED:
-		EnablePressedControlLeftRight(true, false);
-		EnablePressedControlLeftRight(false, false);
-		moveLeft = false;
-		moveRight = false;
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
-		mCurrentTouchState = ui::Widget::TouchEventType::CANCELED;
-		break;
-	}
 }
 
 void GamePlay::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
