@@ -12,7 +12,12 @@ void Fire::Init()
 	auto animate = Animate::create(animation);
 	animate->retain();
 	this->GetSprite()->runAction(RepeatForever::create(animate));
-	this->GetSprite()->setScale(SCALE_FIRE);
+	if (map) {
+		this->GetSprite()->setScale(SCALE_FIRE);
+	}
+	else {
+		this->GetSprite()->setScale(SCALE_FIRE_2);
+	}
 	this->GetSprite()->setTag(TAG_FIRE);
 	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
 
@@ -31,9 +36,10 @@ void Fire::Update(float deltaTime)
 	}
 }
 
-Fire::Fire(Layer* layer)
+Fire::Fire(Layer* layer, bool map)
 {
 	this->layer = layer;
+	this->map = map;
 	Init();
 }
 

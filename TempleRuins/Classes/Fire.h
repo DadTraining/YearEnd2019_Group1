@@ -5,6 +5,7 @@ USING_NS_CC;
 class Fire : public Objject
 {
 private:
+	bool map;
 	Layer* layer;
 	std::vector<Vec2> Fire_pos;
 	CCTMXTiledMap *_tileMap;
@@ -16,7 +17,7 @@ private:
 public:
 	void Init();
 	void Update(float deltaTime);
-	Fire(Layer* layer);
+	Fire(Layer* layer, bool map);
 	Size getSize();
 	void setPos(vector<Vec2> Fire_pos, CCTMXTiledMap *_tileMap, Vec2 AI_View);
 	void setPosMain(Vec2 pos_main);

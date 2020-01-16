@@ -25,6 +25,16 @@ private:
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
 	
+	// fire
+	cocos2d::TMXObjectGroup* mObjectFire;
+	vector<Vec2> Fire_Normal_1;
+	vector<Vec2> Fire_Normal_2;
+	vector<Vec2> Fire_Normal_3;
+	Objject* fire_normal_1;
+	Objject* fire_normal_2;
+	Objject* fire_normal_3;
+
+
 	// collistion
 	void checkGround();
 	cocos2d::TMXObjectGroup* mObjects_line_down;

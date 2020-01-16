@@ -62,9 +62,19 @@ bool GamePlay2::init()
 	// update
 	scheduleUpdate();
 
-	/*for (int i = 0; i < _Line_Down_Pos_1.size(); i++) {
-		log("%f     %f", _Line_Down_Pos_1.at(i).x, _Line_Down_Pos_1.at(i).y);
-	}*/
+	// create fire
+	fire_normal_1 = new Fire(this, false);
+	this->fire_normal_1->GetSprite()->setScale(0.01);
+	((Fire*)(fire_normal_1))->setAI(false);
+	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, Vec2(0, 0));
+
+	fire_normal_2 = new Fire(this, false);
+	((Fire*)(fire_normal_2))->setAI(false);
+	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap, Vec2(0, 0));
+
+	fire_normal_3 = new Fire(this, false);
+	((Fire*)(fire_normal_3))->setAI(false);
+	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, Vec2(0, 0));
 
 	return true;
 }
@@ -82,6 +92,7 @@ void GamePlay2::createMap()
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
 	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
+	mObjectFire = _tileMap->getObjectGroup("Fire");
 
 	this->addChild(_tileMap);
 }
@@ -210,6 +221,27 @@ void GamePlay2::createObject() {
 		}
 		else if (type == 6) {
 			_Line_Up_Pos_6.push_back(Vec2(posX, posY) * 2);
+		}
+	}
+
+	// get object fire
+	auto objects_fire = mObjectFire->getObjects();
+	for (int i = 0; i < objects_fire.size(); i++) {
+		auto object = objects_fire.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			Fire_Normal_1.push_back(Vec2(posX, posY));
+		}
+		else if (type == 2) {
+			Fire_Normal_2.push_back(Vec2(posX, posY));
+		}
+		else if (type == 3) {
+			Fire_Normal_3.push_back(Vec2(posX, posY));
 		}
 	}
 }
@@ -378,6 +410,16 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			}
 			nodeB->removeFromParentAndCleanup(true);
 		}
+
+		//spider vs rock
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_FIRE) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+		else if (nodeA->getTag() == TAG_FIRE && nodeB->getTag() == TAG_CHARACTOR)
+		{
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+
 		// fight
 		/*if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
 			log("fight1");

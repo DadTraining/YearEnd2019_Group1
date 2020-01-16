@@ -459,19 +459,19 @@ bool GamePlay::init()
 	scheduleUpdate();
 
 	// create fire
-	fire_normal_1 = new Fire(this);
+	fire_normal_1 = new Fire(this, true);
 	((Fire*)(fire_normal_1))->setAI(false);
 	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, AI_View);
 
-	fire_normal_2 = new Fire(this);
+	fire_normal_2 = new Fire(this, true);
 	((Fire*)(fire_normal_2))->setAI(false);
 	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap, AI_View);
 
-	fire_normal_3 = new Fire(this);
+	fire_normal_3 = new Fire(this, true);
 	((Fire*)(fire_normal_3))->setAI(false);
 	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, AI_View);
 
-	fire_ai_1 = new Fire(this);
+	fire_ai_1 = new Fire(this, true);
 	((Fire*)(fire_ai_1))->setAI(true);
 	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap, AI_View);
 
