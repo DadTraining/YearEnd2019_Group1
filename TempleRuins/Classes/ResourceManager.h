@@ -38,6 +38,7 @@ private:
 	map<int, Vector<SpriteFrame*>> m_charactor_action;
 	map<int, Sprite*> m_background;
 	map<int, Vector<SpriteFrame*>> m_diamond_action;
+	map<int, Vector<SpriteFrame*>> m_fire_action;   // lua
 
 	ResourceManager();
 	static ResourceManager* instance;
@@ -64,6 +65,8 @@ public:
 	Vector<SpriteFrame*> GetCharactorRun();
 	Vector<SpriteFrame*> GetCharactorStun();
 	Vector<SpriteFrame*> GetFrameDiamond();
+
+	Vector<SpriteFrame*> GetActionFire();
 
 	std::vector<std::string> Split(std::string str1, std::string str2);
 	int Get_ID(string s);

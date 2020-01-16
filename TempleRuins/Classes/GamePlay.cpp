@@ -213,6 +213,7 @@ void GamePlay::checkGround_2()
 
 	// up
 	for (int i = 0; i < _Line_Up_Pos_1.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		//ngang
 		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
 		if (_Line_Up_Pos_1.at(i).y == _Line_Up_Pos_1.at(i + 1).y) {
 			if ((_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
@@ -222,9 +223,26 @@ void GamePlay::checkGround_2()
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y));
 			}
 		}
+
+		// doc
+		if (_Line_Up_Pos_1.at(i).x == _Line_Up_Pos_1.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y) + 10)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
 	}
 
 	for (int i = 0; i < _Line_Up_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		// ngang
 		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
 		if (_Line_Up_Pos_2.at(i).y == _Line_Up_Pos_2.at(i + 1).y) {
 			if ((_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
@@ -234,16 +252,49 @@ void GamePlay::checkGround_2()
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y));
 			}
 		}
+
+		// doc
+		if (_Line_Up_Pos_2.at(i).x == _Line_Up_Pos_2.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
 	}
 
 	for (int i = 0; i < _Line_Up_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
 		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		// ngang
 		if (_Line_Up_Pos_3.at(i).y == _Line_Up_Pos_3.at(i + 1).y) {
 			if ((_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
 				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x <= _Line_Up_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Up_Pos_3.at(i).x == _Line_Up_Pos_3.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 		}
 	}
@@ -258,6 +309,22 @@ void GamePlay::checkGround_2()
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y));
 			}
 		}
+
+		// doc
+		if (_Line_Up_Pos_4.at(i).x == _Line_Up_Pos_4.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
 	}
 
 	for (int i = 0; i < _Line_Up_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
@@ -270,6 +337,22 @@ void GamePlay::checkGround_2()
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y));
 			}
 		}
+
+		// doc
+		if (_Line_Up_Pos_5.at(i).x == _Line_Up_Pos_5.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
 	}
 
 	for (int i = 0; i < _Line_Up_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
@@ -280,6 +363,22 @@ void GamePlay::checkGround_2()
 				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x <= _Line_Up_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
 				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Up_Pos_6.at(i).x == _Line_Up_Pos_6.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 		}
 	}
@@ -359,6 +458,19 @@ bool GamePlay::init()
 	// update
 	scheduleUpdate();
 
+	// create fire
+	fire_normal_1 = new Fire(this);
+	((Fire*)(fire_normal_1))->setAI(false);
+	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap);
+
+	fire_normal_2 = new Fire(this);
+	((Fire*)(fire_normal_1))->setAI(false);
+	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap);
+
+	fire_ai_1 = new Fire(this);
+	((Fire*)(fire_ai_1))->setAI(true);
+	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap);
+
 	return true;
 }
 
@@ -374,6 +486,8 @@ void GamePlay::CreateMap()
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
 	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
+	mObjectFire = _tileMap->getObjectGroup("Fire");
+
 
 	this->addChild(_tileMap);
 }
@@ -498,6 +612,26 @@ void GamePlay::InitialObject()
 		}
 		if (type == 6) {
 			_Line_Up_Pos_6.push_back(Vec2(posX, posY));
+		}
+	}
+
+	// get object fire
+	auto objects_fire = mObjectFire->getObjects();
+	for (int i = 0; i < objects_fire.size(); i++) {
+		auto object = objects_fire.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			Fire_Normal_1.push_back(Vec2(posX, posY));
+		}else if(type == 2) {
+			Fire_AI_1.push_back(Vec2(posX, posY));
+		}
+		else if (type == 3) {
+			Fire_Normal_2.push_back(Vec2(posX, posY));
 		}
 	}
 }
@@ -649,6 +783,21 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
+		}
+
+		// main charactor vs rock
+		auto sizeMain = main_charactor->getSize();
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_ROCK) {
+			/*if (nodeA->getPosition().y + sizeMain.height < nodeB->getPosition().y) {
+				main_charactor->SetBlood(main_charactor->GetBlood() - 10);
+			}*/
+			log("cham");
+		}
+		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_CHARACTOR) {
+			/*if (nodeB->getPosition().y + sizeMain.height < nodeA->getPosition().y) {
+				main_charactor->SetBlood(main_charactor->GetBlood() - 10);
+			}*/
+			log("cham1");
 		}
 
 		// fight
@@ -932,6 +1081,10 @@ void GamePlay::update(float deltaTime)
 
 	// collision vs ground
 	checkGround_2();
+
+	// update fire AI
+	fire_ai_1->Update(deltaTime);
+	((Fire*)(fire_ai_1))->setPosMain(this->main_charactor->GetSprite()->getPosition());
 
 	//Update Joystick
 	UpdateJoystick(deltaTime);
