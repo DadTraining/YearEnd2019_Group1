@@ -6,6 +6,7 @@ cocos2d::Sprite* mHeader2;
 cocos2d::ui::Button *mBump2;
 cocos2d::ui::Button *mJump2;
 cocos2d::ui::Button *btnPause2;
+int numDia = 0;
 
 Scene * GamePlay2::createGame()
 {
@@ -28,10 +29,10 @@ Scene * GamePlay2::createGame()
 bool GamePlay2::init()
 {
 	//Create background music
-	/*if (ControlMusic::GetInstance()->isMusic())
+	if (ControlMusic::GetInstance()->isMusic())
 	{
 		SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/angkor_wat.mp3", true);
-	}*/
+	}
 
 	//create Map
 	createMap();
@@ -44,6 +45,7 @@ bool GamePlay2::init()
 
 	//create Object
 	createObject();
+	log("So luong kim cuong:   %i",numDia);
 
 	// add dispatcher
 	AddDispatcher();
@@ -134,11 +136,12 @@ void GamePlay2::createObject() {
 			spiders.push_back(spider1);
 		}
 		else if (type == 4) {//Create Glass
-			Objject* glass = new Glass(this);
-			glass->GetSprite()->setPosition(Vec2(posX*2, posY*2));
-			glasss.push_back(glass);
+			Objject* glass2 = new Glass2(this);
+			glass2->GetSprite()->setPosition(Vec2(posX*2, posY*2));
+			glasss.push_back(glass2);
 		}
 		else if (type == 5) {//Create Diamond
+			numDia++;
 			Objject* diamon = new Diamond(this);
 			diamon->GetSprite()->setPosition(Vec2(posX*2, posY*2));
 			diamons.push_back(diamon);
@@ -234,7 +237,7 @@ void GamePlay2::InitialButton()
 {
 	//Button Fight
 	mBump2 = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
-	mBump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
+	mBump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 150, 100));
 	mBump2->addTouchEventListener(CC_CALLBACK_2(GamePlay2::Fight, this));
 	addChild(mBump2);
 
@@ -341,18 +344,18 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		}
 
 		// main charactor vs glass
-		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS2) {
 			nodeB->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_icespear_break.mp3", false);
 			}
 		}
-		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
+		else if (nodeA->getTag() == TAG_GLASS2 && nodeB->getTag() == TAG_CHARACTOR) {
 			nodeA->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
-				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_icespear_break.mp3", false);
 			}
 		}
 
@@ -421,7 +424,7 @@ void GamePlay2::CreateNumDiamon()
 	this->addChild(NumDiamon, 2);
 
 	// label number
-	CCString *num = CCString::createWithFormat("%i/50", numDiamond2);
+	CCString *num = CCString::createWithFormat("%i/20", numDiamond2);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
 	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(LabelNumDiamon, 2);
@@ -607,28 +610,6 @@ void GamePlay2::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 		fall = true;
 		moveUp = false;
 		break;
-	}
-}
-
-void GamePlay2::climb()
-{
-	Vec2 _mainPos = main_charactor->GetSprite()->getPosition();
-	Vec2 _mapPos = _tileMap->getPosition();
-	Vec2 _winSize = Director::sharedDirector()->getWinSize();
-
-	float _dis_1 = _thang_1.x - (0 - _mapPos.x);
-	float _dis_2 = _thang_2.x - (0 - _mapPos.x);
-	float _dis_1y = _thang_1.y - (0 - _mapPos.y);
-	float _dis_2y = _thang_2.y - (0 - _mapPos.y);
-
-	if (_mainPos.x >= _dis_1 - 30 && _mainPos.x <= _dis_1 + 30 && _mainPos.y <= _dis_1y) {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-	}
-	else if (_mainPos.x >= _dis_2 - 30 && _mainPos.x <= _dis_2 + 30 && _mainPos.y <= _dis_2y) {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-	}
-	else {
-		main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(true);
 	}
 }
 
@@ -909,9 +890,6 @@ void GamePlay2::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
-	// controller
-	UpdateController();
-
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
@@ -920,14 +898,11 @@ void GamePlay2::update(float deltaTime)
 	bloodBar->setPercent(this->main_charactor->GetBlood());
 
 	// update number diamond
-	CCString *num = CCString::createWithFormat("%i/50", numDiamond2);
+	CCString *num = CCString::createWithFormat("%i/20", numDiamond2);
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock
 	push_rock();
-
-	// leo thang
-	climb();
 
 	////////////// ground
 	checkGround();
@@ -1113,7 +1088,6 @@ void GamePlay2::UpdateJoystick(float dt)
 	if (radius > 0)
 	{
 		float degree = std::atan2f(pos.y, pos.x) * 180 / 3.141593;
-		log("%f", degree);
 		if (degree > 135 && degree < 180 || degree > -180 && degree < -135)//MoveLeft
 		{
 			moveRight = false;
@@ -1177,50 +1151,6 @@ void GamePlay2::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 {
 	mCurrentTouchState = ui::Widget::TouchEventType::ENDED;
 	mCurrentTouchPoint = Point(-1, -1);
-}
-
-void GamePlay2::UpdateController()
-{
-	switch (mCurrentTouchState)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-	case ui::Widget::TouchEventType::MOVED:
-
-		if (Rect(mMoveLeftController->getPosition().x, mMoveLeftController->getPosition().y, mMoveLeftController->getContentSize().width, mMoveLeftController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_LEFT_ARROW) //move left
-		{
-			EnablePressedControlLeftRight(true, true);
-			moveLeft = true;
-			moveRight = false;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(true, false);
-		}
-		if (Rect(mMoveRightController->getPosition().x, mMoveRightController->getPosition().y, mMoveRightController->getContentSize().width, mMoveRightController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) //move right
-		{
-			EnablePressedControlLeftRight(false, true);
-			moveLeft = false;
-			moveRight = true;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(false, false);
-		}
-		break;
-
-	case ui::Widget::TouchEventType::ENDED:
-		EnablePressedControlLeftRight(true, false);
-		EnablePressedControlLeftRight(false, false);
-		moveLeft = false;
-		moveRight = false;
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
-		mCurrentTouchState = ui::Widget::TouchEventType::CANCELED;
-		break;
-	}
 }
 
 void GamePlay2::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
@@ -1298,19 +1228,5 @@ void GamePlay2::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	default:
 		break;
-	}
-}
-
-void GamePlay2::EnablePressedControlLeftRight(bool isLeft, bool pressed)
-{
-	if (isLeft)
-	{
-		mMoveLeftController->setVisible(!pressed);
-		mMoveLeftControllerPressed->setVisible(pressed);
-	}
-	else
-	{
-		mMoveRightController->setVisible(!pressed);
-		mMoveRightControllerPressed->setVisible(pressed);
 	}
 }

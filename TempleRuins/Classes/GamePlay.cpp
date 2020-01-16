@@ -395,6 +395,7 @@ void GamePlay::InitialState()
 	fall = false;
 }
 
+
 void GamePlay::InitialObject()
 {
 	auto objects = mObjectGroup->getObjects();
@@ -636,14 +637,14 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			nodeB->setPosition(Vec2(-100, -100));
+			nodeB->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			nodeA->setPosition(Vec2(-100, -100));
+			nodeA->removeFromParentAndCleanup(true);
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
@@ -697,7 +698,7 @@ void GamePlay::CreateNumDiamon()
 	this->addChild(NumDiamon, 2);
 
 	// label number
-	CCString *num = CCString::createWithFormat("%i/50", numDiamond);
+	CCString *num = CCString::createWithFormat("%i/30", numDiamond);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
 	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(LabelNumDiamon, 2);
@@ -885,27 +886,6 @@ void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 	}
 }
 
-void GamePlay::Jump(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
-{
-	switch (type)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-	{
-		if (ControlMusic::GetInstance()->isSound())
-		{
-			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_hammer.mp3", false);
-		}
-		fall = false;
-		moveUp = true;
-		break;
-	}
-	case ui::Widget::TouchEventType::ENDED:
-		fall = true;
-		moveUp = false;
-		break;
-	}
-}
-
 void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
 	switch (type)
@@ -944,7 +924,7 @@ void GamePlay::update(float deltaTime)
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 
 	// update number diamond
-	CCString *num = CCString::createWithFormat("%i/50", numDiamond);
+	CCString *num = CCString::createWithFormat("%i/30", numDiamond);
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock
@@ -1135,7 +1115,6 @@ void GamePlay::UpdateJoystick(float dt)
 	if (radius > 0)
 	{
 		float degree = std::atan2f(pos.y, pos.x) * 180 / 3.141593;
-		log("%f",degree);
 		if (degree > 135 && degree < 180 || degree > -180 && degree < -135)//MoveLeft
 		{
 			moveRight = false;
@@ -1277,19 +1256,5 @@ void GamePlay::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 	default:
 		break;
-	}
-}
-
-void GamePlay::EnablePressedControlLeftRight(bool isLeft, bool pressed)
-{
-	if (isLeft)
-	{
-		mMoveLeftController->setVisible(!pressed);
-		mMoveLeftControllerPressed->setVisible(pressed);
-	}
-	else
-	{
-		mMoveRightController->setVisible(!pressed);
-		mMoveRightControllerPressed->setVisible(pressed);
 	}
 }
