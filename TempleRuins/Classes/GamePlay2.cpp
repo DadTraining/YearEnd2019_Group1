@@ -196,17 +196,20 @@ void GamePlay2::createObject() {
 		if (type == 1) {
 			_Line_Up_Pos_1.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 2) {
+		else if (type == 2) {
 			_Line_Up_Pos_2.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 3) {
+		else if (type == 3) {
 			_Line_Up_Pos_3.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 4) {
+		else if (type == 4) {
 			_Line_Up_Pos_4.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 5) {
+		else if (type == 5) {
 			_Line_Up_Pos_5.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 6) {
+			_Line_Up_Pos_6.push_back(Vec2(posX, posY) * 2);
 		}
 	}
 }
@@ -936,6 +939,34 @@ void GamePlay2::checkGround()
 				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 50) &&
 				(_main_pos.y >= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_6.at(i).y == _Line_Up_Pos_6.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Up_Pos_6.at(i).x == _Line_Up_Pos_6.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 		}
 	}

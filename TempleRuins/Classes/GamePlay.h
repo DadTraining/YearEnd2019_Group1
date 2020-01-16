@@ -72,10 +72,17 @@ private:
 	cocos2d::TMXObjectGroup* mObjectFire;
 	vector<Vec2> Fire_Normal_1;
 	vector<Vec2> Fire_Normal_2;
+	vector<Vec2> Fire_Normal_3;
 	Objject* fire_normal_1;
 	Objject* fire_normal_2;
+	Objject* fire_normal_3;
 	vector<Vec2> Fire_AI_1;
 	Objject* fire_ai_1;
+	Vec2 AI_View;
+
+	// fire dragon
+	vector<Vec2> Fire_dragon_1;
+
 
 	// state key
 	cocos2d::EventKeyboard::KeyCode mCurrentKey;

@@ -40,6 +40,7 @@ private:
 	vector<Vec2> _Line_Up_Pos_3;
 	vector<Vec2> _Line_Up_Pos_4;
 	vector<Vec2> _Line_Up_Pos_5;
+	vector<Vec2> _Line_Up_Pos_6;
 
 	//State Move of Charactor
 	bool moveLeft;
