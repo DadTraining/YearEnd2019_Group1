@@ -54,6 +54,9 @@ bool GamePlay2::init()
 	//create pause layer
 	createPauseLayer();
 
+	//Create Joystick
+	CreateJoystick(this);
+
 	// update
 	scheduleUpdate();
 
@@ -229,52 +232,11 @@ void GamePlay2::AddDispatcher()
 
 void GamePlay2::InitialButton()
 {
-	Director::getInstance()->getVisibleSize();
-
-	//move Left
-	mMoveLeftController = Sprite::create("touch_controller_normal.png");
-	mMoveLeftController->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftController->setPosition(Vec2(50, 50));
-	addChild(mMoveLeftController);
-
-	mMoveLeftControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveLeftControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveLeftControllerPressed->setPosition(mMoveLeftController->getPosition());
-	mMoveLeftControllerPressed->setVisible(false);
-	addChild(mMoveLeftControllerPressed);
-
-	//move Right
-	mMoveRightController = Sprite::create("touch_controller_normal.png");
-	mMoveRightController->setFlippedX(true);
-	mMoveRightController->setAnchorPoint(Vec2(0, 0));
-	mMoveRightController->setPosition(mMoveLeftController->getPosition() + Vec2(mMoveLeftController->getContentSize().width, 0));
-	addChild(mMoveRightController);
-
-	mMoveRightControllerPressed = Sprite::create("touch_controller_pressed.png");
-	mMoveRightControllerPressed->setAnchorPoint(Vec2(0, 0));
-	mMoveRightControllerPressed->setFlippedX(true);
-	mMoveRightControllerPressed->setPosition(mMoveRightController->getPosition());
-	mMoveRightControllerPressed->setVisible(false);
-	addChild(mMoveRightControllerPressed);
-
 	//Button Fight
 	mBump2 = ui::Button::create("Button/hammer_normal.png", "Button/hammer_pressed.png");
 	mBump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 180, 100));
 	mBump2->addTouchEventListener(CC_CALLBACK_2(GamePlay2::Fight, this));
 	addChild(mBump2);
-
-	//Button Jump
-	mJump2 = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	mJump2->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	mJump2->addTouchEventListener(CC_CALLBACK_2(GamePlay2::Jump, this));
-	addChild(mJump2);
-
-	////Button Down
-	//mJump = ui::Button::create("Button/jump_normal.png", "Button/jump_pressed.png");
-	//mJump->setPosition(Vec2(Director::getInstance()->getVisibleSize().width - 80, 150));
-	//mJump->addTouchEventListener(CC_CALLBACK_2(GamePlay::Jump, this));
-	//mJump->setOpacity(50);
-	//addChild(mJump);
 
 	//Button Pause
 	btnPause2 = ui::Button::create("Button/pause_norrmal.png", "Button/pause_pressed.png");
@@ -518,7 +480,6 @@ void GamePlay2::createPauseLayer()
 		Director::getInstance()->resume();
 		btnPause2->setVisible(true);
 		mBump2->setVisible(true);
-		mJump2->setVisible(true);
 		mPauseLayer2->setVisible(false);
 	});
 	mPauseLayer2->addChild(btnResume);
@@ -935,7 +896,6 @@ void GamePlay2::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType
 		});
 		btnPause2->setVisible(false);
 		mBump2->setVisible(false);
-		mJump2->setVisible(false);
 		mPauseLayer2->setOpacity(0);
 		mPauseLayer2->setVisible(true);
 		auto fadeIn = FadeIn::create(0.3f);
@@ -972,7 +932,8 @@ void GamePlay2::update(float deltaTime)
 	////////////// ground
 	checkGround();
 
-
+	//Update Joystick
+	UpdateJoystick(deltaTime);
 }
 
 void GamePlay2::setViewPointCenter(CCPoint position)
@@ -1112,6 +1073,82 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		{
 			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
+	}
+}
+
+void GamePlay2::CreateJoystick(Layer * layer)
+{
+	auto thumb = Sprite::create("thumb.png");
+	auto joystick = Sprite::create("joystick.png");
+	Rect joystickBaseDimensions = Rect(0, 0, 40.f, 40.0f);
+	Point joystickBasePosition;
+	joystickBasePosition = Vec2(MARGIN_JOYSTICK + thumb->getBoundingBox().size.width / 2 + joystick->getBoundingBox().size.width / 2
+		, MARGIN_JOYSTICK + thumb->getBoundingBox().size.height / 2 + joystick->getBoundingBox().size.height / 2);
+
+	joystickBase = new SneakyJoystickSkinnedBase();
+	joystickBase->init();
+	joystickBase->setPosition(Vec2(100, 100));
+	joystickBase->setBackgroundSprite(thumb);
+	joystickBase->setAnchorPoint(Vec2(0, 0));
+	joystickBase->setThumbSprite(joystick);
+	joystickBase->getThumbSprite()->setScale(0.2f);
+	joystickBase->setScale(1.0f);
+	joystick->setScale(0.5f);
+	SneakyJoystick *aJoystick = new SneakyJoystick();
+	aJoystick->initWithRect(joystickBaseDimensions);
+	aJoystick->autorelease();
+	joystickBase->setJoystick(aJoystick);
+	joystickBase->setPosition(Vec2(100, 100));
+
+	leftJoystick = joystickBase->getJoystick();
+	activeRunRange = thumb->getBoundingBox().size.height / 2;
+	layer->addChild(joystickBase);
+}
+
+void GamePlay2::UpdateJoystick(float dt)
+{
+
+	Point pos = leftJoystick->getStickPosition();
+	float radius = std::sqrt(pos.x*pos.x + pos.y*pos.y);
+	if (radius > 0)
+	{
+		float degree = std::atan2f(pos.y, pos.x) * 180 / 3.141593;
+		log("%f", degree);
+		if (degree > 135 && degree < 180 || degree > -180 && degree < -135)//MoveLeft
+		{
+			moveRight = false;
+			moveLeft = true;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > -135 && degree < -45)//Move Down
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = true;
+		}
+		if (degree > -45 && degree < 45)//Move Right
+		{
+			moveRight = true;
+			moveLeft = false;
+			moveUp = false;
+			moveDown = false;
+		}
+		if (degree > 45 && degree < 135)//Move Up
+		{
+			moveRight = false;
+			moveLeft = false;
+			moveUp = true;
+			moveDown = false;
+		}
+	}
+	else
+	{
+		moveRight = false;
+		moveLeft = false;
+		moveUp = false;
+		moveDown = false;
 	}
 }
 

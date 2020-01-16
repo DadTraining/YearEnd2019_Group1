@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Objject.h"
 #include "MainCharactor.h"
+#include "SneakyJoystickSkinnedBase.h"
 #include "Rock.h"
 #include "Glass.h"
 #include "Diamond.h"
@@ -146,5 +147,12 @@ public:
 	//key
 	void OnKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	void OnKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
+
+	//Joystick
+	void CreateJoystick(Layer * layer);
+	void UpdateJoystick(float dt);
+	SneakyJoystick *leftJoystick;
+	SneakyJoystickSkinnedBase* joystickBase;
+	float activeRunRange;
 };
 

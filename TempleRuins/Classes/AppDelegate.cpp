@@ -109,9 +109,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     ResourceManager::GetInstance()->Init("Data.txt");
     // create a scene. it's an autorelease object
   
-	//auto scene = LoadingLogo::createScene();
+	auto scene = LoadingLogo::createScene();
 	//auto scene = GamePlay::createGame();
-	auto scene = GamePlay::createGame();
+	//auto scene = GamePlay::createGame();
     // run
 
     director->runWithScene(scene);
