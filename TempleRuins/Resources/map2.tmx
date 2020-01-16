@@ -158,7 +158,7 @@
   <object id="173" name="Down" type="6" x="800.364" y="256.73"/>
   <object id="174" name="Down" type="6" x="800.36" y="96"/>
  </objectgroup>
- <objectgroup id="7" name="Line_Up" visible="0">
+ <objectgroup id="7" name="Line_Up">
   <object id="176" name="Up" type="1" x="96.6818" y="449.364"/>
   <object id="177" name="Up" type="1" x="96.68" y="540.455"/>
   <object id="178" name="Up" type="1" x="188.167" y="540.45"/>
