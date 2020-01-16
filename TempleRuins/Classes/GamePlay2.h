@@ -58,7 +58,7 @@ private:
 	bool jump;
 	bool moveUp;
 	bool moveDown;
-	int SPEED_CHARACTOR_RUN = 5;
+	int SPEED_CHARACTOR_RUN = 4;
 
 	//State Action of Charactor
 	bool fight;
@@ -72,6 +72,7 @@ private:
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
 	cocos2d::TMXObjectGroup* mObjectGroup;
+	cocos2d::TMXObjectGroup* mObjectGroup1;
 
 	//Button
 	cocos2d::ui::Button *mFireController;

@@ -729,15 +729,6 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
 			((MainCharactor *)(main_charactor))->Stun();
-			if (this->main_charactor->GetBlood() <= 0)
-			{
-				log("die");
-				if (ControlMusic::GetInstance()->isSound())
-				{
-					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
-				}
-				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
-			}
 		}
 		else if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_SPIDER)
 		{
@@ -747,15 +738,6 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
 			((MainCharactor *)(main_charactor))->Stun();
-			if (this->main_charactor->GetBlood() <= 0)
-			{
-				log("die");
-				if (ControlMusic::GetInstance()->isSound())
-				{
-					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
-				}
-				Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
-			}
 		}
 
 
@@ -814,9 +796,20 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 		// main charactor vs fire
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_FIRE) {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_burn.mp3", false);
+			}
+			((MainCharactor *)(main_charactor))->Stun();
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+			
 		}
 		else if (nodeA->getTag() == TAG_FIRE && nodeB->getTag() == TAG_CHARACTOR) {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_burn.mp3", false);
+			}
+			((MainCharactor *)(main_charactor))->Stun();
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
 		}
 
@@ -827,8 +820,17 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
 			log("fight2");
 		}
-	}
 
+	}
+	if (this->main_charactor->GetBlood() <= 0)
+	{
+		log("die");
+		if (ControlMusic::GetInstance()->isSound())
+		{
+			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
+		}
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
+	}
 	return true;
 }
 
@@ -1161,18 +1163,18 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		//main_charactor->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
 		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
 		{
-			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
+			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
 		}
 		else
 		{
 			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
-			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN + 5))
+			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
 			{
-				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN + 5);
+				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
 			{
-				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN + 5);
+				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
 			}
 		}
 	}

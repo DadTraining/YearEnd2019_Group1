@@ -66,7 +66,7 @@ private:
 	Objject* main_charactor;
 	ui::LoadingBar *bloodBar_1;
 	ui::LoadingBar *bloodBar_2;
-	int SPEED_CHARACTOR_RUN = 5;
+	int SPEED_CHARACTOR_RUN = 2;
 
 	// fire
 	cocos2d::TMXObjectGroup* mObjectFire;
