@@ -64,13 +64,7 @@ private:
 
 	//Button
 	cocos2d::ui::Button *mFireController;
-	cocos2d::ui::Button *mJumpController;
-
-	//Button move left + move right
-	cocos2d::Sprite* mMoveLeftController;
-	cocos2d::Sprite* mMoveLeftControllerPressed;
-	cocos2d::Sprite* mMoveRightController;
-	cocos2d::Sprite* mMoveRightControllerPressed;
+	
 	
 	//Header bar
 	int numDiamond2;
@@ -123,8 +117,6 @@ public:
 	void InitialState();
 	void AddDispatcher();
 	void setViewPointCenter(CCPoint position);
-	void EnablePressedControlLeftRight(bool isLeft, bool pressed);
-	void UpdateController();
 	void push_rock();
 	int check_push();
 	float distance(float main, float rock);

@@ -4,7 +4,7 @@
 
 void Fire::Init()
 {
-	this->SetSprite(Sprite::create("button.png"));
+	this->SetSprite(Sprite::create("Fire/fire10.png"));
 	this->GetSprite()->retain();
 	
 	// run action
@@ -12,8 +12,16 @@ void Fire::Init()
 	auto animate = Animate::create(animation);
 	animate->retain();
 	this->GetSprite()->runAction(RepeatForever::create(animate));
-	this->GetSprite()->setScale(0.1);
-	//this->layer->addChild(this->GetSprite());
+	this->GetSprite()->setScale(SCALE_FIRE);
+	this->GetSprite()->setTag(TAG_FIRE);
+	this->GetSprite()->setAnchorPoint(Vec2(0, 0));
+
+	// physics body
+	physic = PhysicsBody::createBox(this->GetSprite()->getContentSize());
+	physic->setRotationEnable(false);
+	physic->setContactTestBitmask(1);
+	physic->setDynamic(false);
+	this->GetSprite()->setPhysicsBody(physic);
 }
 
 void Fire::Update(float deltaTime)

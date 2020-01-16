@@ -43,4 +43,8 @@
 
 #define MARGIN_JOYSTICK 50
 
+// define fire
+#define SCALE_FIRE 0.1
+#define TAG_FIRE 110
+
 #endif // !_DEFINES_H_

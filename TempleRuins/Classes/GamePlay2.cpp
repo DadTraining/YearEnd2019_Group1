@@ -989,9 +989,6 @@ void GamePlay2::update(float deltaTime)
 	main_charactor->Update(deltaTime);
 	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
-	// controller
-	UpdateController();
-
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
@@ -1249,58 +1246,10 @@ bool GamePlay2::onTouchBegan(cocos2d::Touch * touch, cocos2d::Event * event)
 
 void GamePlay2::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event)
 {
-	mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
-	mCurrentTouchPoint = touch->getLocation();
 }
 
 void GamePlay2::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 {
-	mCurrentTouchState = ui::Widget::TouchEventType::ENDED;
-	mCurrentTouchPoint = Point(-1, -1);
-}
-
-void GamePlay2::UpdateController()
-{
-	switch (mCurrentTouchState)
-	{
-	case ui::Widget::TouchEventType::BEGAN:
-	case ui::Widget::TouchEventType::MOVED:
-
-		if (Rect(mMoveLeftController->getPosition().x, mMoveLeftController->getPosition().y, mMoveLeftController->getContentSize().width, mMoveLeftController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_LEFT_ARROW) //move left
-		{
-			EnablePressedControlLeftRight(true, true);
-			moveLeft = true;
-			moveRight = false;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(true, false);
-		}
-		if (Rect(mMoveRightController->getPosition().x, mMoveRightController->getPosition().y, mMoveRightController->getContentSize().width, mMoveRightController->getContentSize().height).containsPoint(mCurrentTouchPoint) || mCurrentKey == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) //move right
-		{
-			EnablePressedControlLeftRight(false, true);
-			moveLeft = false;
-			moveRight = true;
-			moveUp = false;
-			moveDown = false;
-		}
-		else
-		{
-			EnablePressedControlLeftRight(false, false);
-		}
-		break;
-
-	case ui::Widget::TouchEventType::ENDED:
-		EnablePressedControlLeftRight(true, false);
-		EnablePressedControlLeftRight(false, false);
-		moveLeft = false;
-		moveRight = false;
-		((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
-		mCurrentTouchState = ui::Widget::TouchEventType::CANCELED;
-		break;
-	}
 }
 
 void GamePlay2::OnKeyPressed(EventKeyboard::KeyCode keycode, Event * event)
@@ -1381,16 +1330,3 @@ void GamePlay2::OnKeyReleased(EventKeyboard::KeyCode keycode, Event * event)
 	}
 }
 
-void GamePlay2::EnablePressedControlLeftRight(bool isLeft, bool pressed)
-{
-	if (isLeft)
-	{
-		mMoveLeftController->setVisible(!pressed);
-		mMoveLeftControllerPressed->setVisible(pressed);
-	}
-	else
-	{
-		mMoveRightController->setVisible(!pressed);
-		mMoveRightControllerPressed->setVisible(pressed);
-	}
-}

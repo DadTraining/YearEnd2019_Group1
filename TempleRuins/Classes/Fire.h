@@ -10,6 +10,7 @@ private:
 	CCTMXTiledMap *_tileMap;
 	bool AI = false;
 	Vec2 pos_main;
+	PhysicsBody* physic;
 public:
 	void Init();
 	void Update(float deltaTime);

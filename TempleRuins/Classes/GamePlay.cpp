@@ -410,7 +410,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -797,6 +797,14 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 				main_charactor->SetBlood(main_charactor->GetBlood() - 10);
 			}*/
 			log("cham1");
+		}
+
+		// main charactor vs fire
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_FIRE) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+		else if (nodeA->getTag() == TAG_FIRE && nodeB->getTag() == TAG_CHARACTOR) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
 		}
 
 		// fight
