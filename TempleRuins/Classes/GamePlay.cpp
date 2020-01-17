@@ -390,10 +390,8 @@ void GamePlay::checkGround_2()
 		auto mainPos = main_charactor->GetSprite()->getPosition() - Vec2(size.width / 2, 0);
 		auto rockPos = rocks.at(i)->GetSprite()->getPosition();
 		if ((mainPos.x) >= (rockPos.x - (0 - _mapPos.x)) && (mainPos.x) <= (rockPos.x - (0 - _mapPos.x) + sizeRock.width)) {
-			log("hehe");
 			if (mainPos.y >= rockPos.y - (0 - _mapPos.y) + sizeRock.height - 10 && mainPos.y <= rockPos.y - (0 - _mapPos.y) + sizeRock.height + 5) {
 				main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, rockPos.y + sizeRock.height);
-				log("haha");
 				//break;
 			}
 		}
@@ -410,7 +408,7 @@ Scene *GamePlay::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -481,6 +479,7 @@ void GamePlay::CreateMap()
 	_background = _tileMap->layerNamed("Background");
 	_wall = _tileMap->layerNamed("MapLv1");
 	_phy = _tileMap->layerNamed("physics");
+	_end = _tileMap->layerNamed("endgame");
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
@@ -632,6 +631,9 @@ void GamePlay::InitialObject()
 		else if (type == 3) {
 			Fire_Normal_2.push_back(Vec2(posX, posY));
 		}
+		else if (type == 16) {
+			endGame = (Vec2(posX, posY));
+		}
 	}
 }
 
@@ -695,6 +697,26 @@ void GamePlay::InitialPhysics()
 			}
 		}
 	}
+	
+
+	//endgame
+	Size layerSize1 = _end->getLayerSize();
+	for (int i = 0; i < layerSize1.width; i++)
+	{
+		for (int j = 0; j < layerSize1.height; j++)
+		{
+			auto tileSet = _end->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				tileSet->setPhysicsBody(physic);
+				physic->setCollisionBitmask(1);
+				physic->setContactTestBitmask(true);
+				physic->setDynamic(false);
+				tileSet->setTag(TAG_END);
+			}
+		}
+	}
 }
 
 bool GamePlay::OnContactBegin(PhysicsContact &contact)
@@ -706,6 +728,32 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 	if (nodeA && nodeB)
 	{
+		// end game
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_END)
+		{
+			if (numDiamond >= 25)
+			{
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_jump_time.mp3", false);
+				}
+				//FileUtils::getInstance()->writeStringToFile("Phuong Nghi it thoi", "numDia.txt");
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5f, MiniGame::createScene()));
+			}
+		}
+		else if (nodeA->getTag() == TAG_END && nodeB->getTag() == TAG_CHARACTOR)
+		{
+			if (numDiamond >= 25)
+			{
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_jump_time.mp3", false);
+				}
+				//FileUtils::getInstance()->writeStringToFile("Phuong Nghi it thoi", "numDia.txt");
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5f, MiniGame::createScene()));
+			}
+		}
+
 		// charactor vs spider
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
@@ -811,13 +859,13 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 	}
 	if (this->main_charactor->GetBlood() <= 0)
 	{
-		log("die");
 		if (ControlMusic::GetInstance()->isSound())
 		{
 			SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
 		}
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
 	}
+	
 	return true;
 }
 
@@ -856,7 +904,7 @@ void GamePlay::CreateNumDiamon()
 	this->addChild(NumDiamon, 2);
 
 	// label number
-	CCString *num = CCString::createWithFormat("%i/30", numDiamond);
+	CCString *num = CCString::createWithFormat("%i/25", numDiamond);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
 	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(LabelNumDiamon, 2);
@@ -1082,7 +1130,7 @@ void GamePlay::update(float deltaTime)
 	bloodBar_2->setPercent(this->main_charactor->GetBlood());
 
 	// update number diamond
-	CCString *num = CCString::createWithFormat("%i/30", numDiamond);
+	CCString *num = CCString::createWithFormat("%i/25", numDiamond);
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock
@@ -1334,7 +1382,6 @@ void GamePlay::onTouchMoved(Touch * touch, Event * event)
 {
 	mCurrentTouchState = ui::Widget::TouchEventType::MOVED;
 	mCurrentTouchPoint = touch->getLocation();
-	//log("Touch Moved (%f, %f)", touch->getLocation().x, touch->getLocation().y);
 }
 
 void GamePlay::onTouchEnded(Touch * touch, Event * event)

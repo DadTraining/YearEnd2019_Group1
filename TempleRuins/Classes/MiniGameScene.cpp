@@ -2,6 +2,8 @@
 #include "string.h"
 #include "ControlMusic.h"
 
+cocos2d::ui::Button *btnHome;
+
 Scene* MiniGame::createScene()
 {
 	auto scene = Scene::createWithPhysics();
@@ -33,8 +35,12 @@ bool MiniGame::init()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	// Read file
-	s = FileUtils::getInstance()->getStringFromFile("life.txt");
-	life = std::stoi(s);
+	/*s = FileUtils::getInstance()->getStringFromFile("life.txt");
+	life = std::stoi(s);*/
+	life = 3;
+	//Button Go to Map
+
+	
 	
 	// ===============Background===============
 	// 1) Create the CCParallaxNode
@@ -107,10 +113,16 @@ bool MiniGame::init()
 	this->addChild(edgeSp);
 
 	// ===============Label score===============
+	// sprite diamon
+	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(3);
+	NumDiamon->setScale(0.35);
+	NumDiamon->setPosition(Vec2(50,Director::getInstance()->getVisibleSize().height - 50));
+	this->addChild(NumDiamon, 2);
+
 	CCString *tempScore = CCString::createWithFormat("%i/20", score);
 	scoreLabel = Label::createWithTTF(tempScore->getCString(), "fonts/Marker Felt.ttf", 24);
 	scoreLabel->setColor(Color3B::WHITE);
-	scoreLabel->setPosition(Point(15, visibleSize.height - 15));
+	scoreLabel->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(scoreLabel, 10000);
 
 	// ===============Label life===============
@@ -146,10 +158,15 @@ bool MiniGame::onTouchBegan(Touch* touch, Event* event)
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_damage.mp3", false);
 			}
-			if (this->life > 0)
-			{
 				this->life--;
-			}
+				if (this->life <= 0)
+				{
+					if (ControlMusic::GetInstance()->isSound())
+					{
+						SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_die.mp3", false);
+					}
+					Director::getInstance()->replaceScene(TransitionFade::create(0.5f, MainMenu::createScene()));
+				}
 			auto hide = Hide::create();
 			event->getCurrentTarget()->getChildByTag(i)->getPhysicsBody()->setEnabled(false);
 			event->getCurrentTarget()->getChildByTag(i)->runAction(hide);
@@ -219,6 +236,7 @@ void MiniGame::update(float deltaTime)
 
 	if (score == 20)
 	{
+		
 		for (int i = 1; i <= 160; i++)
 		{
 			if (this->getChildByTag(i))
@@ -227,12 +245,27 @@ void MiniGame::update(float deltaTime)
 				this->removeChildByTag(i);
 			}
 		}
-
+		
+		SimpleAudioEngine::getInstance()->pauseAllEffects();
+		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 		auto winLabel = Label::createWithTTF("YOU WIN!", "fonts/Marker Felt.ttf", 54);
 		winLabel->setColor(Color3B::WHITE);
 		winLabel->setPosition(visibleSize / 2);
 		this->addChild(winLabel, 10000);	
 		auto delay = DelayTime::create(5.0f);
+		
+		btnHome = ui::Button::create("Button/home_normal.png", "Button/home_pressed.png");
+		btnHome->setScale(SCALE_BUTTON);
+		btnHome->setPosition(Vec2(visibleSize / 2 - Size(0, 80)));
+		btnHome->addClickEventListener([](Ref* event) {
+			if (ControlMusic::GetInstance()->isSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_jump_time.mp3", false);
+			}
+			Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenu::createScene()));
+		});
+		addChild(btnHome);
+
 
 	}
 }

@@ -79,7 +79,6 @@ bool Fire::isAI()
 void Fire::runAI()
 {
 	Vec2 pos_AI = this->GetSprite()->getPosition();
-	log("%f        %f", pos_AI.x, pos_AI.y );
 	if (distance(pos_main, pos_AI) < 200) {
 		log("oke man");
 		auto mapPOS = _tileMap->getPosition();

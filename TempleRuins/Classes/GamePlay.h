@@ -11,7 +11,7 @@
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 #include "Fire.h"
-
+#include "MiniGameScene.h"
 using namespace CocosDenshion;
 USING_NS_CC;
 
@@ -20,6 +20,7 @@ class GamePlay :
 {
 private:
 	int numDiamond;
+	std::string numDiaInFile;
 	Label* LabelNumDiamon;
 
 	bool fight;
@@ -40,7 +41,10 @@ private:
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
+	CCTMXLayer *_end;
 
+	//end game
+	Vec2 endGame;
 	
 	float distance_1(float p_1, float p_2);
 
@@ -84,6 +88,7 @@ private:
 
 	// object map
 	cocos2d::TMXObjectGroup* mObjectGroup;
+	cocos2d::TMXObjectGroup* check;
 
 	std::vector<Spider*> spiders;
 	std::vector<Objject*> glasss;
