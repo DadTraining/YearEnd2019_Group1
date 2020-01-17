@@ -26,6 +26,7 @@ void Fire::Init()
 	physic->setRotationEnable(false);
 	physic->setContactTestBitmask(1);
 	physic->setDynamic(false);
+	//physic->setGravityEnable(false);
 	this->GetSprite()->setPhysicsBody(physic);
 }
 
