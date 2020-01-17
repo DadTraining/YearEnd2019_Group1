@@ -13,7 +13,7 @@ Scene * GamePlay2::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -248,6 +248,36 @@ void GamePlay2::createObject() {
 		else if (type == 3) {
 			Fire_Normal_3.push_back(Vec2(posX, posY));
 		}
+		else if (type == 20) {
+			blood_1 = Sprite::create("blood.png");
+			blood_1->setScale(SCALE_BLOOD);
+			blood_1->setTag(TAG_BLOOD);
+			blood_1->retain();
+			blood_1->setPosition(Vec2(posX, posY) * 2);
+
+			auto physic = PhysicsBody::createBox(blood_1->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_1->setPhysicsBody(physic);
+
+			this->addChild(blood_1);
+		}
+		else if (type == 21) {
+			blood_2 = Sprite::create("blood.png");
+			blood_2->setScale(SCALE_BLOOD);
+			blood_2->setTag(TAG_BLOOD);
+			blood_2->retain();
+			blood_2->setPosition(Vec2(posX, posY) * 2);
+
+			auto physic = PhysicsBody::createBox(blood_2->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_2->setPhysicsBody(physic);
+
+			this->addChild(blood_2);
+		}
 	}
 }
 
@@ -426,13 +456,30 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 		}
 
 		// fight
-		/*if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
-			log("fight1");
+		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_SPIDER) {
+			nodeB->removeFromParentAndCleanup(true);
 		}
-		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
-			log("fight2");
-		}*/
+		else if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_FIGHT) {
+			nodeA->removeFromParentAndCleanup(true);
+		}
 
+		// main charactor vs blood
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_BLOOD) {
+			nodeB->removeFromParentAndCleanup(true);
+			if (this->main_charactor->GetBlood() < 100)
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+				this->main_charactor->SetBlood(100);
+		}
+		else if (nodeA->getTag() == TAG_BLOOD && nodeB->getTag() == TAG_CHARACTOR) {
+			nodeA->removeFromParentAndCleanup(true);
+			if (this->main_charactor->GetBlood() < 100)
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+				this->main_charactor->SetBlood(100);
+		}
 
 	}
 
@@ -1206,6 +1253,10 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		{
 			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
+
+		// update blood
+		blood_1->setPosition(blood_1->getPosition() + mapMoveDistance);
+		blood_2->setPosition(blood_2->getPosition() + mapMoveDistance);
 	}
 }
 

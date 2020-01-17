@@ -3,11 +3,11 @@
 
 void Keys::Init()
 {
-	this->SetSprite(Sprite::create("button.png"));
+	this->SetSprite(Sprite::create("key.png"));
 	this->GetSprite()->retain();
 
 	if (map) {
-		//this->GetSprite()->setScale(SCALE_FIRE);
+		this->GetSprite()->setScale(SCALE_KEY);
 	}
 	else {
 		//this->GetSprite()->setScale(SCALE_FIRE_2);

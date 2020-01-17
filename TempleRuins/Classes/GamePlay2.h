@@ -33,7 +33,8 @@ private:
 	Objject* fire_normal_1;
 	Objject* fire_normal_2;
 	Objject* fire_normal_3;
-
+	Sprite* blood_1;
+	Sprite* blood_2;
 
 	// collistion
 	void checkGround();

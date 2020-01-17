@@ -83,6 +83,9 @@ private:
 	vector<Vec2> Keys_Pos;
 	Objject* key;
 	bool isKey = false;
+	
+	Sprite* blood_1;
+	Sprite* blood_2;
 
 	// fire dragon
 	vector<Vec2> Fire_dragon_1;
