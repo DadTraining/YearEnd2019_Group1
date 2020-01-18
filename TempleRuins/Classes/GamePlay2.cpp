@@ -13,7 +13,7 @@ Scene * GamePlay2::createGame()
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setSubsteps(8);
 
 	// 'layer' is an autorelease object
@@ -65,7 +65,6 @@ bool GamePlay2::init()
 	vector<Vec2> v;
 
 	fire_normal_1 = new Fire(this, false);
-	this->fire_normal_1->GetSprite()->setScale(0.01);
 	((Fire*)(fire_normal_1))->setAI(false);
 	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, v);
 
