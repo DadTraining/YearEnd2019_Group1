@@ -213,7 +213,7 @@
   <object id="228" name="Up" type="6" x="736" y="121.25"/>
   <object id="229" name="Up" type="6" x="800" y="121.25"/>
  </objectgroup>
- <objectgroup id="4" name="Objects" visible="0">
+ <objectgroup id="4" name="Objects">
   <object id="3" name="MCPos" type="1" x="65" y="543" width="32" height="32"/>
   <object id="4" name="GrassPos" type="4" x="191.788" y="128.545" width="32" height="32"/>
   <object id="5" name="GrassPos" type="4" x="224.318" y="128.682" width="32" height="32"/>
@@ -281,7 +281,7 @@
   <object id="82" name="DiamonPos" type="5" x="735.852" y="351.091" width="32" height="32"/>
   <object id="83" name="DiamonPos" type="5" x="736.852" y="321.091" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="9" name="Spiders" visible="0">
+ <objectgroup id="9" name="Spiders">
   <object id="237" name="SpiderPos" type="2" x="402.25" y="556.313" width="32" height="32"/>
   <object id="238" name="SpiderPos" type="2" x="338" y="555.563" width="32" height="32"/>
   <object id="243" name="SpiderPos" type="2" x="737" y="223.188" width="32" height="32"/>
