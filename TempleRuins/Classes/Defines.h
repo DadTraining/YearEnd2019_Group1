@@ -47,6 +47,18 @@
 
 // define fire
 #define SCALE_FIRE 0.1
+#define SCALE_FIRE_2 0.04
 #define TAG_FIRE 110
 
+// define key
+#define TAG_KEY 130
+#define SCALE_KEY 0.1
+
+// define AI
+#define RUN_1 1.5
+#define RUN_2 2
+
+// define blood
+#define TAG_BLOOD 140
+#define SCALE_BLOOD 0.1
 #endif // !_DEFINES_H_

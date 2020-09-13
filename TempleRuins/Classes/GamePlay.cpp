@@ -457,17 +457,26 @@ bool GamePlay::init()
 	scheduleUpdate();
 
 	// create fire
-	fire_normal_1 = new Fire(this);
+	fire_normal_1 = new Fire(this, true);
 	((Fire*)(fire_normal_1))->setAI(false);
-	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap);
+	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, AI_View);
 
-	fire_normal_2 = new Fire(this);
-	((Fire*)(fire_normal_1))->setAI(false);
-	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap);
+	fire_normal_2 = new Fire(this, true);
+	((Fire*)(fire_normal_2))->setAI(false);
+	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap, AI_View);
 
-	fire_ai_1 = new Fire(this);
+	fire_normal_3 = new Fire(this, true);
+	((Fire*)(fire_normal_3))->setAI(false);
+	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, AI_View);
+
+	fire_ai_1 = new Fire(this, true);
+	((Fire*)(fire_ai_1))->setKey(isKey);
 	((Fire*)(fire_ai_1))->setAI(true);
-	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap);
+	((Fire*)(fire_ai_1))->setPos(Fire_AI_1, _tileMap, AI_View);
+
+	// create key
+	key = new Keys(this, true);
+	((Keys*)(key))->setPos(Keys_Pos, _tileMap);
 
 	return true;
 }
@@ -633,6 +642,47 @@ void GamePlay::InitialObject()
 		}
 		else if (type == 16) {
 			endGame = (Vec2(posX, posY));
+		else if (type == 4) {
+			Fire_dragon_1.push_back(Vec2(posX, posY));
+		}
+		else if (type == 5) {
+			AI_View.push_back(Vec2(posX, posY));
+		}
+		else if (type == 6) {
+			Fire_Normal_3.push_back(Vec2(posX, posY));
+		}
+		else if (type == 7) {
+			Keys_Pos.push_back(Vec2(posX, posY));
+		}
+		else if (type == 8) {
+			blood_1 = Sprite::create("blood.png");
+			blood_1->setScale(SCALE_BLOOD);
+			blood_1->setTag(TAG_BLOOD);
+			blood_1->retain();
+			blood_1->setPosition(Vec2(posX, posY));
+
+			auto physic = PhysicsBody::createBox(blood_1->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_1->setPhysicsBody(physic);
+
+			this->addChild(blood_1);
+		}
+		else if (type == 9) {
+			blood_2 = Sprite::create("blood.png");
+			blood_2->setScale(SCALE_BLOOD);
+			blood_2->setTag(TAG_BLOOD);
+			blood_2->retain();
+			blood_2->setPosition(Vec2(posX, posY));
+
+			auto physic = PhysicsBody::createBox(blood_2->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_2->setPhysicsBody(physic);
+
+			this->addChild(blood_2);
 		}
 	}
 }
@@ -814,21 +864,6 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 			}
 		}
 
-		// main charactor vs rock
-		auto sizeMain = main_charactor->getSize();
-		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_ROCK) {
-			/*if (nodeA->getPosition().y + sizeMain.height < nodeB->getPosition().y) {
-				main_charactor->SetBlood(main_charactor->GetBlood() - 10);
-			}*/
-			log("cham");
-		}
-		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_CHARACTOR) {
-			/*if (nodeB->getPosition().y + sizeMain.height < nodeA->getPosition().y) {
-				main_charactor->SetBlood(main_charactor->GetBlood() - 10);
-			}*/
-			log("cham1");
-		}
-
 		// main charactor vs fire
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_FIRE) {
 			if (ControlMusic::GetInstance()->isSound())
@@ -848,12 +883,44 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
 		}
 
-		// fight
-		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
-			log("fight1");
+		// main charactor vs key
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_KEY) {
+			isKey = true;
+			nodeB->removeFromParentAndCleanup(true);
+			((Fire*)(fire_ai_1))->setKey(isKey);
 		}
-		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
-			log("fight2");
+		else if (nodeA->getTag() == TAG_KEY && nodeB->getTag() == TAG_CHARACTOR) {
+			isKey = true;
+			nodeA->removeFromParentAndCleanup(true);
+			((Fire*)(fire_ai_1))->setKey(isKey);
+		}
+
+		// main charactor vs blood
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_BLOOD) {
+			nodeB->removeFromParentAndCleanup(true);
+			if (this->main_charactor->GetBlood() < 100)
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+			this->main_charactor->SetBlood(100);
+		}
+		else if (nodeA->getTag() == TAG_BLOOD && nodeB->getTag() == TAG_CHARACTOR) {
+			nodeA->removeFromParentAndCleanup(true);
+			if(this->main_charactor->GetBlood() < 100)
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+			this->main_charactor->SetBlood(100);
+		}
+
+		// fight
+		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_SPIDER) {
+			nodeB->removeFromParentAndCleanup(true);
+			this->numDiamond++;
+		}
+		else if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_FIGHT) {
+			nodeA->removeFromParentAndCleanup(true);
+			this->numDiamond++;
 		}
 
 	}
@@ -1285,6 +1352,10 @@ void GamePlay::setViewPointCenter(CCPoint position)
 		{
 			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
+
+		// update blood
+		blood_1->setPosition(blood_1->getPosition() + mapMoveDistance);
+		blood_2->setPosition(blood_2->getPosition() + mapMoveDistance);
 	}
 }
 

@@ -188,6 +188,10 @@ void MainCharactor::Fight()
 	}
 	if (this->GetSprite()->getNumberOfRunningActionsByTag(Actions::C_FIGHT) == 0)
 		this->GetSprite()->runAction(action_fight);
+	
+	auto pos = this->GetSprite()->getPosition();
+	if(isRight) f->getFrameFight()->setPosition(pos.x + 45, pos.y + 30);
+	if(isLeft) f->getFrameFight()->setPosition(pos.x - 45, pos.y + 30);
 }
 
 void MainCharactor::Wait()

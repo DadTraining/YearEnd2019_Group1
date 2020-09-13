@@ -26,6 +26,17 @@ private:
 	std::vector<Objject*> rocks;
 
 	
+	// fire
+	cocos2d::TMXObjectGroup* mObjectFire;
+	vector<Vec2> Fire_Normal_1;
+	vector<Vec2> Fire_Normal_2;
+	vector<Vec2> Fire_Normal_3;
+	Objject* fire_normal_1;
+	Objject* fire_normal_2;
+	Objject* fire_normal_3;
+	Sprite* blood_1;
+	Sprite* blood_2;
+
 	// collistion
 	void checkGround();
 	cocos2d::TMXObjectGroup* mObjects_line_down;
@@ -41,6 +52,7 @@ private:
 	vector<Vec2> _Line_Up_Pos_3;
 	vector<Vec2> _Line_Up_Pos_4;
 	vector<Vec2> _Line_Up_Pos_5;
+	vector<Vec2> _Line_Up_Pos_6;
 
 	//State Move of Charactor
 	bool moveLeft;

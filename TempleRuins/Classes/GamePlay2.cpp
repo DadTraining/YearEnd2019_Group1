@@ -61,9 +61,20 @@ bool GamePlay2::init()
 	// update
 	scheduleUpdate();
 
-	/*for (int i = 0; i < _Line_Down_Pos_1.size(); i++) {
-		log("%f     %f", _Line_Down_Pos_1.at(i).x, _Line_Down_Pos_1.at(i).y);
-	}*/
+	// create fire
+	vector<Vec2> v;
+
+	fire_normal_1 = new Fire(this, false);
+	((Fire*)(fire_normal_1))->setAI(false);
+	((Fire*)(fire_normal_1))->setPos(Fire_Normal_1, _tileMap, v);
+
+	fire_normal_2 = new Fire(this, false);
+	((Fire*)(fire_normal_2))->setAI(false);
+	((Fire*)(fire_normal_2))->setPos(Fire_Normal_2, _tileMap, v);
+
+	fire_normal_3 = new Fire(this, false);
+	((Fire*)(fire_normal_3))->setAI(false);
+	((Fire*)(fire_normal_3))->setPos(Fire_Normal_3, _tileMap, v);
 
 	return true;
 }
@@ -83,6 +94,7 @@ void GamePlay2::createMap()
 
 	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
 	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
+	mObjectFire = _tileMap->getObjectGroup("Fire");
 
 	this->addChild(_tileMap);
 }
@@ -200,17 +212,71 @@ void GamePlay2::createObject() {
 		if (type == 1) {
 			_Line_Up_Pos_1.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 2) {
+		else if (type == 2) {
 			_Line_Up_Pos_2.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 3) {
+		else if (type == 3) {
 			_Line_Up_Pos_3.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 4) {
+		else if (type == 4) {
 			_Line_Up_Pos_4.push_back(Vec2(posX, posY) * 2);
 		}
-		if (type == 5) {
+		else if (type == 5) {
 			_Line_Up_Pos_5.push_back(Vec2(posX, posY) * 2);
+		}
+		else if (type == 6) {
+			_Line_Up_Pos_6.push_back(Vec2(posX, posY) * 2);
+		}
+	}
+
+	// get object fire
+	auto objects_fire = mObjectFire->getObjects();
+	for (int i = 0; i < objects_fire.size(); i++) {
+		auto object = objects_fire.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		int type = object.asValueMap().at("type").asInt();
+
+		if (type == 1) {
+			Fire_Normal_1.push_back(Vec2(posX, posY));
+		}
+		else if (type == 2) {
+			Fire_Normal_2.push_back(Vec2(posX, posY));
+		}
+		else if (type == 3) {
+			Fire_Normal_3.push_back(Vec2(posX, posY));
+		}
+		else if (type == 20) {
+			blood_1 = Sprite::create("blood.png");
+			blood_1->setScale(SCALE_BLOOD);
+			blood_1->setTag(TAG_BLOOD);
+			blood_1->retain();
+			blood_1->setPosition(Vec2(posX, posY) * 2);
+
+			auto physic = PhysicsBody::createBox(blood_1->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_1->setPhysicsBody(physic);
+
+			this->addChild(blood_1);
+		}
+		else if (type == 21) {
+			blood_2 = Sprite::create("blood.png");
+			blood_2->setScale(SCALE_BLOOD);
+			blood_2->setTag(TAG_BLOOD);
+			blood_2->retain();
+			blood_2->setPosition(Vec2(posX, posY) * 2);
+
+			auto physic = PhysicsBody::createBox(blood_2->getContentSize());
+			physic->setRotationEnable(false);
+			physic->setContactTestBitmask(1);
+			physic->setDynamic(false);
+			blood_2->setPhysicsBody(physic);
+
+			this->addChild(blood_2);
 		}
 	}
 }
@@ -423,14 +489,41 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 			}
 			nodeB->removeFromParentAndCleanup(true);
 		}
-		// fight
-		/*if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_ROCK) {
-			log("fight1");
-		}
-		else if (nodeA->getTag() == TAG_ROCK && nodeB->getTag() == TAG_FIGHT) {
-			log("fight2");
-		}*/
 
+		//spider vs rock
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_FIRE) {
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+		else if (nodeA->getTag() == TAG_FIRE && nodeB->getTag() == TAG_CHARACTOR)
+		{
+			this->main_charactor->SetBlood(this->main_charactor->GetBlood() - 20);
+		}
+
+		// fight
+		if (nodeA->getTag() == TAG_FIGHT && nodeB->getTag() == TAG_SPIDER) {
+			nodeB->removeFromParentAndCleanup(true);
+		}
+		else if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_FIGHT) {
+			nodeA->removeFromParentAndCleanup(true);
+		}
+
+		// main charactor vs blood
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_BLOOD) {
+			nodeB->removeFromParentAndCleanup(true);
+			if (this->main_charactor->GetBlood() < 100)
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+				this->main_charactor->SetBlood(100);
+		}
+		else if (nodeA->getTag() == TAG_BLOOD && nodeB->getTag() == TAG_CHARACTOR) {
+			nodeA->removeFromParentAndCleanup(true);
+			if (this->main_charactor->GetBlood() < 100)
+				this->main_charactor->SetBlood(this->main_charactor->GetBlood() + 20);
+
+			if (this->main_charactor->GetBlood() >= 100)
+				this->main_charactor->SetBlood(100);
+		}
 
 	}
 
@@ -683,13 +776,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_1.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_1.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_1.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_1.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_1.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -713,13 +806,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -743,13 +836,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -773,13 +866,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -803,13 +896,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -833,13 +926,13 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y <= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y) - 50)) {
+				(_main_pos.y >= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y) - 5)) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
+				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 5) &&
 				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
 				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
@@ -864,12 +957,12 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y) + 10)) {
+				(_main_pos.y <= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y) + 5)) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 5) &&
 				(_main_pos.y >= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
@@ -892,12 +985,12 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				(_main_pos.y <= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y) + 5)) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 5) &&
 				(_main_pos.y >= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
@@ -920,12 +1013,12 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				(_main_pos.y <= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y) + 5)) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 5) &&
 				(_main_pos.y >= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
@@ -948,12 +1041,12 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				(_main_pos.y <= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y) + 5)) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 5) &&
 				(_main_pos.y >= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
@@ -976,14 +1069,42 @@ void GamePlay2::checkGround()
 			if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
 				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) - 10) &&
 				(_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y) + 50)) {
+				(_main_pos.y <= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y) + 5)) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 			else if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
 				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 50) &&
+				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 5) &&
 				(_main_pos.y >= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
 				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+		}
+	}
+
+	for (int i = 0; i < _Line_Up_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
+		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
+		if (_Line_Up_Pos_6.at(i).y == _Line_Up_Pos_6.at(i + 1).y) {
+			if ((_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x <= _Line_Up_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
+				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y));
+			}
+		}
+
+		// doc
+		if (_Line_Up_Pos_6.at(i).x == _Line_Up_Pos_6.at(i + 1).x) {
+			if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y) + 5)) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
+			}
+			else if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
+				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
+				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 5) &&
+				(_main_pos.y >= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
+				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
 			}
 		}
 	}
@@ -1176,6 +1297,10 @@ void GamePlay2::setViewPointCenter(CCPoint position)
 		{
 			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
 		}
+
+		// update blood
+		blood_1->setPosition(blood_1->getPosition() + mapMoveDistance);
+		blood_2->setPosition(blood_2->getPosition() + mapMoveDistance);
 	}
 }
 
