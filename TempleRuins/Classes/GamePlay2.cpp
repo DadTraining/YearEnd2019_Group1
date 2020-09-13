@@ -87,6 +87,7 @@ void GamePlay2::createMap()
 	_background = _tileMap->layerNamed("Background");
 	_wall = _tileMap->layerNamed("MapLv2");
 	_phy = _tileMap->layerNamed("physics");
+	_end = _tileMap->layerNamed("endgame");
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 	mObjectGroup1 = _tileMap->getObjectGroup("Spiders");
@@ -339,6 +340,24 @@ void GamePlay2::createMapPhysics()
 			}
 		}
 	}
+	//endgame
+	Size layerSize1 = _end->getLayerSize();
+	for (int i = 0; i < layerSize1.width; i++)
+	{
+		for (int j = 0; j < layerSize1.height; j++)
+		{
+			auto tileSet = _end->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physic = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				tileSet->setPhysicsBody(physic);
+				physic->setCollisionBitmask(1);
+				physic->setContactTestBitmask(true);
+				physic->setDynamic(false);
+				tileSet->setTag(TAG_END);
+			}
+		}
+	}
 }
 
 bool GamePlay2::OnContactBegin(PhysicsContact &contact)
@@ -348,6 +367,32 @@ bool GamePlay2::OnContactBegin(PhysicsContact &contact)
 
 	if (nodeA && nodeB)
 	{
+		// end game
+		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_END)
+		{
+			if (numDiamond2 >= 6)
+			{
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_jump_time.mp3", false);
+				}
+				//FileUtils::getInstance()->writeStringToFile("Phuong Nghi it thoi", "numDia.txt");
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5f, MainMenu::createScene()));
+			}
+		}
+		else if (nodeA->getTag() == TAG_END && nodeB->getTag() == TAG_CHARACTOR)
+		{
+			if (numDiamond2 >= 6)
+			{
+				if (ControlMusic::GetInstance()->isSound())
+				{
+					SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_jump_time.mp3", false);
+				}
+				//FileUtils::getInstance()->writeStringToFile("Phuong Nghi it thoi", "numDia.txt");
+				Director::getInstance()->replaceScene(TransitionFade::create(0.5f, MainMenu::createScene()));
+			}
+		}
+
 		// charactor vs spider
 		if (nodeA->getTag() == TAG_SPIDER && nodeB->getTag() == TAG_CHARACTOR)
 		{
@@ -520,7 +565,7 @@ void GamePlay2::CreateNumDiamon()
 	this->addChild(NumDiamon, 2);
 
 	// label number
-	CCString *num = CCString::createWithFormat("%i/20", numDiamond2);
+	CCString *num = CCString::createWithFormat("%i/16", numDiamond2);
 	LabelNumDiamon = Label::createWithTTF(num->getCString(), "fonts/Marker Felt.ttf", 30);
 	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
 	this->addChild(LabelNumDiamon, 2);
@@ -1102,7 +1147,7 @@ void GamePlay2::update(float deltaTime)
 	bloodBar->setPercent(this->main_charactor->GetBlood());
 
 	// update number diamond
-	CCString *num = CCString::createWithFormat("%i/20", numDiamond2);
+	CCString *num = CCString::createWithFormat("%i/16", numDiamond2);
 	LabelNumDiamon->setString(num->getCString());
 
 	// push rock

@@ -24,6 +24,7 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
+
 	
 	// fire
 	cocos2d::TMXObjectGroup* mObjectFire;
@@ -72,6 +73,7 @@ private:
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
+	CCTMXLayer *_end;
 	cocos2d::TMXObjectGroup* mObjectGroup;
 	cocos2d::TMXObjectGroup* mObjectGroup1;
 

@@ -2,6 +2,9 @@
 #define __MINIGAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "ResourceManager.h"
+#include "MainMenu.h"
+#include "Objject.h"
 
 USING_NS_CC;
 
