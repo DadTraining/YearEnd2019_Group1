@@ -41,26 +41,7 @@ private:
 	CCTMXLayer *_background;
 	CCTMXLayer *_wall;
 	CCTMXLayer *_phy;
-
 	
-	float distance_1(float p_1, float p_2);
-
-	// collision 2
-	void checkGround_2();
-	cocos2d::TMXObjectGroup* mObjects_line_down;
-	cocos2d::TMXObjectGroup* mObjects_line_up;
-	vector<Vec2> _Line_Down_Pos;
-	vector<Vec2> _Line_Down_Pos_2;
-	vector<Vec2> _Line_Down_Pos_3;
-	vector<Vec2> _Line_Down_Pos_4;
-	vector<Vec2> _Line_Down_Pos_5;
-	vector<Vec2> _Line_Down_Pos_6;
-	vector<Vec2> _Line_Up_Pos_1;
-	vector<Vec2> _Line_Up_Pos_2;
-	vector<Vec2> _Line_Up_Pos_3;
-	vector<Vec2> _Line_Up_Pos_4;
-	vector<Vec2> _Line_Up_Pos_5;
-	vector<Vec2> _Line_Up_Pos_6;
 
 
 	// main charactor
@@ -127,6 +108,7 @@ public:
 	
 	// update
 	void update(float deltaTime);
+	void updateUI();
 
 	// touch
 	virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);

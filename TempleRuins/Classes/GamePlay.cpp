@@ -1,409 +1,12 @@
 #include "GamePlay.h"
 #include "ControlMusic.h"
 
-void GamePlay::checkGround_2()
-{
-	Vec2 _mapPos = _tileMap->getPosition();
-
-	// down
-	for (int i = 0; i < _Line_Down_Pos.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		// ngang
-		if (_Line_Down_Pos.at(i).y == _Line_Down_Pos.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos.at(i).x == _Line_Down_Pos.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos.at(i + 1).y - (0 - _mapPos.y) - 50)) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-
-		// rock
-		for (int j = 0; j < rocks.size(); j++) {
-			float x = rocks.at(j)->GetSprite()->getPosition().x;
-			float y = rocks.at(j)->GetSprite()->getPosition().y;
-			if (y <= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) &&
-				(y >= _Line_Down_Pos.at(i).y - (0 - _mapPos.y) - 20) &&
-				(x >= _Line_Down_Pos.at(i).x - (0 - _mapPos.x)) &&
-				(x <= _Line_Down_Pos.at(i + 1).x - (0 - _mapPos.x))) {
-				rocks.at(j)->GetSprite()->setPosition(x, _Line_Down_Pos.at(i).y - (0 - _mapPos.y));
-				rocks.at(j)->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Down_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		// ngang
-		if (_Line_Down_Pos_2.at(i).y == _Line_Down_Pos_2.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Down_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos_2.at(i).x == _Line_Down_Pos_2.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y <= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y) - 50)) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_2.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Down_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-
-		// ngang
-		if (_Line_Down_Pos_3.at(i).y == _Line_Down_Pos_3.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 10) &&
-				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Down_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos_3.at(i).x == _Line_Down_Pos_3.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y <= _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y) - 50)) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y > _Line_Down_Pos_3.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y < _Line_Down_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Down_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-
-		// ngang
-		if (_Line_Down_Pos_4.at(i).y == _Line_Down_Pos_4.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 10) &&
-				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Down_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos_4.at(i).x == _Line_Down_Pos_4.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y <= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y) - 50)) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_4.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Down_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-
-		// ngang
-		if (_Line_Down_Pos_5.at(i).y == _Line_Down_Pos_5.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Down_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos_5.at(i).x == _Line_Down_Pos_5.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			/*else if ((_main_pos.x <= _Line_Down_Pos.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_5.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}*/
-		}
-
-
-	}
-
-	for (int i = 0; i < _Line_Down_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-
-		// ngang
-		if (_Line_Down_Pos_6.at(i).y == _Line_Down_Pos_6.at(i + 1).y) {
-			if ((_main_pos.y <= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Down_Pos_6.at(i).x == _Line_Down_Pos_6.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			/*else if ((_main_pos.x <= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Down_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y >= _Line_Down_Pos_6.at(i).y - (0 - _mapPos.y) - 50) &&
-				(_main_pos.y <= _Line_Down_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->getPhysicsBody()->setGravityEnable(false);
-				main_charactor->GetSprite()->setPosition(_Line_Down_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}*/
-		}
-	}
-
-	// up
-	for (int i = 0; i < _Line_Up_Pos_1.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		//ngang
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		if (_Line_Up_Pos_1.at(i).y == _Line_Up_Pos_1.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_1.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_1.at(i).x == _Line_Up_Pos_1.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y) + 10)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_1.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_1.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_1.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_1.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Up_Pos_2.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		// ngang
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		if (_Line_Up_Pos_2.at(i).y == _Line_Up_Pos_2.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_2.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_2.at(i).x == _Line_Up_Pos_2.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y) + 50)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_2.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_2.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_2.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_2.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Up_Pos_3.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		// ngang
-		if (_Line_Up_Pos_3.at(i).y == _Line_Up_Pos_3.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_3.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_3.at(i).x == _Line_Up_Pos_3.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y) + 50)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_3.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_3.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_3.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_3.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Up_Pos_4.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		if (_Line_Up_Pos_4.at(i).y == _Line_Up_Pos_4.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_4.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_4.at(i).x == _Line_Up_Pos_4.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y) + 50)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_4.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_4.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_4.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_4.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Up_Pos_5.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		if (_Line_Up_Pos_5.at(i).y == _Line_Up_Pos_5.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_5.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_5.at(i).x == _Line_Up_Pos_5.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y) + 50)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_5.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_5.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_5.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_5.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	for (int i = 0; i < _Line_Up_Pos_6.size() - 1; i++) { // -1 vi cai cuoi + 1 null
-		Vec2 _main_pos = main_charactor->GetSprite()->getPosition();
-		if (_Line_Up_Pos_6.at(i).y == _Line_Up_Pos_6.at(i + 1).y) {
-			if ((_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x <= _Line_Up_Pos_6.at(i + 1).x - (0 - _mapPos.x))) {
-				main_charactor->GetSprite()->setPosition(_main_pos.x, _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y));
-			}
-		}
-
-		// doc
-		if (_Line_Up_Pos_6.at(i).x == _Line_Up_Pos_6.at(i + 1).x) {
-			if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) - 10) &&
-				(_main_pos.y >= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y)) &&
-				(_main_pos.y <= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y) + 50)) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-			else if ((_main_pos.x <= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x) + 10) &&
-				(_main_pos.x >= _Line_Up_Pos_6.at(i).x - (0 - _mapPos.x)) &&
-				(_main_pos.y <= _Line_Up_Pos_6.at(i).y - (0 - _mapPos.y) + 50) &&
-				(_main_pos.y >= _Line_Up_Pos_6.at(i + 1).y - (0 - _mapPos.y))) {
-				main_charactor->GetSprite()->setPosition(_Line_Up_Pos_6.at(i).x - (0 - _mapPos.x), _main_pos.y);
-			}
-		}
-	}
-
-	// main vs rock
-	auto size = main_charactor->GetSprite()->getContentSize();
-	auto sizeRock = rocks.at(0)->GetSprite()->getContentSize();
-	for (int i = 0; i < rocks.size(); i++) {
-		auto mainPos = main_charactor->GetSprite()->getPosition() - Vec2(size.width / 2, 0);
-		auto rockPos = rocks.at(i)->GetSprite()->getPosition();
-		if ((mainPos.x) >= (rockPos.x - (0 - _mapPos.x)) && (mainPos.x) <= (rockPos.x - (0 - _mapPos.x) + sizeRock.width)) {
-			log("hehe");
-			if (mainPos.y >= rockPos.y - (0 - _mapPos.y) + sizeRock.height - 10 && mainPos.y <= rockPos.y - (0 - _mapPos.y) + sizeRock.height + 5) {
-				main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, rockPos.y + sizeRock.height);
-				log("haha");
-				//break;
-			}
-		}
-	}
-}
 
 cocos2d::Sprite* mPauseLayer;
 cocos2d::Sprite* mHeader;
 cocos2d::ui::Button *mBump;
 cocos2d::ui::Button *btnPause;
+cocos2d::Sprite* NumDiamon;
 
 Scene *GamePlay::createGame()
 {
@@ -493,8 +96,6 @@ void GamePlay::CreateMap()
 	_phy->setVisible(false);
 	mObjectGroup = _tileMap->getObjectGroup("Objects");
 
-	mObjects_line_down = _tileMap->getObjectGroup("Line_Down");
-	mObjects_line_up = _tileMap->getObjectGroup("Line_Up");
 	mObjectFire = _tileMap->getObjectGroup("Fire");
 
 
@@ -559,67 +160,6 @@ void GamePlay::InitialObject()
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
 			rocks.push_back(rock);
-		}
-	}
-
-
-	// get object line down
-	auto objects_line_down = mObjects_line_down->getObjects();
-	for (int i = 0; i < objects_line_down.size(); i++) {
-		auto object = objects_line_down.at(i);
-		auto properties = object.asValueMap();
-
-		float posX = properties.at("x").asFloat();
-		float posY = properties.at("y").asFloat();
-		int type = object.asValueMap().at("type").asInt();
-
-		if (type == 1) {
-			_Line_Down_Pos.push_back(Vec2(posX, posY));
-		}
-		else if (type == 2) {
-			_Line_Down_Pos_2.push_back(Vec2(posX, posY));
-		}
-		else if (type == 3) {
-			_Line_Down_Pos_3.push_back(Vec2(posX, posY));
-		}
-		else if (type == 4) {
-			_Line_Down_Pos_4.push_back(Vec2(posX, posY));
-		}
-		else if (type == 5) {
-			_Line_Down_Pos_5.push_back(Vec2(posX, posY));
-		}
-		else if (type == 6) {
-			_Line_Down_Pos_6.push_back(Vec2(posX, posY));
-		}
-	}
-
-	// get object line up
-	auto objects_line_up = mObjects_line_up->getObjects();
-	for (int i = 0; i < objects_line_up.size(); i++) {
-		auto object = objects_line_up.at(i);
-		auto properties = object.asValueMap();
-
-		float posX = properties.at("x").asFloat();
-		float posY = properties.at("y").asFloat();
-		int type = object.asValueMap().at("type").asInt();
-
-		if (type == 1) {
-			_Line_Up_Pos_1.push_back(Vec2(posX, posY));
-		}
-		if (type == 2) {
-			_Line_Up_Pos_2.push_back(Vec2(posX, posY));
-		}
-		if (type == 3) {
-			_Line_Up_Pos_3.push_back(Vec2(posX, posY));
-		}
-		if (type == 4) {
-			_Line_Up_Pos_4.push_back(Vec2(posX, posY));
-		}
-		if (type == 5) {
-			_Line_Up_Pos_5.push_back(Vec2(posX, posY));
-		}
-		if (type == 6) {
-			_Line_Up_Pos_6.push_back(Vec2(posX, posY));
 		}
 	}
 
@@ -918,7 +458,7 @@ void GamePlay::CreateBloodBar()
 void GamePlay::CreateNumDiamon()
 {
 	// sprite diamon
-	auto NumDiamon = ResourceManager::GetInstance()->GetSpriteById(3);
+	NumDiamon = ResourceManager::GetInstance()->GetSpriteById(3);
 	NumDiamon->setScale(0.35);
 	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
 	this->addChild(NumDiamon, 2);
@@ -1077,17 +617,8 @@ bool GamePlay::check_Collision(int index)
 	return false;
 }
 
-float GamePlay::distance_1(float p_1, float p_2)
-{
-	return p_1 - p_2;
-}
-
 float GamePlay::distance(float main, float rock)
 {
-	//Vec2 P_main = main->GetSprite()->getPosition();
-	//Vec2 P_rock = rock->GetSprite()->getPosition();
-
-	//float dis = sqrt((P_main.x - P_rock.x)*(P_main.x - P_rock.x) + (P_main.y - P_rock.y)*(P_main.y - P_rock.y));
 	float dis = abs(main - rock);
 
 	return dis;
@@ -1156,15 +687,45 @@ void GamePlay::update(float deltaTime)
 	// push rock
 	push_rock();
 
-	// collision vs ground
-	checkGround_2();
-
 	// update fire AI
 	fire_ai_1->Update(deltaTime);
 	((Fire*)(fire_ai_1))->setPosMain(this->main_charactor->GetSprite()->getPosition());
 
 	//Update Joystick
 	UpdateJoystick(deltaTime);
+
+	updateUI();
+}
+
+void GamePlay::updateUI()
+{
+	// update position of UI | Mr Bia
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto positionUpdate = (ccp(0, 0) - this->getPosition());
+
+	// update fight button
+	mBump->setPosition(positionUpdate + visibleSize - ccp(100, 350));
+
+	// update  joystick
+	joystickBase->setPosition(positionUpdate + ccp(100, 100));
+
+	// update header
+	mHeader->setPosition(positionUpdate + visibleSize);
+
+	// update blood
+	bloodBar_1->setPosition(positionUpdate + visibleSize - Size(230, 30));
+	bloodBar_2->setPosition(bloodBar_1->getPosition());
+
+	// update button pause
+	btnPause->setPosition(positionUpdate + visibleSize - Size(3, 8));
+
+	// number diamond
+	NumDiamon->setPosition(bloodBar_2->getPosition() - Vec2(250, 0));
+	LabelNumDiamon->setPosition(NumDiamon->getPosition() + Vec2(50, 0));
+
+	// update pause layer
+	mPauseLayer->setPosition(positionUpdate + visibleSize / 2);
 }
 
 void GamePlay::setViewPointCenter(CCPoint position)
@@ -1174,142 +735,43 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	Vec2 mapMoveDistance = Vec2(0, 0);
 	Vec2 mcMoveDistance = Vec2(0, 0);
 	if (moveRight)
-	{
-		if (main_charactor->GetSprite()->getPosition().x < winSize.width / 2)
-		{
-			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
-		}
-		else
-		{
-			float mapWidth = _tileMap->getMapSize().width * _tileMap->getTileSize().width;
-			if (_tileMap->getPosition().x > -(mapWidth - winSize.width - SPEED_CHARACTOR_RUN))
-			{
-				mapMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
-			}
-			else if (main_charactor->GetSprite()->getPosition().x <= (winSize.width - SPEED_CHARACTOR_RUN))
-			{
-				mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
-			}
-		}
-
-		//main_charactor->GetSprite()->getPhysicsBody()->setVelocity(Vec2(150, 0));
+	{	
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x + 5, main_charactor->GetSprite()->getPosition().y);
 	}
 	else if (moveLeft)
 	{
-		//main_charactor->GetSprite()->getPhysicsBody()->setVelocity(Vec2(-150, 0));
-		if (main_charactor->GetSprite()->getPosition().x > winSize.width / 2)
-		{
-			mcMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
-		}
-		else
-		{
-			if (_tileMap->getPosition().x <= -SPEED_CHARACTOR_RUN)
-			{
-				mapMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
-			}
-			else if (main_charactor->GetSprite()->getPosition().x >= SPEED_CHARACTOR_RUN)
-			{
-				mcMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
-			}
-		}
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x - 5, main_charactor->GetSprite()->getPosition().y);
 	}
 	else if (moveUp || jump)
 	{
-		//main_charactor->GetSprite()->getPhysicsBody()->applyImpulse(Vec2(0, 7000));
-		if (main_charactor->GetSprite()->getPosition().y < winSize.height / 2)
-		{
-			mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
-		}
-		else
-		{
-			float mapHeight = _tileMap->getMapSize().height * _tileMap->getTileSize().height;
-			if (_tileMap->getPosition().y > -(mapHeight - winSize.height - SPEED_CHARACTOR_RUN))
-			{
-				mapMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-			else if (main_charactor->GetSprite()->getPosition().y <= (winSize.height))
-			{
-				mcMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-		}
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y+4);
 	}
 	else if (moveDown)
 	{
-		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
-		{
-			mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
-		}
-		else
-		{
-			if (_tileMap->getPosition().y <= -SPEED_CHARACTOR_RUN)
-			{
-				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-			else if (main_charactor->GetSprite()->getPosition().y >= SPEED_CHARACTOR_RUN)
-			{
-				mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-		}
+		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y-4);
 	}
-	else if (main_charactor->GetSprite()->getPosition().y < Director::getInstance()->getWinSize().height / 2 &&
-		_tileMap->getPosition().y < 0) {
-		if (main_charactor->GetSprite()->getPosition().y > winSize.height / 2)
-		{
-			//mcMoveDistance = -Vec2(0, SPEED_CHARACTOR_RUN);
-		}
-		else
-		{
-			if (_tileMap->getPosition().y <= -SPEED_CHARACTOR_RUN)
-			{
-				mapMoveDistance = Vec2(0, SPEED_CHARACTOR_RUN);
-			}
-		}
-		if (moveLeft) {
-			mcMoveDistance = -Vec2(SPEED_CHARACTOR_RUN, 0);
-		}
-		if (moveRight) {
-			mcMoveDistance = Vec2(SPEED_CHARACTOR_RUN, 0);
-		}
+	else {
+		// MOVE BY CELL   | Mr Bia
+		int x = main_charactor->GetSprite()->getPosition().x;
+		int y = main_charactor->GetSprite()->getPosition().y;
+		int sizeTilemapWidth = _tileMap->getTileSize().width*2;
+		int sizeTilemapHeight = _tileMap->getTileSize().height * 2;
+		int posConvertX = x / sizeTilemapWidth;
+		int posConvertY = y / sizeTilemapHeight;
+		main_charactor->GetSprite()->setPosition(posConvertX*(sizeTilemapWidth)+sizeTilemapWidth/2, posConvertY*sizeTilemapHeight);
 	}
 
-	if (mcMoveDistance != Vec2(0, 0))
-	{
-		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition() + mcMoveDistance);
-	}
-
-	if (mapMoveDistance != Vec2(0, 0))
-	{
-		// update map
-		_tileMap->setPosition(_tileMap->getPosition() + mapMoveDistance);
-
-		// update spider
-		for (int i = 0; i < spiders.size(); i++)
-		{
-			spiders.at(i)->GetSprite()->setPosition(spiders.at(i)->GetSprite()->getPosition() + mapMoveDistance);
-		}
-
-		// update glass
-		for (int i = 0; i < glasss.size(); i++)
-		{
-			glasss.at(i)->GetSprite()->setPosition(glasss.at(i)->GetSprite()->getPosition() + mapMoveDistance);
-		}
-
-		// update diamon
-		for (int i = 0; i < diamons.size(); i++)
-		{
-			diamons.at(i)->GetSprite()->setPosition(diamons.at(i)->GetSprite()->getPosition() + mapMoveDistance);
-		}
-
-		// update rock
-		for (int i = 0; i < rocks.size(); i++)
-		{
-			rocks.at(i)->GetSprite()->setPosition(rocks.at(i)->GetSprite()->getPosition() + mapMoveDistance);
-		}
-
-		// update blood
-		blood_1->setPosition(blood_1->getPosition() + mapMoveDistance);
-		blood_2->setPosition(blood_2->getPosition() + mapMoveDistance);
-	}
+	int posX = main_charactor->GetSprite()->getPosition().x;
+	int posY = main_charactor->GetSprite()->getPosition().y;
+	int x = MAX(posX, winSize.width / 2);
+	int y = MAX(posY, winSize.height / 2);
+	x = MIN(x, (_tileMap->getMapSize().width*this->_tileMap->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (_tileMap->getMapSize().height*this->_tileMap->getTileSize().height) - winSize.height / 2);
+	
+	CCPoint actualPosition = ccp(x, y);
+	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
+	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+	this->setPosition(viewPoint);
 }
 
 void GamePlay::CreateJoystick(Layer * layer)
@@ -1338,12 +800,12 @@ void GamePlay::CreateJoystick(Layer * layer)
 
 	leftJoystick = joystickBase->getJoystick();
 	activeRunRange = thumb->getBoundingBox().size.height / 2;
+	
 	layer->addChild(joystickBase);
 }
 
 void GamePlay::UpdateJoystick(float dt)
 {
-
 	Point pos = leftJoystick->getStickPosition();
 	float radius = std::sqrt(pos.x*pos.x + pos.y*pos.y);
 	if (radius > 0)
