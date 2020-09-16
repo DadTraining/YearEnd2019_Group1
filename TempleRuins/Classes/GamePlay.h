@@ -84,6 +84,13 @@ private:
 	std::vector<Objject*> glasss;
 	std::vector<Objject*> diamons;
 	std::vector<Objject*> rocks;
+
+	// collistion between map and charactor
+	cocos2d::TMXObjectGroup* mObjectCollistion;
+
+	// collistion cell
+	std::map<int, list<int>> collistionCell;
+	list<int> listCell;
 public:
 	static Scene *createGame();
 	virtual bool init();

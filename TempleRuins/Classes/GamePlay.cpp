@@ -98,6 +98,7 @@ void GamePlay::CreateMap()
 
 	mObjectFire = _tileMap->getObjectGroup("Fire");
 
+	mObjectCollistion = _tileMap->getObjectGroup("collisionMapAndCharactor");
 
 	this->addChild(_tileMap);
 }
@@ -223,6 +224,23 @@ void GamePlay::InitialObject()
 
 			this->addChild(blood_2);
 		}
+	}
+
+	// GET OBJECT COLLISTION | MR BIA
+	auto object_collistion = mObjectCollistion->getObjects();
+	
+	for (int i = 0; i < object_collistion.size(); i++) {
+		auto object = object_collistion.at(i);
+		auto properties = object.asValueMap();
+
+		float posX = properties.at("x").asFloat();
+		float posY = properties.at("y").asFloat();
+		posX = posX / 64;
+		posY = posY / 64;
+		int X = (int)posX;
+		int Y = (int)posY;
+		
+		collistionCell[X].push_back(Y);
 	}
 }
 
@@ -734,21 +752,74 @@ void GamePlay::setViewPointCenter(CCPoint position)
 
 	Vec2 mapMoveDistance = Vec2(0, 0);
 	Vec2 mcMoveDistance = Vec2(0, 0);
+
+	// FIX ACROSS THE WALL | MR BIA
+	int posXCellOfCharactor = main_charactor->GetSprite()->getPosition().x / (_tileMap->getTileSize().width * 2);
+	int posYCellOfCharactor = main_charactor->GetSprite()->getPosition().y / (_tileMap->getTileSize().height * 2);
+
+	bool checkMove = true;
+
 	if (moveRight)
 	{	
-		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x + 5, main_charactor->GetSprite()->getPosition().y);
+		if (collistionCell.size() > 0) {
+			listCell = collistionCell.find(posXCellOfCharactor+1)->second;
+			list<int>::iterator ll = listCell.begin();
+			for (ll; ll != listCell.end(); ll++) {
+				//log("here is it %d", *ll);
+				if (*ll == (posYCellOfCharactor)) {
+					checkMove = false;
+					break;
+				}
+			}
+		}
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x + 5, main_charactor->GetSprite()->getPosition().y);
 	}
 	else if (moveLeft)
 	{
-		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x - 5, main_charactor->GetSprite()->getPosition().y);
+		if (collistionCell.size() > 0) {
+			listCell = collistionCell.find(posXCellOfCharactor-1)->second;
+			list<int>::iterator ll = listCell.begin();
+			for (ll; ll != listCell.end(); ll++) {
+				//log("here is it %d", *ll);
+				if (*ll == (posYCellOfCharactor)) {
+					checkMove = false;
+					break;
+				}
+			}
+		}
+
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x - 5, main_charactor->GetSprite()->getPosition().y);
 	}
 	else if (moveUp || jump)
 	{
-		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y+4);
+		if (collistionCell.size() > 0) {
+			listCell = collistionCell.find(posXCellOfCharactor)->second;
+			list<int>::iterator ll = listCell.begin();
+			for (ll; ll != listCell.end(); ll++) {
+				//log("here is it %d", *ll);
+				if (*ll == (posYCellOfCharactor + 1)) {
+					checkMove = false;
+					break;
+				}
+			}
+		}
+
+		if(checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y+5);
 	}
 	else if (moveDown)
 	{
-		main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y-4);
+		if (collistionCell.size() > 0) {
+			listCell = collistionCell.find(posXCellOfCharactor)->second;
+			list<int>::iterator ll = listCell.begin();
+			for (ll; ll != listCell.end(); ll++) {
+				//log("here is it %d", *ll);
+				if (*ll == (posYCellOfCharactor - 1)) {
+					checkMove = false;
+					break;
+				}
+			}
+		}
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y-5);
 	}
 	else {
 		// MOVE BY CELL   | Mr Bia
