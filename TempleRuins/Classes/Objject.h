@@ -19,6 +19,12 @@ public:
 	virtual void Init() = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual Size getSize() = 0;
+
+	// TEST BY MR BIA
+	virtual void mvLeft();
+	virtual void mvRight();
+	virtual void idle();
+
 	Objject();
 	~Objject();
 	void UpdateVelocity(Point velocity);

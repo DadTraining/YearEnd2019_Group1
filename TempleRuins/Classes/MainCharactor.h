@@ -21,17 +21,8 @@ private:
 	bool push;
 	bool fight;
 	bool fight_1 = false;
-	bool wait;
-	bool run;
 	bool stun;
-	bool jump;
-	bool jump_1;
 
-	bool moveLeft;
-	bool moveRight;
-	
-	///////
-	bool k = true;
 
 	Layer *layer;
 
@@ -44,7 +35,6 @@ private:
 
 	FightHammer* f;
 public:
-	void setState(bool fight, bool moveLeft, bool moveRight, bool jump, bool stun, bool push);
 	void Init();
 	void InitialState();
 	void CreateSprite();
@@ -53,16 +43,19 @@ public:
 	void Update(float deltaTime);
 	void Push();
 	void Fight();
-	void Wait();
-	void Run();
 	void Stun();
-	void MoveLeft();
-	void MoveRight();
-	void Jump();
-
-	void MoveUp();
-	void MoveDown();
+	
 	Size getSize();
+
+	// TEST BY MR BIA
+	void mvLeft();
+	void mvRight();
+	void idle();
+	void rotateLeft();
+	void rotateRight();
+	bool isRotateLeft;
+	bool isRotateRight;
+	string currentAnim;
 
 
 	void RotateLeft();

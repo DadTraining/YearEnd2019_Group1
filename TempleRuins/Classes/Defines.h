@@ -9,7 +9,7 @@
 #define TAG_SPIDER 10
 
 // define main charactor
-#define SCALE_CHARACTOR 0.12
+#define SCALE_CHARACTOR 0.11
 #define SPEED_FRAME_CHARACTOR 0.2f
 #define SPEED_FIGHT 0.2f
 //#define SPEED_CHARACTOR_RUN 5
@@ -18,7 +18,7 @@
 #define TAG_CHARACTOR 20
 
 // define diamond
-#define SCALE_DIAMOND 0.55
+#define SCALE_DIAMOND 0.5
 #define TAG_DIAMOND 30
 
 // define rock
@@ -56,6 +56,15 @@
 // define AI
 #define RUN_1 1.5
 #define RUN_2 2
+
+// TEST DEFINE BY MR_BIA
+#define None1 0
+#define Map1 1
+#define Player1 2
+#define Grass1 3
+#define Rock1 4
+#define Diamond1 5
+
 
 // define blood
 #define TAG_BLOOD 140

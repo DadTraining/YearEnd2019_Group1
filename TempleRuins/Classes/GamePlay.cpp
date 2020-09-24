@@ -122,6 +122,25 @@ void GamePlay::InitialState()
 
 void GamePlay::InitialObject()
 {
+	// USING ARRAY TO SAVE POSITION OF OBJECT
+	wid = (int)_tileMap->getMapSize().width / 2;
+	hei = (int)_tileMap->getMapSize().height / 2;
+	sizeTilemapWidth = _tileMap->getTileSize().width * 2;
+	sizeTilemapHeight = _tileMap->getTileSize().height * 2;
+
+	_arrayMap = new int*[wid];
+	for (int i = 0; i < wid; i++) {
+		_arrayMap[i] = new int[hei];
+	}
+
+	for (int i = 0; i < wid; i++) {
+		for (int j = 0; j < hei; j++) {
+			_arrayMap[i][j] = NONE;
+		}
+	}
+
+
+
 	auto objects = mObjectGroup->getObjects();
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -150,16 +169,19 @@ void GamePlay::InitialObject()
 		else if (type == 4) {//Create Glass
 			Objject* glass = new Glass(this);
 			glass->GetSprite()->setPosition(Vec2(posX, posY));
+			glass->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 			glasss.push_back(glass);
 		}
 		else if (type == 5) {//Create Diamond
 			Objject* diamon = new Diamond(this);
 			diamon->GetSprite()->setPosition(Vec2(posX, posY));
+			diamon->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 			diamons.push_back(diamon);
 		}
 		else if (type == 6) {//Create Rock
 			Objject* rock = new Rock(this);
 			rock->GetSprite()->setPosition(Vec2(posX, posY));
+			rock->GetSprite()->setAnchorPoint(Vec2(0.5f, 0.0f));
 			rocks.push_back(rock);
 		}
 	}
@@ -241,6 +263,9 @@ void GamePlay::InitialObject()
 		int Y = (int)posY;
 		
 		collistionCell[X].push_back(Y);
+
+		// USING ARRAY INSTEAD MAP
+		_arrayMap[X][Y] = MAP;
 	}
 }
 
@@ -361,14 +386,16 @@ bool GamePlay::OnContactBegin(PhysicsContact &contact)
 
 		// main charactor vs glass
 		if (nodeA->getTag() == TAG_CHARACTOR && nodeB->getTag() == TAG_GLASS) {
-			nodeB->removeFromParentAndCleanup(true);
+			//nodeB->removeFromParentAndCleanup(true);
+			nodeB->setPosition(-100, -100);
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
 			}
 		}
 		else if (nodeA->getTag() == TAG_GLASS && nodeB->getTag() == TAG_CHARACTOR) {
-			nodeA->removeFromParentAndCleanup(true);
+			//nodeA->removeFromParentAndCleanup(true);
+			nodeA->setPosition(-100, -100);
 			if (ControlMusic::GetInstance()->isSound())
 			{
 				SimpleAudioEngine::getInstance()->playEffect("Sounds/sfx_character_into_bush.mp3", false);
@@ -546,101 +573,6 @@ void GamePlay::createPauseLayer()
 	mPauseLayer->addChild(btnResume);
 }
 
-void GamePlay::push_rock()
-{
-	push = false;
-	int index = -1;
-	index = check_push();
-	if (index != -1 && index != -2) {
-		push = true;
-		SPEED_CHARACTOR_RUN = 5;
-
-		Size size_rock = rocks.at(0)->GetSprite()->getContentSize();
-		Vec2 p_rock = rocks.at(index)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
-		Vec2 p_main = main_charactor->GetSprite()->getPosition();
-		
-		if (p_main.x > p_rock.x) {
-			//log("cham phai");
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() -
-					Vec2(SPEED_CHARACTOR_RUN, 0));
-		}
-		else if (p_main.x < p_rock.x) {
-			//log("cham trai");
-			rocks.at(index)->GetSprite()->setPosition(rocks.at(index)->GetSprite()->getPosition() +
-						Vec2(SPEED_CHARACTOR_RUN, 0));
-		}
-
-		((MainCharactor*)(main_charactor))->Push();
-	}
-	else if (index == -2) {
-		SPEED_CHARACTOR_RUN = 0;
-	}
-	else {
-		SPEED_CHARACTOR_RUN = 5;
-	}
-}
-
-int GamePlay::check_push()
-{
-	int index = -1;
-	Size size_rock = rocks.at(0)->GetSprite()->getContentSize();
-	Vec2 p_main = main_charactor->GetSprite()->getPosition();
-	Vec2 p_rock = rocks.at(0)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
-	
-	float min_horizontal = 1000000;
-
-	float _dis_horizontal = main_charactor->getSize().width / 2 + size_rock.width / 2;
-
-	for (int i = 0; i < rocks.size(); i++) {
-		auto r = rocks.at(i)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
-		float dis = distance(p_main.x, r.x);
-		if (dis < min_horizontal && (p_main.y >= r.y - 10 && p_main.y <= r.y + size_rock.height - 10)) {
-			min_horizontal = dis;
-			index = i;
-		}
-	}
-
-	if (index != -1) {
-		p_rock = rocks.at(index)->GetSprite()->getPosition() + Vec2(size_rock.width / 2, 0);
-		float dis = distance(p_main.x, p_rock.x);
-		if (dis <= _dis_horizontal && !check_Collision(index)) {
-			// da khong cham nhau
-			//log("cham cham");
-			return index;
-		}
-		else if (dis <= _dis_horizontal && check_Collision(index)) {
-			// da cham nhau
-			//log("return -2");
-			return -2;
-		}
-	}
-
-	return -1;
-}
-
-bool GamePlay::check_Collision(int index)
-{
-	Size size = rocks.at(0)->GetSprite()->getContentSize();
-	auto rock_1 = rocks.at(index)->GetSprite()->getPosition();
-	for (int j = 0; j < rocks.size(); j++) {
-		auto rock_2 = rocks.at(j)->GetSprite()->getPosition();
-		if (j != index && rock_1.y >= rock_2.y - 5 && rock_1.y <= rock_2.y + size.height) {
-			if (rock_1.x >= rock_2.x + size.width - 5 && rock_1.x <= rock_2.x + size.width + 5 ||
-				rock_1.x >= rock_2.x - size.width - 5 && rock_1.x <= rock_2.x - size.width + 5) {
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-float GamePlay::distance(float main, float rock)
-{
-	float dis = abs(main - rock);
-
-	return dis;
-}
 
 void GamePlay::Fight(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType type)
 {
@@ -688,10 +620,6 @@ void GamePlay::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType 
 void GamePlay::update(float deltaTime)
 
 {
-	// update main charactor
-	main_charactor->Update(deltaTime);
-	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
-
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());
 
@@ -702,9 +630,6 @@ void GamePlay::update(float deltaTime)
 	CCString *num = CCString::createWithFormat("%i/30", numDiamond);
 	LabelNumDiamon->setString(num->getCString());
 
-	// push rock
-	push_rock();
-
 	// update fire AI
 	fire_ai_1->Update(deltaTime);
 	((Fire*)(fire_ai_1))->setPosMain(this->main_charactor->GetSprite()->getPosition());
@@ -712,12 +637,19 @@ void GamePlay::update(float deltaTime)
 	//Update Joystick
 	UpdateJoystick(deltaTime);
 
+	// update position of UI when charactor move
 	updateUI();
+
+	// UPDATE ARRAY MAP
+	this->updateArrayMap();
+
+	// UPDATE POSITION ROCK AND DIAMOND
+	this->updatePositionItemByCell();
 }
 
 void GamePlay::updateUI()
 {
-	// update position of UI | Mr Bia
+	// UPDATE POSITION OF UI | MR BIA
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto positionUpdate = (ccp(0, 0) - this->getPosition());
@@ -746,6 +678,100 @@ void GamePlay::updateUI()
 	mPauseLayer->setPosition(positionUpdate + visibleSize / 2);
 }
 
+void GamePlay::updateArrayMap()
+{
+	// clear old position except map's collision
+	for (int i = 0; i < wid; i++) {
+		for (int j = 0; j < hei; j++) {
+			if (_arrayMap[i][j] != MAP) {
+				_arrayMap[i][j] = NONE;
+			}
+		}
+	}
+
+	// update position's player
+	int posConvertX = (int)(playerPosX / sizeTilemapWidth);
+	int posConvertY = (int)(playerPosY / sizeTilemapHeight);
+	_arrayMap[posConvertX][posConvertY] = PLAYER;
+
+	// update position's grass
+	std::vector<Objject*>::iterator iGlass;
+	for (iGlass = glasss.begin(); iGlass != glasss.end(); iGlass++) {
+		int x = (*iGlass)->GetSprite()->getPosition().x;
+		int y = (*iGlass)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+
+		// because when charactor collistion vs grass -> move grass to -100, -100
+		if(x >= 0 && y >= 0) _arrayMap[x][y] = GRASS;
+	}
+
+	// update position's diamond
+	std::vector<Objject*>::iterator iDiamond;
+	for (iDiamond = diamons.begin(); iDiamond != diamons.end(); iDiamond++) {
+		int x = (*iDiamond)->GetSprite()->getPosition().x;
+		int y = (*iDiamond)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+		_arrayMap[x][y] = DIAMOND;
+	}
+
+	// update position's rock
+	std::vector<Objject*>::iterator iRock;
+	for (iRock = rocks.begin(); iRock != rocks.end(); iRock++) {
+		int x = (*iRock)->GetSprite()->getPosition().x;
+		int y = (*iRock)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+		_arrayMap[x][y] = ROCK;
+	}
+}
+
+void GamePlay::updatePositionItemByCell()
+{
+	// update position's diamond
+	std::vector<Objject*>::iterator iGrass;
+	for (iGrass = glasss.begin(); iGrass != glasss.end(); iGrass++) {		// remind: rename glasss to grasss
+		int x = (*iGrass)->GetSprite()->getPosition().x;
+		int y = (*iGrass)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+
+		(*iGrass)->GetSprite()->setPosition(x * sizeTilemapWidth + sizeTilemapWidth / 2, y*sizeTilemapHeight);
+	}
+
+	// update position's diamond
+	std::vector<Objject*>::iterator iDiamond;
+	for (iDiamond = diamons.begin(); iDiamond != diamons.end(); iDiamond++) {
+		int x = (*iDiamond)->GetSprite()->getPosition().x;
+		int y = (*iDiamond)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+		
+		(*iDiamond)->GetSprite()->setPosition(x * sizeTilemapWidth + sizeTilemapWidth/2, y*sizeTilemapHeight);
+		if (_arrayMap[x][y - 1] == NONE) (*iDiamond)->GetSprite()->setPosition(x * sizeTilemapWidth + sizeTilemapWidth / 2, y*sizeTilemapHeight - 10);
+	}
+
+
+	// update position's rock
+	std::vector<Objject*>::iterator iRock;
+	for (iRock = rocks.begin(); iRock != rocks.end(); iRock++) {
+		int x = (*iRock)->GetSprite()->getPosition().x;
+		int y = (*iRock)->GetSprite()->getPosition().y;
+
+		x = x / sizeTilemapWidth;
+		y = y / sizeTilemapHeight;
+
+		(*iRock)->GetSprite()->setPosition(x * sizeTilemapWidth + sizeTilemapWidth / 2, y*sizeTilemapHeight);
+		if (_arrayMap[x][y - 1] == NONE) (*iRock)->GetSprite()->setPosition(x * sizeTilemapWidth + sizeTilemapWidth / 2, y*sizeTilemapHeight - 10);
+	}
+}
+
 void GamePlay::setViewPointCenter(CCPoint position)
 {
 	CCSize winSize = Director::getInstance()->getVisibleSize();
@@ -754,82 +780,101 @@ void GamePlay::setViewPointCenter(CCPoint position)
 	Vec2 mcMoveDistance = Vec2(0, 0);
 
 	// FIX ACROSS THE WALL | MR BIA
-	int posXCellOfCharactor = main_charactor->GetSprite()->getPosition().x / (_tileMap->getTileSize().width * 2);
-	int posYCellOfCharactor = main_charactor->GetSprite()->getPosition().y / (_tileMap->getTileSize().height * 2);
+	int posXPlayer = main_charactor->GetSprite()->getPosition().x;
+	int posYPlayer = main_charactor->GetSprite()->getPosition().y;
 
+	int posXCellOfCharactor = posXPlayer / sizeTilemapWidth;
+	int posYCellOfCharactor = posYPlayer / sizeTilemapHeight;
+	
 	bool checkMove = true;
 
 	if (moveRight)
 	{	
-		if (collistionCell.size() > 0) {
-			listCell = collistionCell.find(posXCellOfCharactor+1)->second;
-			list<int>::iterator ll = listCell.begin();
-			for (ll; ll != listCell.end(); ll++) {
-				//log("here is it %d", *ll);
-				if (*ll == (posYCellOfCharactor)) {
-					checkMove = false;
-					break;
-				}
-			}
-		}
-		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x + 5, main_charactor->GetSprite()->getPosition().y);
+		//if (collistionCell.size() > 0) {
+		//	listCell = collistionCell.find(posXCellOfCharactor+1)->second;
+		//	list<int>::iterator ll = listCell.begin();
+		//	for (ll; ll != listCell.end(); ll++) {
+		//		//log("here is it %d", *ll);
+		//		if (*ll == (posYCellOfCharactor)) {
+		//			checkMove = false;
+		//			break;
+		//		}
+		//	}
+		//}
+		if (_arrayMap[posXCellOfCharactor + 1][posYCellOfCharactor] == MAP ||
+			_arrayMap[posXCellOfCharactor + 1][posYCellOfCharactor] == ROCK) checkMove = false;
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(posXPlayer + 5, posYPlayer);
+
+		// STATE MOVE RIGHT
+		main_charactor->mvRight();
 	}
 	else if (moveLeft)
 	{
-		if (collistionCell.size() > 0) {
-			listCell = collistionCell.find(posXCellOfCharactor-1)->second;
-			list<int>::iterator ll = listCell.begin();
-			for (ll; ll != listCell.end(); ll++) {
-				//log("here is it %d", *ll);
-				if (*ll == (posYCellOfCharactor)) {
-					checkMove = false;
-					break;
-				}
-			}
-		}
-
-		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x - 5, main_charactor->GetSprite()->getPosition().y);
+		//if (collistionCell.size() > 0) {
+		//	listCell = collistionCell.find(posXCellOfCharactor-1)->second;
+		//	list<int>::iterator ll = listCell.begin();
+		//	for (ll; ll != listCell.end(); ll++) {
+		//		//log("here is it %d", *ll);
+		//		if (*ll == (posYCellOfCharactor)) {
+		//			checkMove = false;
+		//			break;
+		//		}
+		//	}
+		//}
+		if (_arrayMap[posXCellOfCharactor - 1][posYCellOfCharactor] == MAP ||
+			_arrayMap[posXCellOfCharactor - 1][posYCellOfCharactor] == ROCK) checkMove = false;
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(posXPlayer - 5, posYPlayer);
+		
+		// STATE MOVE LEFT
+		main_charactor->mvLeft();
 	}
 	else if (moveUp || jump)
 	{
-		if (collistionCell.size() > 0) {
-			listCell = collistionCell.find(posXCellOfCharactor)->second;
-			list<int>::iterator ll = listCell.begin();
-			for (ll; ll != listCell.end(); ll++) {
-				//log("here is it %d", *ll);
-				if (*ll == (posYCellOfCharactor + 1)) {
-					checkMove = false;
-					break;
-				}
-			}
-		}
-
-		if(checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y+5);
+		//if (collistionCell.size() > 0) {
+		//	listCell = collistionCell.find(posXCellOfCharactor)->second;
+		//	list<int>::iterator ll = listCell.begin();
+		//	for (ll; ll != listCell.end(); ll++) {
+		//		//log("here is it %d", *ll);
+		//		if (*ll == (posYCellOfCharactor + 1)) {
+		//			checkMove = false;
+		//			break;
+		//		}
+		//	}
+		//}
+		if (_arrayMap[posXCellOfCharactor][posYCellOfCharactor + 1] == MAP ||
+			_arrayMap[posXCellOfCharactor][posYCellOfCharactor + 1] == ROCK) checkMove = false;
+		if(checkMove == true) main_charactor->GetSprite()->setPosition(posXPlayer, posYPlayer + 5);
+	
 	}
 	else if (moveDown)
 	{
-		if (collistionCell.size() > 0) {
-			listCell = collistionCell.find(posXCellOfCharactor)->second;
-			list<int>::iterator ll = listCell.begin();
-			for (ll; ll != listCell.end(); ll++) {
-				//log("here is it %d", *ll);
-				if (*ll == (posYCellOfCharactor - 1)) {
-					checkMove = false;
-					break;
-				}
-			}
-		}
-		if (checkMove == true) main_charactor->GetSprite()->setPosition(main_charactor->GetSprite()->getPosition().x, main_charactor->GetSprite()->getPosition().y-5);
+		//list<int>::iterator ll;
+		//if (collistionCell.size() > 0) {
+		//	listCell = collistionCell.find(posXCellOfCharactor)->second;
+		//	ll = listCell.begin();
+		//	for (ll; ll != listCell.end(); ll++) {
+		//		//log("here is it %d", *ll);
+		//		if (*ll == (posYCellOfCharactor - 1)) {
+		//			checkMove = false;
+		//			break;
+		//		}
+		//	}
+		//}
+		if (_arrayMap[posXCellOfCharactor][posYCellOfCharactor - 1] == MAP ||
+			_arrayMap[posXCellOfCharactor][posYCellOfCharactor - 1] == ROCK) checkMove = false;
+		if (checkMove == true) main_charactor->GetSprite()->setPosition(posXPlayer, posYPlayer - 5);
 	}
 	else {
 		// MOVE BY CELL   | Mr Bia
-		int x = main_charactor->GetSprite()->getPosition().x;
-		int y = main_charactor->GetSprite()->getPosition().y;
-		int sizeTilemapWidth = _tileMap->getTileSize().width*2;
-		int sizeTilemapHeight = _tileMap->getTileSize().height * 2;
-		int posConvertX = x / sizeTilemapWidth;
-		int posConvertY = y / sizeTilemapHeight;
+		playerPosX = main_charactor->GetSprite()->getPosition().x;
+		playerPosY = main_charactor->GetSprite()->getPosition().y;
+		
+		int posConvertX = (int)(playerPosX / sizeTilemapWidth);
+		int posConvertY = (int)(playerPosY / sizeTilemapHeight);
 		main_charactor->GetSprite()->setPosition(posConvertX*(sizeTilemapWidth)+sizeTilemapWidth/2, posConvertY*sizeTilemapHeight);
+		
+		// STATE IDLE
+		main_charactor->idle();
 	}
 
 	int posX = main_charactor->GetSprite()->getPosition().x;

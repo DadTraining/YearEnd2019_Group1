@@ -87,10 +87,26 @@ private:
 
 	// collistion between map and charactor
 	cocos2d::TMXObjectGroup* mObjectCollistion;
+	int sizeTilemapWidth;
+	int sizeTilemapHeight;
 
 	// collistion cell
 	std::map<int, list<int>> collistionCell;
 	list<int> listCell;
+	
+	// TEST USING ARRAY TO SAVE POSITION OF OBJECT
+	int **_arrayMap;
+	int wid;
+	int hei;
+	int NONE = None1;
+	int MAP = Map1;
+	int PLAYER = Player1;
+	int GRASS = Grass1;
+	int ROCK = Rock1;
+	int DIAMOND = Diamond1;
+	// player pos
+	float playerPosX;
+	float playerPosY;
 public:
 	static Scene *createGame();
 	virtual bool init();
@@ -110,12 +126,13 @@ public:
 	// push rock
 	void push_rock();
 	int check_push();
-	bool check_Collision(int index);
 	float distance(float main, float rock);
 	
 	// update
 	void update(float deltaTime);
 	void updateUI();
+	void updateArrayMap();
+	void updatePositionItemByCell();
 
 	// touch
 	virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);

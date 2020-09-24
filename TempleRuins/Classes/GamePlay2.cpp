@@ -1092,7 +1092,6 @@ void GamePlay2::Pause(cocos2d::Ref * sender, cocos2d::ui::Widget::TouchEventType
 void GamePlay2::update(float deltaTime)
 {
 	main_charactor->Update(deltaTime);
-	((MainCharactor *)main_charactor)->setState(fight, moveLeft, moveRight, jump, stun, push);
 
 	// set view
 	this->setViewPointCenter(main_charactor->GetSprite()->getPosition());

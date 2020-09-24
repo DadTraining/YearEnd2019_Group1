@@ -11,10 +11,8 @@ void Rock::Init()
 	// physics
 	auto physicsBody = PhysicsBody::createCircle(rock->getContentSize().width/2);
 	//auto physicsBody = PhysicsBody::createCircle
-	physicsBody->setDynamic(true);
+	physicsBody->setDynamic(false);
 	physicsBody->setRotationEnable(false);
-	physicsBody->setMass(100);
-	physicsBody->setVelocityLimit(300.0f);
 	rock->setPhysicsBody(physicsBody);
 	
 	// colission

@@ -36,7 +36,7 @@ void Diamond::Init()
 
 	//add physic
 	auto physicsBody1 = PhysicsBody::createCircle(this->GetSprite()->getContentSize().width/2);
-	physicsBody1->setDynamic(true);
+	physicsBody1->setDynamic(false);
 	physicsBody1->setRotationEnable(false);
 	this->GetSprite()->setPhysicsBody(physicsBody1);
 	this->GetSprite()->getPhysicsBody()->setContactTestBitmask(1);

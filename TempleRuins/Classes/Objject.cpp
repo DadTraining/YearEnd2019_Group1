@@ -28,6 +28,19 @@ Sprite * Objject::GetSprite()
 	return this->sprite;
 }
 
+void Objject::mvLeft()
+{
+	log("move left");
+}
+
+void Objject::mvRight()
+{
+}
+
+void Objject::idle()
+{
+}
+
 Objject::Objject()
 {
 	visibleSize = Director::getInstance()->getVisibleSize();
